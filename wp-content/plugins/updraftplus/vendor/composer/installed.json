@@ -1,33 +1,119 @@
 [
     {
-        "name": "psr/log",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
+        "name": "kriswallsmith/assetic",
+        "version": "v1.4.0",
+        "version_normalized": "1.4.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/php-fig/log.git",
-            "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+            "url": "https://github.com/kriswallsmith/assetic.git",
+            "reference": "e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-            "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+            "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1",
+            "reference": "e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.0"
+            "php": ">=5.3.1",
+            "symfony/process": "~2.1|~3.0"
         },
-        "time": "2016-10-10T12:19:37+00:00",
+        "conflict": {
+            "twig/twig": "<1.27"
+        },
+        "require-dev": {
+            "leafo/lessphp": "^0.3.7",
+            "leafo/scssphp": "~0.1",
+            "meenie/javascript-packer": "^1.1",
+            "mrclay/minify": "<2.3",
+            "natxet/cssmin": "3.0.4",
+            "patchwork/jsqueeze": "~1.0|~2.0",
+            "phpunit/phpunit": "~4.8 || ^5.6",
+            "psr/log": "~1.0",
+            "ptachoire/cssembed": "~1.0",
+            "symfony/phpunit-bridge": "~2.7|~3.0",
+            "twig/twig": "~1.23|~2.0",
+            "yfix/packager": "dev-master"
+        },
+        "suggest": {
+            "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
+            "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
+            "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin",
+            "patchwork/jsqueeze": "Assetic provides the integration with the JSqueeze JavaScript compressor",
+            "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
+            "twig/twig": "Assetic provides the integration with the Twig templating engine"
+        },
+        "time": "2016-11-11T18:43:20+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.0.x-dev"
+                "dev-master": "1.4-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
-            "psr-4": {
-                "Psr\\Log\\": "Psr/Log/"
+            "psr-0": {
+                "Assetic": "src/"
+            },
+            "files": [
+                "src/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kris Wallsmith",
+                "email": "kris.wallsmith@gmail.com",
+                "homepage": "http://kriswallsmith.net/"
+            }
+        ],
+        "description": "Asset Management for PHP",
+        "homepage": "https://github.com/kriswallsmith/assetic",
+        "keywords": [
+            "assets",
+            "compression",
+            "minification"
+        ]
+    },
+    {
+        "name": "robloach/component-installer",
+        "version": "0.2.3",
+        "version_normalized": "0.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/RobLoach/component-installer.git",
+            "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/908a859aa7c4949ba9ad67091e67bac10b66d3d7",
+            "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0",
+            "kriswallsmith/assetic": "1.*",
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "composer/composer": "1.*@alpha",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2015-08-10T12:35:38+00:00",
+        "type": "composer-plugin",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            },
+            "class": "ComponentInstaller\\ComponentInstallerPlugin"
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ComponentInstaller": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -36,31 +122,25 @@
         ],
         "authors": [
             {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
+                "name": "Rob Loach",
+                "homepage": "http://robloach.net"
             }
         ],
-        "description": "Common interface for logging libraries",
-        "homepage": "https://github.com/php-fig/log",
-        "keywords": [
-            "log",
-            "psr",
-            "psr-3"
-        ]
+        "description": "Allows installation of Components via Composer."
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.28",
-        "version_normalized": "2.8.28.0",
+        "version": "v2.8.37",
+        "version_normalized": "2.8.37.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "7fe089232554357efb8d4af65ce209fc6e5a2186"
+            "reference": "f5d2d7dcc33b89e20c2696ea9afcbddf6540081c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/7fe089232554357efb8d4af65ce209fc6e5a2186",
-            "reference": "7fe089232554357efb8d4af65ce209fc6e5a2186",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/f5d2d7dcc33b89e20c2696ea9afcbddf6540081c",
+            "reference": "f5d2d7dcc33b89e20c2696ea9afcbddf6540081c",
             "shasum": ""
         },
         "require": {
@@ -77,7 +157,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2017-10-01T21:00:16+00:00",
+        "time": "2018-02-11T16:53:59+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -209,425 +289,6 @@
         "abandoned": "guzzlehttp/guzzle"
     },
     {
-        "name": "rackspace/php-opencloud",
-        "version": "v1.12.2",
-        "version_normalized": "1.12.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/rackspace/php-opencloud.git",
-            "reference": "9c0ade232ddd1ae23994349406171ffea1127b5d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/rackspace/php-opencloud/zipball/9c0ade232ddd1ae23994349406171ffea1127b5d",
-            "reference": "9c0ade232ddd1ae23994349406171ffea1127b5d",
-            "shasum": ""
-        },
-        "require": {
-            "guzzle/guzzle": "~3.8",
-            "php": ">=5.3.3",
-            "psr/log": "~1.0"
-        },
-        "require-dev": {
-            "apigen/apigen": "~2.8",
-            "fabpot/php-cs-fixer": "1.0.*@dev",
-            "jakub-onderka/php-parallel-lint": "0.*",
-            "phpunit/phpunit": "4.3.*",
-            "satooshi/php-coveralls": "0.6.*@dev"
-        },
-        "time": "2015-03-16T23:57:58+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "OpenCloud": [
-                    "lib/",
-                    "tests/"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Glen Campbell",
-                "email": "glen.campbell@rackspace.com"
-            },
-            {
-                "name": "Jamie Hannaford",
-                "email": "jamie.hannaford@rackspace.com",
-                "homepage": "https://github.com/jamiehannaford"
-            },
-            {
-                "name": "Shaunak Kashyap",
-                "email": "shaunak.kashyap@rackspace.com",
-                "homepage": "https://github.com/ycombinator"
-            }
-        ],
-        "description": "PHP SDK for Rackspace/OpenStack APIs",
-        "keywords": [
-            "Openstack",
-            "nova",
-            "opencloud",
-            "rackspace",
-            "swift"
-        ]
-    },
-    {
-        "name": "components/jquery",
-        "version": "3.2.1",
-        "version_normalized": "3.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/components/jquery.git",
-            "reference": "e5534d4ab8e80c159553d507e358ed20a806d3bf"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/components/jquery/zipball/e5534d4ab8e80c159553d507e358ed20a806d3bf",
-            "reference": "e5534d4ab8e80c159553d507e358ed20a806d3bf",
-            "shasum": ""
-        },
-        "time": "2017-03-21T07:01:49+00:00",
-        "type": "component",
-        "extra": {
-            "component": {
-                "scripts": [
-                    "jquery.js"
-                ],
-                "files": [
-                    "jquery.min.js",
-                    "jquery.min.map",
-                    "jquery.slim.js",
-                    "jquery.slim.min.js",
-                    "jquery.slim.min.map"
-                ]
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "JS Foundation and other contributors"
-            }
-        ],
-        "description": "jQuery JavaScript Library",
-        "homepage": "http://jquery.com"
-    },
-    {
-        "name": "symfony/process",
-        "version": "v3.3.10",
-        "version_normalized": "3.3.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/process.git",
-            "reference": "fdf89e57a723a29baf536e288d6e232c059697b1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/fdf89e57a723a29baf536e288d6e232c059697b1",
-            "reference": "fdf89e57a723a29baf536e288d6e232c059697b1",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8"
-        },
-        "time": "2017-10-02T06:42:24+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Process\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Process Component",
-        "homepage": "https://symfony.com"
-    },
-    {
-        "name": "kriswallsmith/assetic",
-        "version": "v1.4.0",
-        "version_normalized": "1.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kriswallsmith/assetic.git",
-            "reference": "e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1",
-            "reference": "e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.1",
-            "symfony/process": "~2.1|~3.0"
-        },
-        "conflict": {
-            "twig/twig": "<1.27"
-        },
-        "require-dev": {
-            "leafo/lessphp": "^0.3.7",
-            "leafo/scssphp": "~0.1",
-            "meenie/javascript-packer": "^1.1",
-            "mrclay/minify": "<2.3",
-            "natxet/cssmin": "3.0.4",
-            "patchwork/jsqueeze": "~1.0|~2.0",
-            "phpunit/phpunit": "~4.8 || ^5.6",
-            "psr/log": "~1.0",
-            "ptachoire/cssembed": "~1.0",
-            "symfony/phpunit-bridge": "~2.7|~3.0",
-            "twig/twig": "~1.23|~2.0",
-            "yfix/packager": "dev-master"
-        },
-        "suggest": {
-            "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
-            "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
-            "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin",
-            "patchwork/jsqueeze": "Assetic provides the integration with the JSqueeze JavaScript compressor",
-            "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
-            "twig/twig": "Assetic provides the integration with the Twig templating engine"
-        },
-        "time": "2016-11-11T18:43:20+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Assetic": "src/"
-            },
-            "files": [
-                "src/functions.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Kris Wallsmith",
-                "email": "kris.wallsmith@gmail.com",
-                "homepage": "http://kriswallsmith.net/"
-            }
-        ],
-        "description": "Asset Management for PHP",
-        "homepage": "https://github.com/kriswallsmith/assetic",
-        "keywords": [
-            "assets",
-            "compression",
-            "minification"
-        ]
-    },
-    {
-        "name": "robloach/component-installer",
-        "version": "0.2.3",
-        "version_normalized": "0.2.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/RobLoach/component-installer.git",
-            "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/908a859aa7c4949ba9ad67091e67bac10b66d3d7",
-            "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7",
-            "shasum": ""
-        },
-        "require": {
-            "composer-plugin-api": "^1.0",
-            "kriswallsmith/assetic": "1.*",
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "composer/composer": "1.*@alpha",
-            "phpunit/phpunit": "4.*"
-        },
-        "time": "2015-08-10T12:35:38+00:00",
-        "type": "composer-plugin",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            },
-            "class": "ComponentInstaller\\ComponentInstallerPlugin"
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ComponentInstaller": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Rob Loach",
-                "homepage": "http://robloach.net"
-            }
-        ],
-        "description": "Allows installation of Components via Composer."
-    },
-    {
-        "name": "components/jquery-blockui",
-        "version": "2.70",
-        "version_normalized": "2.70.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/malsup/blockui.git",
-            "reference": "316f6e5d76a33266970778e80507149d9ef6a02d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/malsup/blockui/zipball/316f6e5d76a33266970778e80507149d9ef6a02d",
-            "reference": "316f6e5d76a33266970778e80507149d9ef6a02d",
-            "shasum": ""
-        },
-        "require": {
-            "components/jquery": ">=1.7",
-            "robloach/component-installer": "*"
-        },
-        "time": "2014-11-24T03:14:41+00:00",
-        "type": "component",
-        "extra": {
-            "component": {
-                "scripts": [
-                    "jquery.blockUI.js"
-                ],
-                "shim": {
-                    "deps": [
-                        "jquery"
-                    ]
-                }
-            }
-        },
-        "installation-source": "dist",
-        "license": [
-            "MIT",
-            "GPL"
-        ],
-        "authors": [
-            {
-                "name": "M. Alsup",
-                "homepage": "http://jquery.malsup.com"
-            }
-        ],
-        "description": "Simulate synchronous ajax by blocking - not locking - the UI. This plugin lets you block user interaction with the page or with a specific element on the page. Also great at displaying modal dialogs.",
-        "homepage": "http://jquery.malsup.com/block/",
-        "keywords": [
-            "block",
-            "dialog",
-            "modal",
-            "overlay"
-        ],
-        "support": {
-            "source": "https://github.com/malsup/blockui/tree/2.70",
-            "issues": "https://github.com/malsup/blockui/issues"
-        }
-    },
-    {
-        "name": "xamin/handlebars.php",
-        "version": "dev-php-52",
-        "version_normalized": "dev-php-52",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/XaminProject/handlebars.php.git",
-            "reference": "1d076fa15924a47a023d62a8d5990e9b437c92c4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/XaminProject/handlebars.php/zipball/1d076fa15924a47a023d62a8d5990e9b437c92c4",
-            "reference": "1d076fa15924a47a023d62a8d5990e9b437c92c4",
-            "shasum": ""
-        },
-        "time": "2015-02-17T17:50:03+00:00",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Handlebars": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "fzerorubigd",
-                "email": "fzerorubigd@gmail.com"
-            }
-        ],
-        "description": "Handlebars processor for php",
-        "homepage": "https://github.com/XaminProject/handlebars.php"
-    },
-    {
-        "name": "eher/oauth",
-        "version": "1.0.7",
-        "version_normalized": "1.0.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/EHER/OAuth.git",
-            "reference": "935c1f7709d1c1457de9e250d0e5f29cac06e507"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/EHER/OAuth/zipball/935c1f7709d1c1457de9e250d0e5f29cac06e507",
-            "reference": "935c1f7709d1c1457de9e250d0e5f29cac06e507",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "eher/phpunit": "1.6"
-        },
-        "time": "2012-12-13T23:48:10+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Eher\\OAuth": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "OAuth 1 PHP Library"
-    },
-    {
         "name": "aws/aws-sdk-php",
         "version": "2.8.31",
         "version_normalized": "2.8.31.0",
@@ -693,18 +354,154 @@
         ]
     },
     {
-        "name": "phpseclib/phpseclib",
-        "version": "1.0.8",
-        "version_normalized": "1.0.8.0",
+        "name": "components/jquery",
+        "version": "3.3.1",
+        "version_normalized": "3.3.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "817bebef472ac34260564097a7a69209e9a4f017"
+            "url": "https://github.com/components/jquery.git",
+            "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/817bebef472ac34260564097a7a69209e9a4f017",
-            "reference": "817bebef472ac34260564097a7a69209e9a4f017",
+            "url": "https://api.github.com/repos/components/jquery/zipball/459648cda77875519c5da3ae1dd0ed5d170aa649",
+            "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649",
+            "shasum": ""
+        },
+        "time": "2018-03-04T13:23:48+00:00",
+        "type": "component",
+        "extra": {
+            "component": {
+                "scripts": [
+                    "jquery.js"
+                ],
+                "files": [
+                    "jquery.min.js",
+                    "jquery.min.map",
+                    "jquery.slim.js",
+                    "jquery.slim.min.js",
+                    "jquery.slim.min.map"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "JS Foundation and other contributors"
+            }
+        ],
+        "description": "jQuery JavaScript Library",
+        "homepage": "http://jquery.com"
+    },
+    {
+        "name": "components/jquery-blockui",
+        "version": "2.70",
+        "version_normalized": "2.70.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/malsup/blockui.git",
+            "reference": "316f6e5d76a33266970778e80507149d9ef6a02d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/malsup/blockui/zipball/316f6e5d76a33266970778e80507149d9ef6a02d",
+            "reference": "316f6e5d76a33266970778e80507149d9ef6a02d",
+            "shasum": ""
+        },
+        "require": {
+            "components/jquery": ">=1.7",
+            "robloach/component-installer": "*"
+        },
+        "time": "2014-11-24T03:14:41+00:00",
+        "type": "component",
+        "extra": {
+            "component": {
+                "scripts": [
+                    "jquery.blockUI.js"
+                ],
+                "shim": {
+                    "deps": [
+                        "jquery"
+                    ]
+                }
+            }
+        },
+        "installation-source": "dist",
+        "license": [
+            "MIT",
+            "GPL"
+        ],
+        "authors": [
+            {
+                "name": "M. Alsup",
+                "homepage": "http://jquery.malsup.com"
+            }
+        ],
+        "description": "Simulate synchronous ajax by blocking - not locking - the UI. This plugin lets you block user interaction with the page or with a specific element on the page. Also great at displaying modal dialogs.",
+        "homepage": "http://jquery.malsup.com/block/",
+        "keywords": [
+            "block",
+            "dialog",
+            "modal",
+            "overlay"
+        ],
+        "support": {
+            "source": "https://github.com/malsup/blockui/tree/2.70",
+            "issues": "https://github.com/malsup/blockui/issues"
+        }
+    },
+    {
+        "name": "eher/oauth",
+        "version": "1.0.7",
+        "version_normalized": "1.0.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/EHER/OAuth.git",
+            "reference": "935c1f7709d1c1457de9e250d0e5f29cac06e507"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/EHER/OAuth/zipball/935c1f7709d1c1457de9e250d0e5f29cac06e507",
+            "reference": "935c1f7709d1c1457de9e250d0e5f29cac06e507",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "eher/phpunit": "1.6"
+        },
+        "time": "2012-12-13T23:48:10+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Eher\\OAuth": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "OAuth 1 PHP Library"
+    },
+    {
+        "name": "phpseclib/phpseclib",
+        "version": "1.0.10",
+        "version_normalized": "1.0.10.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpseclib/phpseclib.git",
+            "reference": "1468ef1a23f66b09b8e906f05ddfa6c3f5236202"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/1468ef1a23f66b09b8e906f05ddfa6c3f5236202",
+            "reference": "1468ef1a23f66b09b8e906f05ddfa6c3f5236202",
             "shasum": ""
         },
         "require": {
@@ -712,7 +509,7 @@
         },
         "require-dev": {
             "phing/phing": "~2.7",
-            "phpunit/phpunit": "~4.0",
+            "phpunit/phpunit": "^4.8.35|^5.7|^6.0",
             "sami/sami": "~2.0",
             "squizlabs/php_codesniffer": "~2.0"
         },
@@ -721,7 +518,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
         },
-        "time": "2017-10-23T05:03:25+00:00",
+        "time": "2018-02-08T03:22:54+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -792,5 +589,172 @@
             "x.509",
             "x509"
         ]
+    },
+    {
+        "name": "psr/log",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/log.git",
+            "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+            "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2016-10-10T12:19:37+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\Log\\": "Psr/Log/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interface for logging libraries",
+        "homepage": "https://github.com/php-fig/log",
+        "keywords": [
+            "log",
+            "psr",
+            "psr-3"
+        ]
+    },
+    {
+        "name": "rackspace/php-opencloud",
+        "version": "v1.12.2",
+        "version_normalized": "1.12.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/rackspace/php-opencloud.git",
+            "reference": "9c0ade232ddd1ae23994349406171ffea1127b5d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/rackspace/php-opencloud/zipball/9c0ade232ddd1ae23994349406171ffea1127b5d",
+            "reference": "9c0ade232ddd1ae23994349406171ffea1127b5d",
+            "shasum": ""
+        },
+        "require": {
+            "guzzle/guzzle": "~3.8",
+            "php": ">=5.3.3",
+            "psr/log": "~1.0"
+        },
+        "require-dev": {
+            "apigen/apigen": "~2.8",
+            "fabpot/php-cs-fixer": "1.0.*@dev",
+            "jakub-onderka/php-parallel-lint": "0.*",
+            "phpunit/phpunit": "4.3.*",
+            "satooshi/php-coveralls": "0.6.*@dev"
+        },
+        "time": "2015-03-16T23:57:58+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "OpenCloud": [
+                    "lib/",
+                    "tests/"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Glen Campbell",
+                "email": "glen.campbell@rackspace.com"
+            },
+            {
+                "name": "Jamie Hannaford",
+                "email": "jamie.hannaford@rackspace.com",
+                "homepage": "https://github.com/jamiehannaford"
+            },
+            {
+                "name": "Shaunak Kashyap",
+                "email": "shaunak.kashyap@rackspace.com",
+                "homepage": "https://github.com/ycombinator"
+            }
+        ],
+        "description": "PHP SDK for Rackspace/OpenStack APIs",
+        "keywords": [
+            "Openstack",
+            "nova",
+            "opencloud",
+            "rackspace",
+            "swift"
+        ]
+    },
+    {
+        "name": "symfony/process",
+        "version": "v3.4.7",
+        "version_normalized": "3.4.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/process.git",
+            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/process/zipball/4b7d64e852886319e93ddfdecff0d744ab87658b",
+            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2018-04-03T05:22:50+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
     }
 ]

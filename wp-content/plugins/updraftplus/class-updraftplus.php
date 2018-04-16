@@ -32,6 +32,8 @@ class UpdraftPlus {
 
 	public $nonce;
 
+	public $file_nonce;
+
 	public $logfile_name = "";
 
 	public $logfile_handle = false;
@@ -174,20 +176,41 @@ class UpdraftPlus {
 		return $ud_rpc;
 	}
 
-	public function ensure_phpseclib($classes = false, $class_paths = false) {
+	/**
+	 * Ensure that the indicated phpseclib classes are available
+	 *
+	 * @param String|Array $classes		- a class, or list of classes
+	 * @param String|Array $class_paths - paths to include
+	 *
+	 * @return Boolean|WP_Error
+	 */
+	public function ensure_phpseclib($classes = array(), $class_paths = array()) {
 
 		$this->no_deprecation_warnings_on_php7();
 
-		if ($classes) {
+		if (!empty($classes)) {
 			$any_missing = false;
 			if (is_string($classes)) $classes = array($classes);
 			foreach ($classes as $cl) {
 				if (!class_exists($cl)) $any_missing = true;
 			}
-			if (!$any_missing) return;
+			if (!$any_missing) return true;
 		}
 
-		if ($class_paths) {
+		$ret = true;
+		
+		// From phpseclib/phpseclib/phpseclib/bootstrap.php - we nullify it there, but log here instead
+		if (extension_loaded('mbstring')) {
+			// 2 - MB_OVERLOAD_STRING
+			// @codingStandardsIgnoreLine
+			if (ini_get('mbstring.func_overload') & 2) {
+				// We go on to try anyway, in case the caller wasn't using an affected part of phpseclib
+				// @codingStandardsIgnoreLine
+				$ret = new WP_Error('mbstring_func_overload', 'Overloading of string functions using mbstring.func_overload is not supported by phpseclib.');
+			}
+		}
+		
+		if (!empty($class_paths)) {
 			$phpseclib_dir = UPDRAFTPLUS_DIR.'/vendor/phpseclib/phpseclib/phpseclib';
 			if (false === strpos(get_include_path(), $phpseclib_dir)) set_include_path(get_include_path().PATH_SEPARATOR.$phpseclib_dir);
 			if (is_string($class_paths)) $class_paths = array($class_paths);
@@ -195,6 +218,8 @@ class UpdraftPlus {
 				include_once($phpseclib_dir.'/'.$cp.'.php');
 			}
 		}
+		
+		return $ret;
 	}
 
 	/**
@@ -203,8 +228,10 @@ class UpdraftPlus {
 	private function no_deprecation_warnings_on_php7() {
 		// PHP_MAJOR_VERSION is defined in PHP 5.2.7+
 		// We don't test for PHP > 7 because the specific deprecated element will be removed in PHP 8 - and so no warning should come anyway (and we shouldn't suppress other stuff until we know we need to).
+		// @codingStandardsIgnoreLine
 		if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION == 7) {
 			$old_level = error_reporting();
+			// @codingStandardsIgnoreLine
 			$new_level = $old_level & ~E_DEPRECATED;
 			if ($old_level != $new_level) error_reporting($new_level);
 			$this->no_deprecation_warnings = true;
@@ -266,7 +293,10 @@ class UpdraftPlus {
 
 		// Already converted?
 		if (isset($current_setting['version'])) return $current_setting;
-		
+		if (empty($current_setting)) {
+			$remote_storage = $this->get_storage_object($method);
+			$current_setting = $remote_storage->get_default_options();
+		}
 		$new_setting = $this->wrap_remote_storage_options($current_setting);
 		
 		$already_active = true;
@@ -276,7 +306,7 @@ class UpdraftPlus {
 		if ($updated) {
 			return $new_setting;
 		} else {
-			return WP_Error('save_failed', 'Saving the options in the new format failed', array('method' => $method, 'current_setting' => $new_setting));
+			return new WP_Error('save_failed', 'Saving the options in the new format failed', array('method' => $method, 'current_setting' => $new_setting));
 		}
 	
 	}
@@ -291,8 +321,8 @@ class UpdraftPlus {
 		// Already converted?
 		if (isset($options['version'])) return $options;
 		
-		// Cryptographic randomness not required. The prefix helps avoid potential for type-juggling issues.
-		$uuid = 's-'.md5(rand().uniqid().microtime(true));
+		// Generate an instance id
+		$uuid = $this->generate_instance_id();
 		
 		$new_setting = array(
 			'version' => 1,
@@ -303,6 +333,18 @@ class UpdraftPlus {
 		$new_setting['settings'] = array($uuid => $options);
 
 		return $new_setting;
+	}
+
+	/**
+	 * This method will return a random instance id string
+	 *
+	 * @return String - a random instance id
+	 */
+	public function generate_instance_id() {
+		// Cryptographic randomness not required. The prefix helps avoid potential for type-juggling issues.
+		$uuid = 's-'.md5(rand().uniqid().microtime(true));
+
+		return $uuid;
 	}
 
 	/**
@@ -459,10 +501,16 @@ class UpdraftPlus {
 				$storage_objects_and_ids = $this->get_storage_objects_and_ids(array($method));
 
 				$instance_id = isset($_GET['updraftplus_instance']) ? $_GET['updraftplus_instance'] : '';
-				
+		
+				if ("POST" == $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
+					$state = urldecode($_POST['state']);
+				} elseif (isset($_GET['state'])) {
+					$state = $_GET['state'];
+				}
+
 				// If we don't have an instance_id but the state is set then we are coming back to finish the auth and should extract the instance_id from the state
-				if ('' == $instance_id && isset($_GET['state']) && false !== strpos($_GET['state'], ':')) {
-					$parts = explode(':', $_GET['state']);
+				if ('' == $instance_id && isset($state) && false !== strpos($state, ':')) {
+					$parts = explode(':', $state);
 					$instance_id = $parts[1];
 				}
 				
@@ -710,6 +758,7 @@ class UpdraftPlus {
 		$this->job_time_ms = microtime(true);
 		$this->backup_time = time();
 		if (false === $nonce) $nonce = substr(md5(time().rand()), 20);
+		$this->file_nonce = apply_filters('updraftplus_incremental_backup_file_nonce', $nonce);
 		$this->nonce = $nonce;
 		return $nonce;
 	}
@@ -724,6 +773,18 @@ class UpdraftPlus {
 		return $got_wp_version;
 	}
 
+	/**
+	 * Remove slashes from a string or array of strings.
+	 *
+	 * The function wp_unslash() is WP 3.6+, so therefore we have a compatibility method here
+	 *
+	 * @param String|Array $value String or array of strings to unslash.
+	 * @return String|Array Unslashed $value
+	 */
+	public function wp_unslash($value) {
+		return function_exists('wp_unslash') ? wp_unslash($value) : stripslashes_deep($value);
+	}
+	
 	/**
 	 * Opens the log file, writes a standardised header, and stores the resulting name and handle in the class variables logfile_name/logfile_handle/opened_log_time (and possibly backup_is_already_complete)
 	 *
@@ -923,7 +984,14 @@ class UpdraftPlus {
 		if (defined('UPDRAFTPLUS_BROWSERLOG') && UPDRAFTPLUS_BROWSERLOG) echo htmlentities($line)."<br>\n";
 	}
 
-	public function log_removewarning($uniq_id) {
+	/**
+	 * Remove any logged warnings with the specified identifier. (The use case for this is that you can warn of something that may be about to happen (with a probably crash if it does), and then remove the warning if it did not happen).
+	 *
+	 * @see self::log()
+	 *
+	 * @param String $uniq_id - the identifier, previously passed to self::log()
+	 */
+	public function log_remove_warning($uniq_id) {
 		$warnings = $this->jobdata_get('warnings');
 		if (!is_array($warnings)) $warnings = array();
 		unset($warnings[$uniq_id]);
@@ -966,6 +1034,12 @@ class UpdraftPlus {
 		return false;
 	}
 
+	/**
+	 * Get the maximum packet size on the WPDB MySQL connection, in bytes, after attempting to raise it to 32MB if it appeared to be lower.
+	 * A default value equal to 1MB is returned if the true value could not be found - it has been found reasonable to assume that at least this is available.
+	 *
+	 * @return Integer
+	 */
 	public function get_max_packet_size() {
 		global $wpdb;
 		$mp = (int) $wpdb->get_var("SELECT @@session.max_allowed_packet");
@@ -1057,7 +1131,8 @@ class UpdraftPlus {
 
 		$fullpath = $this->backups_dir_location().'/'.$file;
 		$orig_file_size = filesize($fullpath);
-		if ($uploaded_size >= $orig_file_size) return true;
+		
+		if ($uploaded_size >= $orig_file_size && !method_exists($caller, 'chunked_upload_finish')) return true;
 
 		$chunks = floor($orig_file_size / $chunk_size);
 		// There will be a remnant unless the file size was exactly on a chunk boundary
@@ -1069,23 +1144,26 @@ class UpdraftPlus {
 			return 1;
 		} elseif ($chunks < 2 && !$singletons) {
 			return 1;
-		} else {
+		}
 
+		// We have multiple chunks
+		if ($uploaded_size < $orig_file_size) {
+			
 			if (false == ($fp = @fopen($fullpath, 'rb'))) {
 				$this->log("$logname: failed to open file: $fullpath");
 				$this->log("$file: ".sprintf(__('%s Error: Failed to open local file', 'updraftplus'), $logname), 'error');
 				return false;
 			}
 
-			$errors_so_far = 0;
 			$upload_start = 0;
 			$upload_end = -1;
 			$chunk_index = 1;
 			// The file size minus one equals the byte offset of the final byte
 			$upload_end = min($chunk_size - 1, $orig_file_size - 1);
+			$errors_on_this_chunk = 0;
 			
 			while ($upload_start < $orig_file_size) {
-
+			
 				// Don't forget the +1; otherwise the last byte is omitted
 				$upload_size = $upload_end - $upload_start + 1;
 
@@ -1103,7 +1181,6 @@ class UpdraftPlus {
 				*  (bool)log: (bool) - if absent, defaults to true
 				*  (int)new_chunk_size: advisory amount for the chunk size for future chunks
 				*  NOT IMPLEMENTED: (int)bytes_uploaded: Actual number of bytes uploaded (needs to be positive - o/w, should return an error instead)
-				*  
 				* N.B. Consumers should consult $fp and $upload_start to get data; they should not re-calculate from $chunk_index, which is not an indicator of file position.
 				*/
 				$uploaded = $caller->chunked_upload($file, $fp, $chunk_index, $upload_size, $upload_start, $upload_end, $orig_file_size);
@@ -1150,43 +1227,60 @@ class UpdraftPlus {
 					
 					// $uploaded_bytes = $upload_end + 1;
 					
+					// If there was an error, then we re-try the same chunk; we don't move on to the next one. Otherwise, we would need more code to handle potential 'intermediate' failed chunks (in case PHP dies before this method eventually returns false, and thus the intermediate chunk failure never gets detected)
+					$chunk_index++;
+					$errors_on_this_chunk = 0;
+					$upload_start = $upload_end + 1;
+					$upload_end += isset($new_chunk_size) ? $uploaded_amount + $new_chunk_size - $chunk_size : $uploaded_amount;
+					$upload_end = min($upload_end, $orig_file_size - 1);
+					
 				} else {
-					$errors_so_far++;
-					if ($errors_so_far >= 3) {
+				
+					$errors_on_this_chunk++;
+					
+					// Either $uploaded is false-y, or is a WP_Error
+					if (is_wp_error($uploaded)) {
+						$this->log("$logname: Chunk upload ($chunk_index) failed (".$uploaded->get_error_code().'): '.$uploaded->get_error_message());
+					} else {
+						$this->log("$logname: Chunk upload ($chunk_index) failed");
+					}
+					
+					if ($errors_on_this_chunk >= 3) {
 						@fclose($fp);
 						return false;
 					}
 				}
-				
-				$chunk_index++;
-				$upload_start = $upload_end + 1;
-				$upload_end += isset($new_chunk_size) ? $uploaded_amount + $new_chunk_size - $chunk_size : $uploaded_amount;
-				$upload_end = min($upload_end, $orig_file_size - 1);
 
 			}
 
 			@fclose($fp);
 
-			if ($errors_so_far) return false;
-
-			// All chunks are uploaded - now combine the chunks
-			$ret = true;
-			if (method_exists($caller, 'chunked_upload_finish')) {
-				$ret = $caller->chunked_upload_finish($file);
-				if (!$ret) {
-					$this->log("$logname - failed to re-assemble chunks");
-					$this->log(sprintf(__('%s error - failed to re-assemble chunks', 'updraftplus'), $logname), 'error');
-				}
-			}
-			if ($ret) {
-				$this->log("$logname upload: success");
-				// UpdraftPlus_RemoteStorage_Addons_Base calls this itself
-				if (!is_a($caller, 'UpdraftPlus_RemoteStorage_Addons_Base')) $this->uploaded_file($file);
-			}
-
-			return $ret;
-
 		}
+
+		// All chunks are uploaded - now combine the chunks
+		$ret = true;
+		
+		// The action calls here exist to aid debugging
+		if (method_exists($caller, 'chunked_upload_finish')) {
+			do_action('updraftplus_pre_chunked_upload_finish', $file, $caller);
+			$ret = $caller->chunked_upload_finish($file);
+			if (!$ret) {
+				$this->log("$logname - failed to re-assemble chunks");
+				$this->log(sprintf(__('%s error - failed to re-assemble chunks', 'updraftplus'), $logname), 'error');
+			}
+			do_action('updraftplus_post_chunked_upload_finish', $file, $caller, $ret);
+		}
+		
+		if ($ret) {
+			// We allow chunked_upload_finish to return (int)1 to indicate that it took care of any logging.
+			if (true === $ret) $this->log("$logname upload: success");
+			$ret = true;
+			// UpdraftPlus_RemoteStorage_Addons_Base calls this itself
+			if (!is_a($caller, 'UpdraftPlus_RemoteStorage_Addons_Base_v2')) $this->uploaded_file($file);
+		}
+
+		return $ret;
+
 	}
 
 	/**
@@ -1293,15 +1387,23 @@ class UpdraftPlus {
 	}
 
 	/**
-	 * This will decrypt an encryped db file
+	 * This will decrypt an encrypted db file
 	 *
-	 * @param  string  $fullpath          This is the full path to the encrypted file location
-	 * @param  string  $key               This is the key (satling) to be used when decrypting
-	 * @param  boolean $to_temporary_file Use if the resulting file is not intended to be kept
-	 * @return array               This bring back an array of full decrypted path
+	 * @param String  $fullpath          This is the full filesystem path to the encrypted file location
+	 * @param String  $key               This is the key to be used when decrypting
+	 * @param Boolean $to_temporary_file Use if the resulting file is not intended to be kept
+	 *
+	 * @return Boolean|Array -An array with info on the decryption; or false for failure
 	 */
 	public function decrypt($fullpath, $key, $to_temporary_file = false) {
-		$this->ensure_phpseclib('Crypt_Rijndael', 'Crypt/Rijndael');
+	
+		$ensure_phpseclib = $this->ensure_phpseclib('Crypt_Rijndael', 'Crypt/Rijndael');
+		if (is_wp_error($ensure_phpseclib)) {
+			$this->log("Failed to load phpseclib classes (".$ensure_phpseclib->get_error_code()."): ".$ensure_phpseclib->get_error_message());
+			$this->log("Failed to load phpseclib classes (".$ensure_phpseclib->get_error_code()."): ".$ensure_phpseclib->get_error_message(), 'error');
+			return false;
+		}
+		
 		if (defined('UPDRAFTPLUS_DECRYPTION_ENGINE')) {
 			if ('openssl' == UPDRAFTPLUS_DECRYPTION_ENGINE) {
 				$rijndael->setPreferredEngine(CRYPT_ENGINE_OPENSSL);
@@ -1698,7 +1800,7 @@ class UpdraftPlus {
 				'type' => $matches[4],
 				'index' => (empty($matches[5]) ? 0 : $matches[5]-1),
 				'extension' => $matches[6]
-);
+			);
 		} else {
 			return false;
 		}
@@ -1926,6 +2028,7 @@ class UpdraftPlus {
 
 		if ($resumption_no > 0) {
 
+			$this->file_nonce = apply_filters('updraftplus_incremental_backup_file_nonce', $bnonce);
 			$this->nonce = $bnonce;
 			$this->backup_time = $this->jobdata_get('backup_time');
 			$this->job_time_ms = $this->jobdata_get('job_time_ms');
@@ -2303,7 +2406,7 @@ class UpdraftPlus {
 		do_action('updraft_final_backup_history', $our_files);
 
 		// We finished; so, low memory was not a problem
-		$this->log_removewarning('lowram');
+		$this->log_remove_warning('lowram');
 
 		if (0 == count($undone_files)) {
 			$this->log("Resume backup ($bnonce, $resumption_no): finish run");
@@ -3016,7 +3119,8 @@ class UpdraftPlus {
 		$db_connected = $this->check_db_connection(false, true, true);
 
 		$service = empty($updraftplus_backup->current_service) ? '' : $updraftplus_backup->current_service;
-		$shash = $service.'-'.md5($file);
+		$instance_id = empty($updraftplus_backup->current_instance) ? '' : $updraftplus_backup->current_instance;
+		$shash = $service.(('' == $service) ? '' : '-').$instance_id.(('' == $instance_id) ? '' : '-').md5($file);
 
 		$this->jobdata_set("uploaded_".$shash, 'yes');
 	
@@ -3053,19 +3157,20 @@ class UpdraftPlus {
 	/**
 	 * Return whether a particular file has been uploaded to a particular remote service
 	 *
-	 * @param String $file	  - the filename (basename)
-	 * @param String $service - the service identifier; or none, to indicate all services
+	 * @param String $file	      - the filename (basename)
+	 * @param String $service     - the service identifier; or none, to indicate all services
+	 * @param String $instance_id - the instance identifier
 	 *
 	 * @return Boolean - the result
 	 */
-	public function is_uploaded($file, $service = '') {
-		$hash = $service.(('' == $service) ? '' : '-').md5($file);
+	public function is_uploaded($file, $service = '', $instance_id = '') {
+		$hash = $service.(('' == $service) ? '' : '-').$instance_id.(('' == $instance_id) ? '' : '-').md5($file);
 		return ($this->jobdata_get("uploaded_$hash") === "yes") ? true : false;
 	}
 
 	private function delete_local($file) {
 		$log = "Deleting local file: $file: ";
-		if (UpdraftPlus_Options::get_updraft_option('updraft_delete_local')) {
+		if (UpdraftPlus_Options::get_updraft_option('updraft_delete_local', 1)) {
 			$fullpath = $this->backups_dir_location().'/'.$file;
 
 			// check to make sure it exists before removing
@@ -3381,9 +3486,35 @@ class UpdraftPlus {
 	}
 	
 	/**
+	 * Instantiate a remote storage object. If one of the same type has previously been fetched, then it will be returned.
+	 *
+	 * @param String $method - the storage method (e.g. 'dropbox', 's3', etc.)
+	 *
+	 * @return Object|WP_Error - an instance of UpdraftPlus_BackupModule, or anerror
+	 */
+	public function get_storage_object($method) {
+	
+		static $objects = array();
+	
+		if (!empty($objects[$method])) return $objects[$method];
+	
+		$method_class = 'UpdraftPlus_BackupModule_'.$method;
+		
+		if (!class_exists($method_class)) include_once UPDRAFTPLUS_DIR.'/methods/'.$method.'.php';
+		
+		if (!class_exists($method_class)) return new WP_Error('no_such_storage_class', "The specified storage method ($method) was not found");
+		
+		$objects[$method] = new $method_class;
+		
+		return $objects[$method];
+	}
+	
+	/**
 	 * This method will return an array of remote storage objects and instance settings of the currently connected remote storage services.
 	 *
-	 * @param  Array $services - an list of service identifiers (e.g. ['dropbox', 's3'])
+	 * @param Array $services - an list of service identifiers (e.g. ['dropbox', 's3'])
+	 *
+	 * @uses self::get_storage_object()
 	 *
 	 * @return Array					- returns an array, with a key equal to each member of the $services list passed in. The corresponding value is then an array with keys 'object', 'instance_settings'. The value for 'object' is an UpdraftPlus_BackupModule instance. The value for 'instance_settings' is an array keyed by associated instance IDs, with the values being the associated settings for the instance ID.
 	 */
@@ -3395,39 +3526,39 @@ class UpdraftPlus {
 
 			if ('none' === $method || '' == $method) continue;
 		
-			$call_method = 'UpdraftPlus_BackupModule_'.$method;
+			$remote_storage = $this->get_storage_object($method);
+		
+			if (is_a($remote_storage, 'UpdraftPlus_BackupModule')) {
 			
-			if (!class_exists($call_method)) include_once UPDRAFTPLUS_DIR.'/methods/'.$method.'.php';
-			
-			if (class_exists($call_method)) {
-			
-				$remote_storage = new $call_method;
-				
 				if (!empty($method_objects[$method])) $storage_objects_and_ids[$method] = array();
 				
 				$storage_objects_and_ids[$method]['object'] = $remote_storage;
 				
 				if ($remote_storage->supports_feature('multi_options')) {
 				
-					$settings = UpdraftPlus_Options::get_updraft_option('updraft_'.$method);
+					$settings_from_db = UpdraftPlus_Options::get_updraft_option('updraft_'.$method);
 					
-					if (!is_array($settings)) $settings = array();
+					$settings = is_array($settings_from_db) ? $settings_from_db : array();
 				
 					if (!isset($settings['version'])) $settings = $this->update_remote_storage_options_format($method);
 					
 					if (is_wp_error($settings)) {
-						error_log("UpdraftPlus: failed to convert storage options format: $method");
+						if (!empty($settings_from_db)) error_log("UpdraftPlus: failed to convert storage options format: $method");
 						$settings = array('settings' => array());
 					}
 
 					if (empty($settings['settings'])) {
-						// See: https://wordpress.org/support/topic/cannot-setup-connectionauthenticate-with-dropbox/
-						error_log("UpdraftPlus: Warning: settings for $method are empty. A dummy field is usually needed so that something is saved.");
-						
+					
 						// Try to recover by getting a default set of options for display
 						if (is_callable(array($remote_storage, 'get_default_options'))) {
 							$uuid = 's-'.md5(rand().uniqid().microtime(true));
 							$settings['settings'] = array($uuid => $remote_storage->get_default_options());
+						}
+						
+						// See: https://wordpress.org/support/topic/cannot-setup-connectionauthenticate-with-dropbox/
+						if (empty($settings['settings'])) {
+							// This can get sent to the browser, and break the page, if the user has configured that. However, it should now (1.13.6+) be impossible for this condition to occur, now that we only log it after getting some default options.
+							error_log("UpdraftPlus: Warning: settings for $method are empty. A dummy field is usually needed so that something is saved.");
 						}
 						
 					}
@@ -3443,12 +3574,65 @@ class UpdraftPlus {
 				}
 
 			} else {
-				error_log("UpdraftPlus: no such storage class: $call_method");
+				error_log("UpdraftPlus: storage method not found: $method");
 			}
 		}
 
 		return $storage_objects_and_ids;
 		
+	}
+	
+	/**
+	 * This method will return an array of remote storage options and storage_templates.
+	 *
+	 * @return Array - returns an array which consists of storage options and storage_templates multidimensional array
+	 */
+	public function get_remote_storage_options_and_templates() {
+
+		$storage_objects_and_ids = $this->get_storage_objects_and_ids(array_keys($this->backup_methods));
+		$options = array();
+		$templates = array();
+
+		foreach ($storage_objects_and_ids as $method => $method_info) {
+
+			$object = $method_info['object'];
+
+			if (!$object->supports_feature('multi_options')) {
+				ob_start();
+				do_action('updraftplus_config_print_before_storage', $method, null);
+				$object->config_print();
+				$templates[$method] = ob_get_clean();
+			} else {
+				$templates[$method] = $object->get_template();
+			}
+
+			if (isset($method_info['instance_settings'])) {
+				// Add the methods default settings so that we can add new instances
+				$method_info['instance_settings']['default'] = $object->get_default_options();
+
+				foreach ($method_info['instance_settings'] as $instance_id => $instance_options) {
+
+					$opts_without_transform = $instance_options;
+
+					if ($object->supports_feature('multi_options')) {
+						$opts_without_transform['instance_id'] = $instance_id;
+					}
+
+					$opts = $object->transform_options_for_template($opts_without_transform);
+
+					foreach ($object->filter_frontend_settings_keys() as $filter_frontend_settings_key) {
+						unset($opts[$filter_frontend_settings_key]);
+					}
+
+					$options[$method][$instance_id] = $opts;
+				}
+			}
+		}
+
+		return array(
+			'options' => $options,
+			'templates' => $templates,
+		);
 	}
 	
 	/**
@@ -3478,7 +3662,7 @@ class UpdraftPlus {
 	 * @param  string  $search         The value being searched for, otherwise known as the needle
 	 * @param  string  $replace        The replacement value that replaces found search values
 	 * @param  string  $subject        The string or array being searched and replaced on, otherwise known as the haystack
-	 * @param  boolean $case_sensitive whether replacement do in case seitively otr not
+	 * @param  boolean $case_sensitive Whether the replacement should be case sensitive or not
 	 *
 	 * @return string
 	 */
@@ -3598,322 +3782,22 @@ class UpdraftPlus {
 	/**
 	 * Acts as a WordPress options filter
 	 *
-	 * @param  Array $onedrive - An array of OneDrive options
-	 * @return Array - the returned array can either be the set of updated OneDrive settings or a WordPress error array
+	 * @param Array	 $options	  - An array of options
+	 * @param String $option_name - The option name
+	 *
+	 * @return Array - the returned array can either be the set of updated options or a WordPress error array
 	 */
-	public function onedrive_checkchange($onedrive) {
+	public function storage_options_filter($options, $option_name) {
+		if ('updraft_' !== substr($option_name, 0, 8)) return $options;
+		$method = substr($option_name, 8);
+		
+		$storage = $this->get_storage_object($method);
+		
+		if (!is_a($storage, 'UpdraftPlus_BackupModule') || !is_callable(array($storage, 'options_filter'))) return $options;
 
-		// Get the current options (and possibly update them to the new format)
-		$opts = $this->update_remote_storage_options_format('onedrive');
-
-		if (is_wp_error($opts)) {
-			if ('recursion' !== $opts->get_error_code()) {
-				$msg = "OneDrive (".$opts->get_error_code()."): ".$opts->get_error_message();
-				$this->log($msg);
-				error_log("UpdraftPlus: $msg");
-			}
-			// The saved options had a problem; so, return the new ones
-			return $onedrive;
-		}
-
-		if (!is_array($onedrive)) return $opts;
-
-		// Remove instances that no longer exist
-		foreach ($opts['settings'] as $instance_id => $storage_options) {
-			if (!isset($onedrive['settings'][$instance_id])) unset($opts['settings'][$instance_id]);
-		}
-
-		foreach ($onedrive['settings'] as $instance_id => $storage_options) {
-			$old_client_id = empty($opts['settings'][$instance_id]['clientid']) ? '' : $opts['settings'][$instance_id]['clientid'];
-			$now_client_id = empty($storage_options['clientid']) ? '' : $storage_options['clientid'];
-			if (!empty($opts['settings'][$instance_id]['refresh_token']) && $old_client_id != $now_client_id) {
-				unset($opts['settings'][$instance_id]['refresh_token']);
-				unset($opts['settings'][$instance_id]['tokensecret']);
-				unset($opts['settings'][$instance_id]['ownername']);
-			}
-			
-			foreach ($storage_options as $key => $value) {
-				if ('folder' == $key) $value = trim(str_replace('\\', '/', $value), '/');
-				$opts['settings'][$instance_id][$key] = ('clientid' == $key || 'secret' == $key) ? trim($value) : $value;
-			}
-		}
-		return $opts;
+		return call_user_func(array($storage, 'options_filter'), $options);
 	}
 	
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param  Array $azure an array of Azure options
-	 * @return Array - the returned array can either be the set of updated Azure settings or a WordPress error array
-	 */
-	public function azure_checkchange($azure) {
-		// Get the current options (and possibly update them to the new format)
-		$opts = $this->update_remote_storage_options_format('azure');
-		
-		if (is_wp_error($opts)) {
-			if ('recursion' !== $opts->get_error_code()) {
-				$msg = "Azure (".$opts->get_error_code()."): ".$opts->get_error_message();
-				$this->log($msg);
-				error_log("UpdraftPlus: $msg");
-			}
-			// The saved options had a problem; so, return the new ones
-			return $azure;
-		}
-
-		if (!is_array($azure)) return $opts;
-
-		// Remove instances that no longer exist
-		foreach ($opts['settings'] as $instance_id => $storage_options) {
-			if (!isset($azure['settings'][$instance_id])) unset($opts['settings'][$instance_id]);
-		}
-		foreach ($azure['settings'] as $instance_id => $storage_options) {
-			foreach ($storage_options as $key => $value) {
-				if ('folder' == $key) $value = trim(str_replace('\\', '/', $value), '/');
-				// Only lower-case containers are permitted - enforce this
-				if ('container' == $key) $value = strtolower($value);
-				$opts['settings'][$instance_id][$key] = ('key' == $key || 'account_name' == $key) ? trim($value) : $value;
-				// Convert one likely misunderstanding of the format to enter the account name in
-				if ('account_name' == $key && preg_match('#^https?://(.*)\.blob\.core\.windows#i', $opts['settings'][$instance_id]['account_name'], $matches)) {
-					$opts['settings'][$instance_id]['account_name'] = $matches[1];
-				}
-			}
-		}
-		return $opts;
-	}
-
-
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param  Array $google - An array of Google Drive options
-	 * @return Array - the returned array can either be the set of updated Google Drive settings or a WordPress error array
-	 */
-	public function googledrive_checkchange($google) {
-
-		// Get the current options (and possibly update them to the new format)
-		$opts = $this->update_remote_storage_options_format('googledrive');
-		
-		if (is_wp_error($opts)) {
-			if ('recursion' !== $opts->get_error_code()) {
-				$msg = "Google Drive (".$opts->get_error_code()."): ".$opts->get_error_message();
-				$this->log($msg);
-				error_log("UpdraftPlus: $msg");
-			}
-			// The saved options had a problem; so, return the new ones
-			return $google;
-		}
-		// $opts = UpdraftPlus_Options::get_updraft_option('updraft_googledrive');
-		if (!is_array($google)) return $opts;
-
-		// Remove instances that no longer exist
-		foreach ($opts['settings'] as $instance_id => $storage_options) {
-			if (!isset($google['settings'][$instance_id])) unset($opts['settings'][$instance_id]);
-		}
-
-		foreach ($google['settings'] as $instance_id => $storage_options) {
-			if (empty($opts['settings'][$instance_id]['user_id'])) {
-				$old_client_id = (empty($opts['settings'][$instance_id]['clientid'])) ? '' : $opts['settings'][$instance_id]['clientid'];
-				if (!empty($opts['settings'][$instance_id]['token']) && $old_client_id != $storage_options['clientid']) {
-					include_once(UPDRAFTPLUS_DIR.'/methods/googledrive.php');
-					$this->register_wp_http_option_hooks();
-					$googledrive = new UpdraftPlus_BackupModule_googledrive();
-					$googledrive->gdrive_auth_revoke(false);
-					$this->register_wp_http_option_hooks(false);
-					$opts['settings'][$instance_id]['token'] = '';
-					unset($opts['settings'][$instance_id]['ownername']);
-				}
-			}
-
-			foreach ($storage_options as $key => $value) {
-				// Trim spaces - I got support requests from users who didn't spot the spaces they introduced when copy/pasting
-				$opts['settings'][$instance_id][$key] = ('clientid' == $key || 'secret' == $key) ? trim($value) : $value;
-			}
-			if (isset($opts['settings'][$instance_id]['folder'])) {
-				$opts['settings'][$instance_id]['folder'] = apply_filters('updraftplus_options_googledrive_foldername', 'UpdraftPlus', $opts['settings'][$instance_id]['folder']);
-				unset($opts['settings'][$instance_id]['parentid']);
-			}
-		}
-		return $opts;
-	}
-
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param  Array $google - An array of Google Cloud options
-	 * @return Array - the returned array can either be the set of updated Google Cloud settings or a WordPress error array
-	 */
-	public function googlecloud_checkchange($google) {
-
-		// Get the current options (and possibly update them to the new format)
-		$opts = $this->update_remote_storage_options_format('googlecloud');
-		
-		if (is_wp_error($opts)) {
-			if ('recursion' !== $opts->get_error_code()) {
-				$msg = "Google Cloud (".$opts->get_error_code()."): ".$opts->get_error_message();
-				$this->log($msg);
-				error_log("UpdraftPlus: $msg");
-			}
-			// The saved options had a problem; so, return the new ones
-			return $google;
-		}
-
-		if (!is_array($google)) return $opts;
-
-		// Remove instances that no longer exist
-		foreach ($opts['settings'] as $instance_id => $storage_options) {
-			if (!isset($google['settings'][$instance_id])) unset($opts['settings'][$instance_id]);
-		}
-		
-		foreach ($google['settings'] as $instance_id => $storage_options) {
-			$old_token = (empty($opts['settings'][$instance_id]['token'])) ? '' : $opts['settings'][$instance_id]['token'];
-			$old_client_id = (empty($opts['settings'][$instance_id]['clientid'])) ? '' : $opts['settings'][$instance_id]['clientid'];
-			$old_client_secret = (empty($opts['settings'][$instance_id]['secret'])) ? '' : $opts['settings'][$instance_id]['secret'];
-			
-			if (isset($google['settings'][$instance_id]['clientid']) && $old_client_id == $google['settings'][$instance_id]['clientid'] && $old_client_secret == $google['settings'][$instance_id]['secret']) {
-				$google['settings'][$instance_id]['token'] = $old_token;
-			}
-			if (!empty($opts['settings'][$instance_id]['token']) && $old_client_id != $google['settings'][$instance_id]['clientid']) {
-				include_once(UPDRAFTPLUS_DIR.'/methods/googlecloud.php');
-				$this->register_wp_http_option_hooks();
-				$googlecloud = new UpdraftPlus_BackupModule_googlecloud();
-				$googlecloud->gcloud_auth_revoke(false);
-				$this->register_wp_http_option_hooks(false);
-				$opts['settings'][$instance_id]['token'] = '';
-				unset($opts['settings'][$instance_id]['ownername']);
-			}
-			foreach ($storage_options as $key => $value) {
-				// Trim spaces - I got support requests from users who didn't spot the spaces they introduced when copy/pasting
-				$opts['settings'][$instance_id][$key] = ('clientid' == $key || 'secret' == $key) ? trim($value) : $value;
-				if ('bucket_location' == $key) $opts['settings'][$instance_id][$key] = trim(strtolower($value));
-			}
-		}
-		
-		return $opts;
-	}
-
-	/**
-	 * WordPress options filter, sanitising the FTP options saved from the options page
-	 *
-	 * @param Array $settings - the options, prior to sanitisation
-	 *
-	 * @return Array - the sanitised options for saving
-	 */
-	public function ftp_sanitise($settings) {
-		if (is_array($settings) && !empty($settings['version']) && !empty($settings['settings'])) {
-			foreach ($settings['settings'] as $instance_id => $instance_settings) {
-				if (!empty($instance_settings['host']) && preg_match('#ftp(es|s)?://(.*)#i', $instance_settings['host'], $matches)) {
-					$settings['settings'][$instance_id]['host'] = rtrim($matches[2], "/ \t\n\r\0x0B");
-				}
-				if (isset($instance_settings['pass'])) {
-					$settings['settings'][$instance_id]['pass'] = trim($instance_settings['pass'], "\n\r\0\x0B");
-				}
-			}
-		}
-		return $settings;
-	}
-
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param Array $settings - pre-filtered settings
-	 *
-	 * @return Array filtered settings
-	 */
-	public function backblaze_sanitise($settings) {
-		if (is_array($settings) && !empty($settings['version']) && !empty($settings['settings'])) {
-			foreach ($settings['settings'] as $instance_id => $instance_settings) {
-				if (!empty($instance_settings['backup_path'])) {
-					$settings['settings'][$instance_id]['backup_path'] = trim($instance_settings['backup_path'], "/ \t\n\r\0\x0B");
-				}
-			}
-		}
-		return $settings;
-	}
-
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param Array $settings - pre-filtered settings
-	 *
-	 * @return Array filtered settings
-	 */
-	public function s3_sanitise($settings) {
-		if (is_array($settings) && !empty($settings['version']) && !empty($settings['settings'])) {
-			foreach ($settings['settings'] as $instance_id => $instance_settings) {
-				if (!empty($instance_settings['path'])) {
-					$settings['settings'][$instance_id]['path'] = trim($instance_settings['path'], "/ \t\n\r\0\x0B");
-				}
-			}
-		}
-		return $settings;
-	}
-
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param  Array $dropbox - An array of Dropbox options
-	 * @return Array - the returned array can either be the set of updated Dropbox settings or a WordPress error array
-	 */
-	public function dropbox_checkchange($dropbox) {
-
-		// Get the current options (and possibly update them to the new format)
-		$opts = $this->update_remote_storage_options_format('dropbox');
-		
-		if (is_wp_error($opts)) {
-			if ('recursion' !== $opts->get_error_code()) {
-				$msg = "Dropbox (".$opts->get_error_code()."): ".$opts->get_error_message();
-				$this->log($msg);
-				error_log("UpdraftPlus: $msg");
-			}
-			// The saved options had a problem; so, return the new ones
-			return $dropbox;
-		}
-		
-		// If the input is not as expected, then return the current options
-		if (!is_array($dropbox)) return $opts;
-		
-		// Remove instances that no longer exist
-		foreach ($opts['settings'] as $instance_id => $storage_options) {
-			if (!isset($dropbox['settings'][$instance_id])) unset($opts['settings'][$instance_id]);
-		}
-		
-		// Dropbox has a special case where the settings could be empty so we should check for this before
-		if (!empty($dropbox['settings'])) {
-		
-			foreach ($dropbox['settings'] as $instance_id => $storage_options) {
-				if (!empty($opts['settings'][$instance_id]['tk_access_token'])) {
-				
-					$current_app_key = empty($opts['settings'][$instance_id]['appkey']) ? false : $opts['settings'][$instance_id]['appkey'];
-					$new_app_key = empty($storage_options['appkey']) ? false : $storage_options['appkey'];
-
-					// If a different app key is being used, then wipe the stored token as it cannot belong to the new app
-					if ($current_app_key !== $new_app_key) {
-						unset($opts['settings'][$instance_id]['tk_access_token']);
-						unset($opts['settings'][$instance_id]['ownername']);
-						unset($opts['settings'][$instance_id]['CSRF']);
-					}
-				
-				}
-				
-				// Now loop over the new options, and replace old options with them
-				foreach ($storage_options as $key => $value) {
-					if (null === $value) {
-						unset($opts['settings'][$instance_id][$key]);
-					} else {
-						if (!isset($opts['settings'][$instance_id])) $opts['settings'][$instance_id] = array();
-						$opts['settings'][$instance_id][$key] = $value;
-					}
-				}
-				
-				if (!empty($opts['settings'][$instance_id]['folder']) && preg_match('#^https?://(www.)dropbox\.com/home/Apps/UpdraftPlus(.Com)?([^/]*)/(.*)$#i', $opts['settings'][$instance_id]['folder'], $matches)) $opts['settings'][$instance_id]['folder'] = $matches[3];
-				
-			}
-			
-		}
-		
-		return $opts;
-	}
-
 	public function remove_local_directory($dir, $contents_only = false) {
 		// PHP 5.3+ only
 		// foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
@@ -4112,83 +3996,7 @@ class UpdraftPlus {
 		$input = (int) $input;
 		return ($input > 0) ? min($input, 9999) : 1;
 	}
-
-	/**
-	 * Acts as a WordPress options filter
-	 *
-	 * @param  Array $webdav - An array of WebDAV options
-	 * @return Array - the returned array can either be the set of updated WebDAV settings or a WordPress error array
-	 */
-	public function construct_webdav_url($webdav) {
-		// Get the current options (and possibly update them to the new format)
-		$opts = $this->update_remote_storage_options_format('webdav');
-
-		if (is_wp_error($opts)) {
-			if ('recursion' !== $opts->get_error_code()) {
-				$msg = "WebDAV (".$opts->get_error_code()."): ".$opts->get_error_message();
-				$this->log($msg);
-				error_log("UpdraftPlus: $msg");
-			}
-			// The saved options had a problem; so, return the new ones
-			return $webdav;
-		}
-
-		// If the input is not as expected, then return the current options
-		if (!is_array($webdav)) return $opts;
-
-		// Remove instances that no longer exist
-		foreach ($opts['settings'] as $instance_id => $storage_options) {
-			if (!isset($webdav['settings'][$instance_id])) unset($opts['settings'][$instance_id]);
-		}
-
-		// WebDAV has a special case where the settings could be empty so we should check for this before proceeding
-		if (!empty($webdav['settings'])) {
-			
-			foreach ($webdav['settings'] as $instance_id => $storage_options) {
-				if (isset($storage_options['webdav'])) {
-			
-					$url = null;
-					$slash = "/";
-					$host = "";
-					$colon = "";
-					$port_colon = "";
-					
-					if ((80 == $storage_options['port'] && 'webdav' == $storage_options['webdav']) || (443 == $storage_options['port'] && 'webdavs' == $storage_options['webdav'])) {
-						$storage_options['port'] = '';
-					}
-					
-					if ('/' == substr($storage_options['path'], 0, 1)) {
-						$slash = "";
-					}
-					
-					if (false === strpos($storage_options['host'], "@")) {
-						$host = "@";
-					}
-					
-					if ('' != $storage_options['user'] && '' != $storage_options['pass']) {
-						$colon = ":";
-					}
-					
-					if ('' != $storage_options['host'] && '' != $storage_options['port']) {
-						$port_colon = ":";
-					}
-
-					if (!empty($storage_options['url']) && 'http' == strtolower(substr($storage_options['url'], 0, 4))) {
-						$storage_options['url'] = 'webdav'.substr($storage_options['url'], 4);
-					} elseif ('' != $storage_options['user'] && '' != $storage_options['pass']) {
-						$storage_options['url'] = $storage_options['webdav'].urlencode($storage_options['user']).$colon.urlencode($storage_options['pass']).$host.urlencode($storage_options['host']).$port_colon.$storage_options['port'].$slash.$storage_options['path'];
-					} else {
-						$storage_options['url'] = $storage_options['webdav'].urlencode($storage_options['host']).$port_colon.$storage_options['port'].$slash.$storage_options['path'];
-					}
-
-					$opts['settings'][$instance_id]['url'] = $storage_options['url'];
-				}
-			}
-		}
-		
-		return $opts;
-	}
-
+	
 	public function just_one_email($input, $required = false) {
 		$x = $this->just_one($input, 'saveemails', (empty($input) && false === $required) ? '' : get_bloginfo('admin_email'));
 		if (is_array($x)) {
@@ -4395,23 +4203,32 @@ class UpdraftPlus {
 					if (untrailingslashit(site_url()) != $old_siteurl) {
 						if (!$migration_warning) {
 							$migration_warning = true;
-							if ($this->normalise_url($old_siteurl) == $this->normalise_url(site_url()) && !class_exists('UpdraftPlus_Addons_Migrator')) {
+							$info['migration'] = true;
+							// && !class_exists('UpdraftPlus_Addons_Migrator')
+							if ($this->normalise_url($old_siteurl) == $this->normalise_url(site_url())) {
 								$old_siteurl_parsed = parse_url($old_siteurl);
 								$actual_siteurl_parsed = parse_url(site_url());
 								if ((stripos($old_siteurl_parsed['host'], 'www.') === 0 && stripos($actual_siteurl_parsed['host'], 'www.') !== 0) || (stripos($old_siteurl_parsed['host'], 'www.') !== 0 && stripos($actual_siteurl_parsed['host'], 'www.') === 0)) {
-									$warn[] = sprintf(__('The website address in the backup set (%s) is slightly different from that of the site now (%s). This is not expected to be a problem for restoring the site, as long as visits to the former address still reach the site.', 'updraftplus'), $old_siteurl, site_url());
+									$powarn = sprintf(__('The website address in the backup set (%s) is slightly different from that of the site now (%s). This is not expected to be a problem for restoring the site, as long as visits to the former address still reach the site.', 'updraftplus'), $old_siteurl, site_url()).' ';
+								} else {
+									$powarn = '';
 								}
 								if (('https' == $old_siteurl_parsed['scheme'] && 'http' == $actual_siteurl_parsed['scheme']) || ('http' == $old_siteurl_parsed['scheme'] && 'https' == $actual_siteurl_parsed['scheme'])) {
-									$powarn_ssl = sprintf(__('This backup set is of this site, but at the time of the backup you were using %s, whereas the site now uses %s.', 'updraftplus'), $old_siteurl_parsed['scheme'], $actual_siteurl_parsed['scheme']);
+									$powarn .= sprintf(__('This backup set is of this site, but at the time of the backup you were using %s, whereas the site now uses %s.', 'updraftplus'), $old_siteurl_parsed['scheme'], $actual_siteurl_parsed['scheme']);
 									if ('https' == $old_siteurl_parsed['scheme']) {
-										$powarn_ssl .= ' '.sprintf(__('This restoration will work if you still have an SSL certificate (i.e. can use https) to access the site. Otherwise, you will want to use %s to search/replace the site address so that the site can be visited without https.', 'updraftplus'), '<a href="https://updraftplus.com/shop/migrator/">'.__('the migrator add-on', 'updraftplus').'</a>');
+										$powarn .= ' '.apply_filters('updraftplus_https_to_http_additional_warning', sprintf(__('This restoration will work if you still have an SSL certificate (i.e. can use https) to access the site. Otherwise, you will want to use %s to search/replace the site address so that the site can be visited without https.', 'updraftplus'), '<a href="https://updraftplus.com/shop/migrator/">'.__('the migrator add-on', 'updraftplus').'</a>'));
 									} else {
-										$powarn_ssl .= ' '.sprintf(__('As long as your web hosting allows http (i.e. non-SSL access) or will forward requests to https (which is almost always the case), this is no problem. If that is not yet set up, then you should set it up, or use %s so that the non-https links are automatically replaced.', 'updraftplus'), '<a href="https://updraftplus.com/shop/migrator/">'.__('the migrator add-on', 'updraftplus').'</a>');
+										$powarn .= ' '.apply_filters('updraftplus_http_to_https_additional_warning', sprintf(__('As long as your web hosting allows http (i.e. non-SSL access) or will forward requests to https (which is almost always the case), this is no problem. If that is not yet set up, then you should set it up, or use %s so that the non-https links are automatically replaced.', 'updraftplus'), apply_filters('updraftplus_migrator_addon_link', '<a href="https://updraftplus.com/shop/migrator/">'.__('the migrator add-on', 'updraftplus').'</a>')));
 									}
-									$warn[] = $powarn_ssl;
+								} else {
+									$powarn .= apply_filters('updraftplus_dbscan_urlchange_www_append_warning', '');
 								}
+								$warn[] = $powarn;
 							} else {
 								$warn[] = apply_filters('updraftplus_dbscan_urlchange', '<a href="https://updraftplus.com/shop/migrator/">'.__('This backup set is from a different site - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work.', 'updraftplus').'</a>', $old_siteurl, $res);
+							}
+							if (!class_exists('UpdraftPlus_Addons_Migrator')) {
+								$warn[] .= '<strong><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/tell-me-more-about-the-search-and-replace-site-location-in-the-database-option/").'">'.__('You can search and replace your database (for migrating a website to a new location/URL) with the Migrator add-on - follow this link for more information', 'updraftplus').'</a></strong>';
 							}
 						}
 						// Explicitly set it, allowing the consumer to detect when the result was unknown
@@ -5045,6 +4862,7 @@ class UpdraftPlus {
 			'updraft_dreamobjects',
 			'updraft_report_warningsonly',
 			'updraft_report_wholebackup',
+			'updraft_report_dbbackup',
 			'updraft_log_syslog',
 			'updraft_extradatabases',
 		);

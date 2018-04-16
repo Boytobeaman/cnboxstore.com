@@ -45,6 +45,8 @@ class Updraft_Restorer extends WP_Upgrader {
 
 	private $statements_run = 0;
 	
+	private $use_wpdb = null;
+	
 	// Constants for use with the move_backup_in method
 	// These can't be arbitrarily changed; there is legacy code doing bitwise operations and numerical comparisons, and possibly legacy code still using the values directly.
 	const MOVEIN_OVERWRITE_NO_BACKUP = 0;
@@ -55,12 +57,11 @@ class Updraft_Restorer extends WP_Upgrader {
 	public function __construct($skin = null, $info = null, $shortinit = false, $restore_options = array()) {
 
 		global $wpdb;
-		// Line up a wpdb-like object
-		$this->use_wpdb = ((!function_exists('mysql_query') && !function_exists('mysqli_query')) || !$wpdb->is_mysql || !$wpdb->ready) ? true : false;
-
+		
 		$this->our_siteurl = untrailingslashit(site_url());
 
-		if (false == $this->use_wpdb) {
+		// Line up a wpdb-like object
+		if (!$this->use_wpdb()) {
 			// We have our own extension which drops lots of the overhead on the query
 			$wpdb_obj = new UpdraftPlus_WPDB(DB_USER, DB_PASSWORD, DB_NAME, DB_HOST);
 			// Was that successful?
@@ -91,6 +92,35 @@ class Updraft_Restorer extends WP_Upgrader {
 		$this->is_multisite = is_multisite();
 	}
 
+	/**
+	 * Get the wpdb-like object that we are using, if we are using one
+	 *
+	 * @return UpdraftPlus_WPDB|Boolean
+	 */
+	public function get_db_object() {
+		return $this->wpdb_obj;
+	}
+	
+	/**
+	 * Whether or not we must use the global $wpdb object for database queries.
+	 * That is to say: we *can* always use it. But we prefer to avoid the overhead since we are potentially doing very many queries.
+	 *
+	 * This is the getter. We have no use-case for a setter outside of this class, so we just set it directly.
+	 *
+	 * @return Boolean
+	 */
+	public function use_wpdb() {
+		if (!is_bool($this->use_wpdb)) {
+			global $wpdb;
+			if (defined('UPDRAFTPLUS_USE_WPDB')) {
+				$this->use_wpdb = (bool) UPDRAFTPLUS_USE_WPDB;
+			} else {
+				$this->use_wpdb = ((!function_exists('mysql_query') && !function_exists('mysqli_query')) || !$wpdb->is_mysql || !$wpdb->ready) ? true : false;
+			}
+		}
+		return $this->use_wpdb;
+	}
+	
 	public function ud_get_skin() {
 		return $this->skin;
 	}
@@ -153,6 +183,9 @@ class Updraft_Restorer extends WP_Upgrader {
 		$this->strings['delete_failed'] = __('Failed to delete working directory after restoring.', 'updraftplus');
 		$this->strings['multisite_error'] = __('You are running on WordPress multisite - but your backup is not of a multisite site.', 'updraftplus');
 		$this->strings['unpack_failed'] = __('Failed to unpack the archive', 'updraftplus');
+		$this->strings['read_manifest_failed'] = __('Failed to read the manifest file from backup.', 'updraftplus');
+		$this->strings['manifest_not_found'] = __('Failed to find a manifest file in the backup.', 'updraftplus');
+		$this->strings['read_working_dir_failed'] = __('Failed to read from the working directory.', 'updraftplus');
 	}
 
 	/**
@@ -732,9 +765,10 @@ class Updraft_Restorer extends WP_Upgrader {
 	 * @param  string  $type        type of file
 	 * @param  array   $info        information array
 	 * @param  boolean $last_one    indicate if this is the last file to be restored
+	 * @param  boolean $last_entity indicate if this is the last entity of this type to be restored
 	 * @return boolean
 	 */
-	public function restore_backup($backup_file, $type, $info, $last_one = false) {
+	public function restore_backup($backup_file, $type, $info, $last_one = false, $last_entity = false) {
 
 		if ('more' == $type) {
 			$this->skin->feedback('not_possible');
@@ -956,6 +990,12 @@ class Updraft_Restorer extends WP_Upgrader {
 				}
 				
 				if (file_exists($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json')) {
+					// Before we cleanup and remove the manifest check if this is the last entity of this type, if it is then we want to remove anything that no longer exists in this manifest
+					if ($last_entity) {
+						$incremental_restore_prune = $this->incremental_restore_prune_files($working_dir, $type);
+						if (is_wp_error($incremental_restore_prune)) return $incremental_restore_prune;
+					}
+
 					$wp_filesystem->delete($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json');
 					if ($wp_filesystem->delete($working_dir)) $fixed_it_now = true;
 				}
@@ -1024,6 +1064,75 @@ class Updraft_Restorer extends WP_Upgrader {
 
 		return true;
 
+	}
+
+	/**
+	 * This method will read in the latest manifest file for an entity type and start the file prune.
+	 *
+	 * @param  string $working_dir - the directory we are working in
+	 * @param  string $type        - the type of file
+	 * @return boolean|WP_Error
+	 */
+	private function incremental_restore_prune_files($working_dir, $type) {
+		// Check file exists again just in case it some how got removed
+		if (file_exists($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json')) {
+			$entity_manifest = file_get_contents($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json');
+			$entity_manifest = json_decode($entity_manifest, true);
+			$base_path = WP_CONTENT_DIR . '/';
+			$path = $base_path . $type;
+			return $this->incremental_restore_scan_dir($base_path, $path, 1, $entity_manifest);
+		} else {
+			return new WP_Error('manifest_not_found', $this->strings['manifest_not_found']);
+		}
+	}
+
+	/**
+	 * This method will recursively scan each directory to the given listed_level which is located in the manifest and prune and files or folders that do not exist in the manifest.
+	 *
+	 * @param string  $base_path       - the base path of the entity type
+	 * @param string  $path            - the current path we are scanning
+	 * @param integer $current_level   - the level we are currently scanning at
+	 * @param array   $entity_manifest - the manifest array which includes the listed_level, directories and files to keep
+	 * @return boolean|WP_Error
+	 */
+	private function incremental_restore_scan_dir($base_path, $path, $current_level, $entity_manifest) {
+		
+		global $wp_filesystem;
+
+		$directroy_level = $entity_manifest['listed_levels'];
+		$entity_directories = $entity_manifest['contents']['directories'];
+		$entity_files = $entity_manifest['contents']['files'];
+
+		if (!isset($directroy_level) || !isset($entity_directories) || !isset($entity_files)) return new WP_Error('read_manifest_failed', $this->strings['read_manifest_failed']);
+
+		$directory_files = $wp_filesystem->dirlist($path);
+
+		if (isset($directory_files)) {
+			foreach ($directory_files as $file => $filestruc) {
+				if ($wp_filesystem->is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+					$directory = $path . DIRECTORY_SEPARATOR . $file;
+					// Check if we should go deeper in the file path, if not then check if this directory exists in the manifest, if not then remove it.
+					if ($current_level + 1 < $directroy_level) {
+						$incremental_restore_prune = $this->incremental_restore_scan_dir($base_path, $directory, $current_level + 1, $entity_manifest);
+						if (is_wp_error($incremental_restore_prune)) return $incremental_restore_prune;
+					} else {
+						$directory = str_replace($base_path, "", $directory);
+						if (!in_array($directory, $entity_directories)) {
+							$wp_filesystem->delete($base_path . $directory, true);
+						}
+					}
+				} else {
+					$file = str_replace($base_path, "", $path . DIRECTORY_SEPARATOR . $file);
+					if (!in_array($file, $entity_files)) {
+						$wp_filesystem->delete($base_path . $file, false);
+					}
+				}
+			}
+
+			return true;
+		} else {
+			return new WP_Error('read_working_dir_failed', $this->strings['read_working_dir_failed']);
+		}
 	}
 
 	private function move_existing_to_old($type, $get_dir, $wp_filesystem, $wp_filesystem_dir) {
@@ -1171,7 +1280,7 @@ ENDHERE;
 					jQuery.post(ajaxurl, backupinfo, function(response) {
 						console.log(response);
 						try {
-							var resp = jQuery.parseJSON(response);
+							var resp = JSON.parse(response);
 							console.log(resp);
 							// TODO: Do something
 						} catch (err) {
@@ -1333,7 +1442,7 @@ ENDHERE;
 	private function chmod_if_needed($dir, $chmod, $recursive = false, $wpfs = false, $suppress = true) {
 
 		// Do nothing on Windows
-		if (strtoupper(substr(php_uname('s'), 0, 3)) === 'WIN') return true;
+		if ('WIN' === strtoupper(substr(php_uname('s'), 0, 3))) return true;
 
 		if (false == $wpfs) {
 			global $wp_filesystem;
@@ -1441,8 +1550,8 @@ ENDHERE;
 	 *
 	 * @param  string $working_dir           specify working directory
 	 * @param  string $working_dir_localpath specify working local directory
-	 * @param  string $import_table_prefix   speficy import
-	 * @return boolean
+	 * @param  string $import_table_prefix   specify import
+	 * @return boolean|WP_Error
 	 */
 	private function restore_backup_db($working_dir, $working_dir_localpath, $import_table_prefix) {
 
@@ -1506,7 +1615,7 @@ ENDHERE;
 
 		$this->line = 0;
 
-		if (true == $this->use_wpdb) {
+		if ($this->use_wpdb()) {
 			$updraftplus->log_e('Database access: Direct MySQL access is not available, so we are falling back to wpdb (this will be considerably slower)');
 		} else {
 			$updraftplus->log("Using direct MySQL access; value of use_mysqli is: ".($this->use_mysqli ? '1' : '0'));
@@ -1552,7 +1661,7 @@ ENDHERE;
 		$random_table_name = 'updraft_tmp_'.rand(0, 9999999).md5(microtime(true));
 
 		// The only purpose in funnelling queries directly here is to be able to get the error number
-		if ($this->use_wpdb) {
+		if ($this->use_wpdb()) {
 			$req = $wpdb->query("CREATE TABLE $random_table_name (test INT)");
 			// WPDB, for several query types, returns the number of rows changed; in distinction from an error, indicated by (bool)false
 			if (0 === $req) {
@@ -1575,7 +1684,7 @@ ENDHERE;
 			}
 		}
 
-		if (!$req && ($this->use_wpdb || 1142 === $this->last_error_no)) {
+		if (!$req && ($this->use_wpdb() || 1142 === $this->last_error_no)) {
 			$this->create_forbidden = true;
 			// If we can't create, then there's no point dropping
 			$this->drop_forbidden = true;
@@ -1592,7 +1701,7 @@ ENDHERE;
 				$updraftplus->log("Database user has no permission to lock tables - will not lock after CREATE");
 			}
 		
-			if ($this->use_wpdb) {
+			if ($this->use_wpdb()) {
 				$req = $wpdb->query("DROP TABLE $random_table_name");
 				// WPDB, for several query types, returns the number of rows changed; in distinction from an error, indicated by (bool)false
 				if (0 === $req) {
@@ -1614,7 +1723,7 @@ ENDHERE;
 					$this->last_error_no = ($this->use_mysqli) ? mysqli_errno($this->mysql_dbh) : mysql_errno($this->mysql_dbh);
 				}
 			}
-			if (!$req && ($this->use_wpdb || 1142 === $this->last_error_no)) {
+			if (!$req && ($this->use_wpdb() || 1142 === $this->last_error_no)) {
 				$this->drop_forbidden = true;
 
 				$updraftplus->log(sprintf('Your database user does not have permission to drop tables. We will attempt to restore by simply emptying the tables; this should work as long as you are restoring from a WordPress version with the same database structure (%s)', '('.$this->last_error.', '.$this->last_error_no.')'));
@@ -1661,7 +1770,7 @@ ENDHERE;
 			}
 
 			// Discard comments
-			if (empty($buffer) || substr($buffer, 0, 1) == '#' || preg_match('/^--(\s|$)/', substr($buffer, 0, 3))) {
+			if (empty($buffer) || '#' == substr($buffer, 0, 1) || preg_match('/^--(\s|$)/', substr($buffer, 0, 3))) {
 				if ('' == $this->old_siteurl && preg_match('/^\# Backup of: (http(.*))$/', $buffer, $matches)) {
 					$this->old_siteurl = untrailingslashit($matches[1]);
 					$updraftplus->log("Backup of: ".$this->old_siteurl);
@@ -1775,7 +1884,7 @@ ENDHERE;
 
 				if (!isset($printed_new_table_prefix)) {
 					$import_table_prefix = $this->pre_sql_actions($import_table_prefix);
-					if (false===$import_table_prefix || is_wp_error($import_table_prefix)) return $import_table_prefix;
+					if (false === $import_table_prefix || is_wp_error($import_table_prefix)) return $import_table_prefix;
 					$printed_new_table_prefix = true;
 				}
 
@@ -2009,7 +2118,7 @@ ENDHERE;
 		global $updraftplus;
 		$table = $updraftplus->backquote($table);
 		
-		if ($this->use_wpdb) {
+		if ($this->use_wpdb()) {
 			$req = $wpdb->query("LOCK TABLES $table WRITE;");
 		} else {
 			if ($this->use_mysqli) {
@@ -2023,7 +2132,7 @@ ENDHERE;
 				$lock_error_no = $this->use_mysqli ? mysqli_errno($this->mysql_dbh) : mysql_errno($this->mysql_dbh);
 			}
 		}
-		if (!$req && ($this->use_wpdb || 1142 === $lock_error_no)) {
+		if (!$req && ($this->use_wpdb() || 1142 === $lock_error_no)) {
 			// Permission denied
 			return 1142;
 		}
@@ -2033,7 +2142,7 @@ ENDHERE;
 	public function unlock_tables() {
 		return;
 		// Not yet working
-		if ($this->use_wpdb) {
+		if ($this->use_wpdb()) {
 			$wpdb->query("UNLOCK TABLES;");
 		} elseif ($this->use_mysqli) {
 			$req = mysqli_query($this->mysql_dbh, "UNLOCK TABLES;");
@@ -2150,7 +2259,7 @@ ENDHERE;
 	 * @param  integer $sql_type            sql type
 	 * @param  string  $import_table_prefix import type prefix
 	 * @param  boolean $check_skipping      if true, then check whether the table is on the list of tables to skip
-	 * @return array
+	 * @return Boolean|WP_Error|Void
 	 */
 	public function sql_exec($sql_line, $sql_type, $import_table_prefix = '', $check_skipping = true) {
 
@@ -2169,7 +2278,7 @@ ENDHERE;
 				// We choose, for now, to be very conservative - we only do the apparently-missing drop if we have never seen any drop - i.e. assume that in SQL dumps with missing DROPs, that it's because there are no DROPs at all
 				if (!in_array($this->new_table_name, $this->tables_been_dropped)) {
 					$updraftplus->log_e('Table to be implicitly dropped: %s', $this->new_table_name);
-					$this->sql_exec('DROP TABLE IF EXISTS '.esc_sql($this->new_table_name), 1, '', false);
+					$this->sql_exec('DROP TABLE IF EXISTS '.$updraftplus->backquote($this->new_table_name), 1, '', false);
 					$this->tables_been_dropped[] = $this->new_table_name;
 				}
 			}
@@ -2195,7 +2304,7 @@ ENDHERE;
 				return false;
 			}
 
-			if ($this->use_wpdb) {
+			if ($this->use_wpdb()) {
 				$req = $wpdb->query($sql_line);
 				// WPDB, for several query types, returns the number of rows changed; in distinction from an error, indicated by (bool)false
 				if (0 === $req) {
@@ -2254,6 +2363,7 @@ ENDHERE;
 		} elseif (2 == $sql_type) {
 			if (!$this->lock_forbidden) $this->lock_table($this->new_table_name);
 			$this->tables_created++;
+			do_action('updraftplus_creating_table', $this->new_table_name);
 		}
 
 		if ($this->line >0 && ($this->line)%50 == 0) {
@@ -2344,7 +2454,7 @@ ENDHERE;
 						} else {
 							$updraftplus->log_e("Uploads path (%s) has changed during a migration - resetting (to: %s)", $new_upload_path, $this->prior_upload_path);
 						}
-						if (false === $wpdb->query("UPDATE ${import_table_prefix}".$mprefix."options SET option_value='".esc_sql($this->prior_upload_path)."' WHERE option_name='upload_path' LIMIT 1")) {
+						if (false === $wpdb->query($wpdb->prepare("UPDATE ${import_table_prefix}".$mprefix."options SET option_value='%s' WHERE option_name='upload_path' LIMIT 1", array($this->prior_upload_path)))) {
 							$updraftplus->log(__('Error', 'updraftplus'), 'notice-restore');
 							$updraftplus->log("Error when changing upload path: ".$wpdb->last_error);
 							$updraftplus->log("Failed");
@@ -2515,9 +2625,16 @@ class Updraft_Restorer_Skin extends WP_Upgrader_Skin {
  * Get a protected property
  */
 class UpdraftPlus_WPDB extends wpdb {
+
 	public function updraftplus_getdbh() {
 		return $this->dbh;
 	}
+	
+	/**
+	 * Return whether the object is using mysqli or not.
+	 *
+	 * @return Boolean
+	 */
 	public function updraftplus_use_mysqli() {
 		return !empty($this->use_mysqli);
 	}
