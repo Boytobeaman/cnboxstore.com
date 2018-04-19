@@ -1,0 +1,4108 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Excel导入\n"
+"POT-Creation-Date: 2016-12-22 10:24+0800\n"
+"PO-Revision-Date: 2017-01-14 15:23+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.10\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-WPHeader: wp-all-import-pro.Custom Fields\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;"
+"esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;"
+"__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: actions/admin_menu.Custom Fields:12
+msgid "New Import"
+msgstr "新的导入"
+
+#: actions/admin_menu.Custom Fields:13 views/admin/import/process.Custom Fields:61
+#: views/admin/manage/index.Custom Fields:5
+msgid "Manage Imports"
+msgstr "导入文件管理"
+
+#: actions/admin_menu.Custom Fields:14 views/admin/settings/index.Custom Fields:7
+msgid "Settings"
+msgstr " "
+
+#: actions/admin_menu.Custom Fields:16
+msgid "History"
+msgstr "历史记录"
+
+#: actions/admin_menu.Custom Fields:22 controllers/admin/license.Custom Fields:18
+#: controllers/admin/settings.Custom Fields:50 views/admin/import/confirm.Custom Fields:11
+#: views/admin/import/element.Custom Fields:8 views/admin/import/index.Custom Fields:43
+#: views/admin/import/options.Custom views/admin/import/process.Custom
+#: views/admin/import/template.Custom Fields:9 views/admin/manage/index.Custom Fields:4
+#: views/admin/settings/index.Custom Fields:6
+msgid "WP All Import"
+msgstr "excel导入"
+
+#: actions/admin_menu.Custom Fields:22
+msgid "All Import"
+msgstr "导入数据"
+
+#: actions/admin_notices.Custom Fields:12
+msgid "<b>%s Plugin</b>: Please update your WP All Import WooCommerce add-on to the latest version"
+msgstr "<b>%s Plugin</b>: 请更新导入工具！"
+
+#: actions/admin_notices.Custom Fields:39
+msgid "<b>%s Plugin</b>: Please update your WP All Import ACF add-on to the latest version"
+msgstr "<b>%s Plugin</b>: 请更新你的导入工具"
+
+#: actions/admin_notices.Custom Fields:56
+msgid "<b>%s Plugin</b>: Please update your WP All Import Linkcloak add-on to the latest version"
+msgstr "<b>%s Plugin</b>: 请更新你的导入工具"
+
+#: actions/admin_notices.Custom Fields:73
+msgid "<b>%s Plugin</b>: Please update your WP All Import User add-on to the latest version"
+msgstr "<b>%s Plugin</b>: 请更新你的导入工具"
+
+#: actions/admin_notices.Custom Fields:90
+msgid ""
+"<b>%s Plugin</b>: The WPML Add-On Plugin is no longer compatible with this version of WP All Import "
+"- please contact support@wpallimport.com and we will supply the latest version of WP All Import "
+"that is compatible with the WPML Add-On."
+msgstr "<b>%s Plugin</b>: 有问题请联系QQ：739696033"
+
+#: actions/admin_notices.Custom Fields:119 controllers/admin/import.Custom Fields:1534 Fields:1758
+#: Fields:2272
+msgid "<strong>Warning:</strong> your title is blank."
+msgstr "标题还没写呢"
+
+#: actions/admin_notices.Custom Fields:122 controllers/admin/import.Custom Fields:1541 Fields:1760
+#: Fields:2274
+msgid "<strong>Warning:</strong> your content is blank."
+msgstr "你还写内容，是不需要吗？"
+
+#: actions/wp_ajax_auto_detect_cf.Custom Fields:5 Fields:9 actions/wp_ajax_auto_detect_sf.Custom
+#: actions/wp_ajax_delete_import.Custom actions/wp_ajax_dismiss_notifications.Custom
+#: actions/wp_ajax_get_bundle_post_type.Custom Fields:6 Fields:10 actions/wp_ajax_import_failed.Custom
+#: actions/wp_ajax_nested_merge.Custom actions/wp_ajax_nested_xpath.Custom
+#: actions/wp_ajax_parse_nested_file.Custom Fields:14 actions/wp_ajax_save_import_functions.Custom
+#: actions/wp_ajax_test_images.Custom actions/wp_ajax_unmerge_file.Custom
+#: actions/wp_ajax_upload_resource.Custom controllers/admin/history.Custom Fields:74
+#: controllers/admin/import.Custom Fields:585 Fields:893 Fields:1030 Fields:1169 Fields:1324
+#: Fields:2515 controllers/admin/manage.Custom Fields:136 Fields:179 Fields:293 Fields:545
+#: controllers/admin/settings.Custom Fields:427
+msgid "Security check"
+msgstr "安全监测"
+
+#: actions/wp_ajax_auto_detect_cf.Custom Fields:59
+msgid "No Custom Fields are present in your database for %s"
+msgstr "你的数据库里还没有找到Custom Fields for %s"
+
+#: actions/wp_ajax_auto_detect_cf.Custom Fields:62
+msgid "%s field was automatically detected."
+msgstr "%s 字段是自动检测"
+
+#: actions/wp_ajax_auto_detect_cf.Custom Fields:64
+msgid "%s fields were automatically detected."
+msgstr "%s 字段已经自动检测完成"
+
+#: actions/wp_ajax_delete_import.Custom Fields:32 controllers/admin/manage.Custom Fields:608
+msgid "Import deleted"
+msgstr "导入删除"
+
+#: actions/wp_ajax_delete_import.Custom Fields:36 controllers/admin/manage.Custom Fields:612
+msgid "All associated posts deleted."
+msgstr "所有的相关数据已删除"
+
+#: actions/wp_ajax_delete_import.Custom Fields:40 controllers/admin/manage.Custom Fields:616
+msgid "Import and all associated posts deleted."
+msgstr "导入的相关数据已删除"
+
+#: actions/wp_ajax_delete_import.Custom Fields:44 controllers/admin/manage.Custom Fields:597
+msgid "Nothing to delete."
+msgstr "什么也没有删除"
+
+#: actions/wp_ajax_delete_import.Custom Fields:66
+msgid "Import #%d - %d records deleted"
+msgstr "导入 #%d - %d 的记录已删除"
+
+#: actions/wp_ajax_get_bundle_post_type.Custom Fields:70 actions/wp_ajax_upload_resource.Custom
+#: Fields:140 controllers/admin/settings.Custom Fields:606
+msgid ""
+"<p class=\"wpallimport-bundle-notice\">The import bundle you are using requires WooCommerce.</p><a "
+"class=\"upgrade_link\" href=\"https://wordpress.org/plugins/woocommerce/\" target=\"_blank\">Get "
+"WooCommerce</a>."
+msgstr ""
+"<p class=\"wpallimport-bundle-notice\">导入包您使用需要WooCommerce.</p><a class=\"upgrade_link\" "
+"href=\"http://www.bcoder.cn\" target=\"_blank\">有问题请联系管理员QQ：739696033</a>."
+
+#: actions/wp_ajax_get_bundle_post_type.Custom Fields:76 actions/wp_ajax_upload_resource.Custom
+#: Fields:146 controllers/admin/settings.Custom Fields:612
+msgid ""
+"<p class=\"wpallimport-bundle-notice\">The import bundle you are using requires the Pro version of "
+"the WooCommerce Add-On.</p><a href=\"http://www.wpallimport.com/checkout/?"
+"edd_action=add_to_cart&download_id=1529&edd_options%5Bprice_id%5D=1\" class=\"upgrade_link\" target="
+"\"_blank\">Purchase the WooCommerce Add-On</a>."
+msgstr "导入包您使用需要WooCommerce附加组件的专业版，请联系管理员qq：739696033"
+
+#: actions/wp_ajax_get_bundle_post_type.Custom Fields:81 actions/wp_ajax_upload_resource.Custom
+#: Fields:151 controllers/admin/settings.Custom Fields:617
+msgid ""
+"<p class=\"wpallimport-bundle-notice\">The import bundle you are using requires the Pro version of "
+"the WooCommerce Add-On, but you have the free version installed.</p><a href=\"http://www."
+"wpallimport.com/checkout/?edd_action=add_to_cart&download_id=1529&edd_options%5Bprice_id%5D=1\" "
+"target=\"_blank\" class=\"upgrade_link\">Purchase the WooCommerce Add-On</a>."
+msgstr "无需翻译，你已经是专业版"
+
+#: actions/wp_ajax_get_bundle_post_type.Custom Fields:91 actions/wp_ajax_upload_resource.Custom
+#: Fields:161 controllers/admin/settings.Custom Fields:627
+msgid ""
+"<p class=\"wpallimport-bundle-notice\">The import bundle you are using requires the User Import Add-"
+"On.</p><a href=\"http://www.wpallimport.com/checkout/?"
+"edd_action=add_to_cart&download_id=1921&edd_options%5Bprice_id%5D=1\" target=\"_blank\" class="
+"\"upgrade_link\">Purchase the User Import Add-On</a>."
+msgstr "无需翻译，你已经是专业版"
+
+#: actions/wp_ajax_nested_xpath.Custom Fields:51
+msgid "XPath is required"
+msgstr "XPath是必需的"
+
+#: actions/wp_ajax_nested_xpath.Custom Fields:65 actions/wp_ajax_parse_nested_file.Custom Fields:159
+msgid "Elements found"
+msgstr "发现数据元素"
+
+#: actions/wp_ajax_nested_xpath.Custom Fields:65 actions/wp_ajax_parse_nested_file.Custom Fields:159
+msgid "Elements not found"
+msgstr "没有找到数据元素"
+
+#: actions/wp_ajax_save_import_functions.Custom Fields:30 Fields:51
+msgid "PHP code must be wrapped in \"&lt;?Custom Fields\" and \"?&gt;\""
+msgstr "在 \"&lt;?Custom Fields\" and \"?&gt;\" 里必须用Custom Fields代码"
+
+#: actions/wp_ajax_save_import_functions.Custom Fields:37 Fields:60
+msgid "File has been successfully updated."
+msgstr "文件已经成功更新！"
+
+#: actions/wp_ajax_test_images.Custom Fields:32
+msgid "Uploads folder `%s` is not writable."
+msgstr "上传的文件夹 `%s` 不可写入."
+
+#: actions/wp_ajax_test_images.Custom Fields:46
+msgid "Use image name instead of URL `%s`."
+msgstr "用图片的名字，而不是URL `%s`."
+
+#: actions/wp_ajax_test_images.Custom Fields:53
+msgid "File `%s` isn't readable"
+msgstr "文件 `%s` 不可写。"
+
+#: actions/wp_ajax_test_images.Custom Fields:57
+msgid "File `%s` doesn't exist"
+msgstr "文件 `%s` 不存在"
+
+#: actions/wp_ajax_test_images.Custom Fields:63
+msgid "%d image was successfully retrieved from `%s`"
+msgstr "%d 图片已经成功的从 `%s` 中检索"
+
+#: actions/wp_ajax_test_images.Custom Fields:67
+msgid "%d images were successfully retrieved from `%s`"
+msgstr "%d 图片已经成功的从 `%s` 中检索"
+
+#: actions/wp_ajax_test_images.Custom Fields:95
+msgid "Image `%s` not found in media library."
+msgstr "图片 `%s` 在媒体库没有找到"
+
+#: actions/wp_ajax_test_images.Custom Fields:102
+msgid "%d image was successfully founded in media gallery"
+msgstr "%d 图片从媒体库已在找到"
+
+#: actions/wp_ajax_test_images.Custom Fields:106
+msgid "%d images were successfully founded in media gallery"
+msgstr "%d 图片从媒体库已在找到"
+
+#: actions/wp_ajax_test_images.Custom Fields:120
+msgid "URL `%s` is not valid."
+msgstr "URL `%s` 是无效的。"
+
+#: actions/wp_ajax_test_images.Custom Fields:135
+msgid "File `%s` cannot be saved locally"
+msgstr "文件 `%s` 不能在本地保存"
+
+#: actions/wp_ajax_test_images.Custom Fields:137
+msgid "File `%s` is not a valid image."
+msgstr "文件 `%s` 是无效的。"
+
+#: actions/wp_ajax_test_images.Custom Fields:148
+msgid "%d image was successfully downloaded in %s seconds"
+msgstr "%d 图片下载花费 %s 秒钟"
+
+#: actions/wp_ajax_test_images.Custom Fields:152
+msgid "%d images were successfully downloaded in %s seconds"
+msgstr "%d 图片下载花费 %s 秒钟"
+
+#: actions/wp_ajax_upload_resource.Custom Fields:124
+msgid "Please verify that the URL returns a valid import file."
+msgstr "请确认返回一个有效的导入文件的URL。"
+
+#: actions/wp_loaded.Custom Fields:38
+msgid "Cleanup completed."
+msgstr "清理完成"
+
+#: actions/wp_loaded.Custom Fields:44
+msgid "Missing import ID."
+msgstr "缺少导入ID"
+
+#: actions/wp_loaded.Custom Fields:72
+msgid "Other imports are currently in process [%s]."
+msgstr "其他导入已经在目前的程序中 [%s]."
+
+#: actions/wp_loaded.Custom Fields:82
+msgid "Scheduling update is not working with \"upload\" import type. Import #%s."
+msgstr "Scheduling update is not working with \"upload\" import type. Import #%s."
+
+#: actions/wp_loaded.Custom Fields:95 Fields:167
+msgid "Import #%s is currently in manually process. Request skipped."
+msgstr "导入 #%s 是手动过程，请求跳过"
+
+#: actions/wp_loaded.Custom Fields:118 views/admin/history/index.Custom Fields:170
+msgid "triggered by cron"
+msgstr "由cron触发"
+
+#: actions/wp_loaded.Custom Fields:124
+msgid "#%s Cron job triggered."
+msgstr "#%s Cron job已触发."
+
+#: actions/wp_loaded.Custom Fields:131
+msgid "Import #%s currently in process. Request skipped."
+msgstr "导入 #%s 正在进行.请求跳过."
+
+#: actions/wp_loaded.Custom Fields:140
+msgid "Import #%s already triggered. Request skipped."
+msgstr "导入 #%s 已经触发. 请求跳过."
+
+#: actions/wp_loaded.Custom Fields:160
+msgid "Import #%s is not triggered. Request skipped."
+msgstr "导入 #%s 没有触发，请求跳过"
+
+#: actions/wp_loaded.Custom Fields:198 views/admin/history/index.Custom Fields:167
+msgid "cron processing"
+msgstr "cron 正在处理"
+
+#: actions/wp_loaded.Custom Fields:230 models/import/record.Custom Fields:603
+msgid "Import #%s complete"
+msgstr "导入 #%s 完成"
+
+#: actions/wp_loaded.Custom Fields:239 models/import/record.Custom Fields:627
+msgid "Records Processed %s. Records Count %s."
+msgstr "记录处理 %s. 已处理 %s条记录."
+
+#: actions/wp_loaded.Custom Fields:251
+msgid "Import #%s already processing. Request skipped."
+msgstr "导入 #%s已经进行了. 请求跳过."
+
+#: actions/wp_loaded.Custom Fields:275
+msgid "Import #%s canceled"
+msgstr "导入 #%s 取消"
+
+#: classes/api.Custom Fields:113 views/admin/import/template/_other_template.Custom Fields:28
+#: Fields:77 Fields:100 Fields:167 Fields:197 Fields:225 Fields:251
+msgid "Set with XPath"
+msgstr "设置一个xpath路径"
+
+#: classes/api.Custom Fields:129 views/admin/import/template/_custom_fields_template.Custom Fields:57
+#: Fields:266 Fields:400
+msgid "Field Options..."
+msgstr "选项"
+
+#: classes/api.Custom Fields:132 views/admin/import/template/_custom_fields_template.Custom Fields:63
+#: Fields:272 Fields:406
+msgid "Mapping"
+msgstr "映射/地图"
+
+#: classes/api.Custom Fields:141 views/admin/import/template/_custom_fields_template.Custom Fields:170
+#: Fields:338 Fields:472 views/admin/import/template/_taxonomies_template.Custom Fields:233
+msgid "In Your File"
+msgstr "在你的文件里"
+
+#: classes/api.Custom Fields:142 views/admin/import/template/_custom_fields_template.Custom Fields:171
+#: Fields:339 Fields:473 views/admin/import/template/_taxonomies_template.Custom Fields:234
+msgid "Translated To"
+msgstr "翻译成"
+
+#: classes/api.Custom Fields:221 views/admin/import/template/_custom_fields_template.Custom Fields:144
+#: Fields:233 Fields:312 Fields:368 Fields:446 Fields:502
+msgid "Add Another"
+msgstr "添加另一个"
+
+#: classes/api.Custom Fields:227 views/admin/import/template/_custom_fields_template.Custom Fields:239
+#: Fields:374 Fields:508
+msgid "Save Rules"
+msgstr "保存规则"
+
+#: classes/api.Custom Fields:258
+msgid "Download image hosted elsewhere"
+msgstr "在其他地方下载图片托管"
+
+#: classes/api.Custom Fields:259 Fields:279 views/admin/import/template/_featured_template.Custom
+#: Fields:16 Fields:26
+msgid "http:// or https://"
+msgstr "http:// or https://"
+
+#: classes/api.Custom Fields:264
+msgid "Use image(s) currently uploaded in %s"
+msgstr "正在上传图像 %s"
+
+#: classes/api.Custom Fields:278
+msgid "Download file hosted elsewhere"
+msgstr "在其他地方下载托管的文件"
+
+#: classes/api.Custom Fields:284
+msgid "Use file(s) currently uploaded in %s"
+msgstr "文件正在  %s 里上传"
+
+#: classes/api.Custom Fields:396 models/import/record.Custom Fields:2467
+msgid "- Searching for existing image `%s` in `%s` folder"
+msgstr "- 图片 `%s` 已在 `%s` 文件夹里存在了！"
+
+#: classes/api.Custom Fields:403 Fields:476 models/import/record.Custom Fields:2474 Fields:2558
+#: Fields:2799
+msgid "- <b>WARNING</b>: Can't detect attachment file type %s"
+msgstr "- <b>WARNING</b>:无法检测到附件文件类型 %s"
+
+#: classes/api.Custom Fields:409 Fields:481 models/import/record.Custom Fields:2480 Fields:2564
+msgid "- File `%s` has been successfully found"
+msgstr "- 文件 `%s` 已找到"
+
+#: classes/api.Custom Fields:415 Fields:467 models/import/record.Custom Fields:2389 Fields:2491
+#: Fields:2517 Fields:2551
+msgid "- <b>WARNING</b>: File %s is not a valid image and cannot be set as featured one"
+msgstr "- <b>WARNING</b>: 文件 %s 不是一个有效的图像,不能设置为特色图像"
+
+#: classes/api.Custom Fields:418 models/import/record.Custom Fields:2487
+msgid "- Image `%s` has been successfully found"
+msgstr "-图片 `%s` 已经找到"
+
+#: classes/api.Custom Fields:428 models/import/record.Custom Fields:2500
+msgid "- Downloading image from `%s`"
+msgstr "- 正在从 `%s`  下载图片"
+
+#: classes/api.Custom Fields:431
+msgid "- Downloading file from `%s`"
+msgstr "- 正在从 `%s` 下载图片"
+
+#: classes/api.Custom Fields:443 Fields:471 models/import/record.Custom Fields:2513 Fields:2549
+msgid "- Image `%s` has been successfully downloaded"
+msgstr "- 图片 `%s`  已成功下载"
+
+#: classes/api.Custom Fields:449 models/import/record.Custom Fields:2524
+msgid "- File `%s` has been successfully downloaded"
+msgstr "- 文件 `%s`  下载成功"
+
+#: classes/api.Custom Fields:461 models/import/record.Custom Fields:2541
+msgid "- <b>WARNING</b>: File %s cannot be saved locally as %s"
+msgstr "- <b>WARNING</b>: 文件 %s 不能保存成  %s"
+
+#: classes/api.Custom Fields:495 models/import/record.Custom Fields:2602
+msgid "- Creating an attachment for image `%s`"
+msgstr "- 为图像创建一个附件 `%s`"
+
+#: classes/api.Custom Fields:498
+msgid "- Creating an attachment for file `%s`"
+msgstr "- 为文件创建一个附件 `%s`"
+
+#: classes/api.Custom Fields:517 models/import/record.Custom Fields:2624 Fields:2821
+msgid "- <b>WARNING</b>"
+msgstr "- <b>小心</b>"
+
+#: classes/api.Custom Fields:521 models/import/record.Custom Fields:2671
+msgid "- Attachment has been successfully created for image `%s`"
+msgstr "-附件已成功为图像创建 `%s`"
+
+#: classes/render.Custom Fields:68 Fields:88 Fields:166 Fields:186
+msgid "<strong>%s</strong> %s more"
+msgstr "<strong>%s</strong> %s 更多"
+
+#: classes/render.Custom Fields:68 Fields:88 Fields:166 Fields:186 views/admin/import/evaluate.Custom
+#: Fields:5 views/admin/import/evaluate_variations.Custom Fields:3
+msgid "element"
+msgid_plural "elements"
+msgstr[0] "节点"
+
+#: classes/render.Custom Fields:94 Fields:192
+msgid "more"
+msgstr "更多"
+
+#: classes/updater.Custom Fields:240
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s"
+"\">View version %3$s details</a>."
+msgstr ""
+"There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s"
+"\">View version %3$s details</a>."
+
+#: classes/updater.Custom Fields:247
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s"
+"\">View version %3$s details</a> or <a href=\"%4$s\">update now</a>."
+msgstr ""
+
+#: classes/updater.Custom Fields:435
+msgid "You do not have permission to install plugin updates"
+msgstr "你没有权限来安装插件更新"
+
+#: classes/updater.Custom Fields:435
+msgid "Error"
+msgstr ""
+
+#: classes/upload.Custom Fields:50
+msgid ""
+"Please specify a file to import.<br/><br/>If you are uploading the file from your computer, please "
+"wait for it to finish uploading (progress bar at 100%), before trying to continue."
+msgstr ""
+"请指定要导入的文件。< br / > < br / >如果你从你的电脑上传文件,请等待它完成上传进度条(100%),在继续之"
+"前。"
+
+#: classes/upload.Custom Fields:52
+msgid "Uploaded file is empty"
+msgstr "上传的文件是空的"
+
+#: classes/upload.Custom Fields:54 controllers/admin/settings.Custom Fields:466
+msgid "Uploaded file must be XML, CSV, ZIP, GZIP, GZ, JSON, SQL, TXT, DAT or PSV"
+msgstr "上传文件必须XML, CSV, ZIP, GZIP, GZ, JSON, SQL, TXT, DAT or PSV"
+
+#: classes/upload.Custom Fields:61 Fields:148 Fields:355 Fields:426 Fields:687 Fields:758
+msgid ""
+"WP All Import couldn't find a file to import inside your ZIP.<br/><br/>Either the .ZIP file is "
+"broken, or doesn't contain a file with an extension of  XML, CSV, PSV, DAT, or TXT. <br/>Please "
+"attempt to unzip your .ZIP file on your computer to ensure it is a valid .ZIP file which can "
+"actually be unzipped, and that it contains a file which WP All Import can import."
+msgstr ""
+"系统找不到导入的文件编码格式，ZIP文件坏了或者文件不包含XML, CSV, PSV, DAT, or TXT等格式，请尝试解"
+"压。压缩文件在您的计算机上,以确保它是有效的。实际上可以解压ZIP文件,它包含一个文件可以导入。"
+
+#: classes/upload.Custom Fields:128 Fields:168 Fields:406 Fields:674 Fields:738 Fields:778 Fields:805
+#: Fields:844 Fields:868 Fields:892 Fields:963
+msgid "WP All Import can't access your WordPress uploads folder."
+msgstr "系统不能访问你的上传的文件"
+
+#: classes/upload.Custom Fields:235 Fields:498 Fields:600 Fields:831 Fields:988
+msgid "Can not import this file. JSON to XML convertation failed."
+msgstr "不能导入这个文件，JSON to XML失败了！"
+
+#: classes/upload.Custom Fields:324 Fields:670
+msgid "Please specify a file to import."
+msgstr "请指定要导入的文件。"
+
+#: classes/upload.Custom Fields:326
+msgid ""
+"The URL to your file is not valid.<br/><br/>Please make sure the URL starts with http:// or "
+"https://. To import from https://, your server must have OpenSSL installed."
+msgstr ""
+"您的文件是无效的URL。< br / > < br / >请确认从http://或https://的URL。从https://服务器必须安装"
+"OpenSSL。"
+
+#: classes/upload.Custom Fields:328
+msgid "Uploads folder "
+msgstr "上传文件夹"
+
+#: classes/upload.Custom Fields:348
+msgid "Failed upload ZIP archive"
+msgstr "ZIP归档上传失败"
+
+#: classes/upload.Custom Fields:459 Fields:563
+msgid ""
+"WP All Import was not able to download your file.<br/><br/>Please make sure the URL to your file is "
+"valid.<br/>You can test this by pasting it into your browser.<br/>Other reasons for this error can "
+"include some server setting on your host restricting access to this particular URL or external URLs "
+"in general, or some setting on the server hosting the file you are trying to access preventing your "
+"server from accessing it."
+msgstr ""
+"系统无法下载您的文件。< br / > < br / >,请确保您的文件的URL是有效的。< br / >您可以测试通过将它粘贴"
+"到你的浏览器。< br / >其他原因这个错误可以包括一些服务器设置在您的主机限制访问这个URL或外部URL,或者"
+"一些设置在服务器上托管的文件你想访问防止服务器访问它。"
+
+#: controllers/admin/addons.Custom Fields:21
+msgid "WooCommerce Addon"
+msgstr "WooCommerce插件"
+
+#: controllers/admin/addons.Custom Fields:22 Fields:76
+msgid "Import Products from any XML or CSV to WooCommerce"
+msgstr "从任何xml或csv导入产品到WooCommerce"
+
+#: controllers/admin/addons.Custom Fields:32
+msgid "ACF Addon"
+msgstr ""
+
+#: controllers/admin/addons.Custom Fields:33
+msgid "Import to advanced custom fields"
+msgstr "导入Custom Fields"
+
+#: controllers/admin/addons.Custom Fields:43
+msgid "WPML Addon"
+msgstr ""
+
+#: controllers/admin/addons.Custom Fields:44
+msgid "Import to WPML"
+msgstr "导入WPML"
+
+#: controllers/admin/addons.Custom Fields:54
+msgid "User Addon"
+msgstr "用户"
+
+#: controllers/admin/addons.Custom Fields:55
+msgid "Import Users"
+msgstr "导入用户"
+
+#: controllers/admin/addons.Custom Fields:65
+msgid "Link cloaking Addon"
+msgstr ""
+
+#: controllers/admin/addons.Custom Fields:66
+msgid "Affiliate link cloaking"
+msgstr ""
+
+#: controllers/admin/addons.Custom Fields:75
+msgid "WooCommerce Addon - free edition"
+msgstr ""
+
+#: controllers/admin/addons.Custom Fields:84
+msgid "WooCommerce Tabs Addon"
+msgstr ""
+
+#: controllers/admin/addons.Custom Fields:85
+msgid "Import data to WooCommerce tabs"
+msgstr ""
+
+#: controllers/admin/history.Custom Fields:31
+msgid "Import is not specified."
+msgstr "导入没有指定"
+
+#: controllers/admin/history.Custom Fields:57 controllers/admin/manage.Custom Fields:60
+msgid "&laquo;"
+msgstr ""
+
+#: controllers/admin/history.Custom Fields:58 controllers/admin/manage.Custom Fields:61
+msgid "&raquo;"
+msgstr ""
+
+#: controllers/admin/history.Custom Fields:92
+msgid "Log file does not exists."
+msgstr "日志文件不存在。"
+
+#: controllers/admin/history.Custom Fields:112
+msgid "History deleted"
+msgstr "删除历史"
+
+#: controllers/admin/history.Custom Fields:139 controllers/admin/manage.Custom Fields:652
+msgid "%d %s deleted"
+msgstr "%d %s 已删除"
+
+#: controllers/admin/history.Custom Fields:139
+msgid "history"
+msgid_plural "histories"
+msgstr[0] ""
+
+#: controllers/admin/import.Custom Fields:75
+msgid ""
+"WP All Import lost track of where you are.<br/><br/>Maybe you cleared your cookies or maybe it is "
+"just a temporary issue on your or your web host's end.<br/>If you can't do an import without seeing "
+"this error, change your session settings on the All Import -> Settings page."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:92 Fields:678
+msgid ""
+"There are no elements to import based on your XPath.<br/><br/>If you are in Step 2, you probably "
+"specified filtering options that don’t match any elements present in your file.<br/>If you are "
+"seeing this error elsewhere, it means that while the XPath expression for your initial import "
+"matched some elements in your file previously, there are now zero elements in the file that match "
+"this expression.<br/>You can edit the XPath for your import by going to the Manage Imports -> "
+"Import Settings page."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:150
+msgid "The import associated with this export has been deleted."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:150
+msgid ""
+"Please re-run your export by clicking Run Export on the All Export -> Manage Exports page. Then try "
+"your import again."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:155
+msgid "This import has been deleted."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:176
+msgid ""
+"Required PHP components are missing.<br/><br/>WP All Import requires DOMDocument, XMLReader, and "
+"XMLWriter PHP modules to be installed.<br/>These are standard features of PHP, and are necessary "
+"for WP All Import to read the files you are trying to import.<br/>Please contact your web hosting "
+"provider and ask them to install and activate the DOMDocument, XMLReader, and XMLWriter PHP modules."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:251
+msgid "Select an item type to import the data"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:255
+msgid "Previous import for update must be selected to proceed with a new one"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:298
+msgid "File is no longer in the correct format"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:301 Fields:344
+msgid ""
+"Certain columns are required to be present in your file to enable it to be re-imported with WP All "
+"Import. These columns are missing. Re-export your file using WP All Export, and don't delete any of "
+"the columns when editing it. Then, re-import will work correctly."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:304
+msgid ""
+"The import template you are using requires User Import Add-On.<br/><a href=\"http://www.wpallimport."
+"com/add-ons/user-import/?utm_source=wordpress.org&utm_medium=wpai-import-template&utm_campaign=free"
+"+wp+all+export+plugin\" target=\"_blank\">Purchase the User Import Add-On</a>"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:379
+msgid "Unable to download feed resource."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:455 Fields:479 controllers/admin/settings.Custom Fields:701
+msgid ""
+"Please confirm you are importing a valid feed.<br/> Often, feed providers distribute feeds with "
+"invalid data, improperly wrapped HTML, line breaks where they should not be, faulty character "
+"encodings, syntax errors in the XML, and other issues.<br/><br/>WP All Import has checks in place "
+"to automatically fix some of the most common problems, but we can’t catch every single one.<br/><br/"
+">It is also possible that there is a bug in WP All Import, and the problem is not with the feed.<br/"
+"><br/>If you need assistance, please contact support – <a href=\"mailto:support@wpallimport.com"
+"\">support@wpallimport.com</a> – with your XML/CSV file. We will identify the problem and release a "
+"bug fix if necessary."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:474
+msgid ""
+"WP All Import unable to detect file type.<br/><br/>WP All Import not able to determine what type of "
+"file you are importing. Make sure your file extension is correct for the file type you are "
+"importing.<br/> Please choose the correct file type from the dropdown below, or try adding "
+"&type=xml or &type=csv to the end of the URL, for example http://example.com/export-products.Custom "
+"Fields?&type=xml"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:507
+msgid "No elements selected"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:512 Fields:741
+msgid "Your XPath is not valid.<br/><br/>Click \"get default XPath\" to get the default XPath."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:516 Fields:747
+msgid "XPath must match only elements"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:546
+msgid ""
+"Warning: No matching elements found for XPath expression from the import being updated. It probably "
+"means that new XML file has different format. Though you can update XPath, procceed only if you "
+"sure about update operation being valid."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:588 Fields:734
+msgid ""
+"Your XPath is empty.<br/><br/>Please enter an XPath expression, or click \"get default XPath\" to "
+"get the default XPath."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:743
+msgid "No matching variations found for XPath specified"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:983 Fields:999 Fields:1129
+msgid ""
+"WP All Import lost track of where you are.<br/><br/>Maybe you cleared your cookies or maybe it is "
+"just a temporary issue on your web host's end.<br/>If you can't do an import without seeing this "
+"error, change your session settings on the All Import -> Settings page."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:985
+msgid "<strong>Warning</strong>: your title is blank."
+msgstr "标题还没写呢"
+
+#: controllers/admin/import.Custom Fields:990
+msgid "<strong>Warning</strong>: resulting post title is empty"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:995
+msgid "Error parsing title: %s"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1001
+msgid "<strong>Warning</strong>: your content is blank."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1006
+msgid "<strong>Warning</strong>: resulting post content is empty"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1011
+msgid "Error parsing content: %s"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1149 Fields:1304 Fields:1436
+msgid "Error parsing: %s"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1260 Fields:1415
+msgid "Error parsing: String could not be parsed as XML"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1301 Fields:1433
+msgid "There is no data to preview"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1495
+msgid "You've reached your max_input_vars limit of %d. Please increase this."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1550 views/admin/import/template.Custom Fields:67
+msgid "Excerpt"
+msgstr "引用"
+
+#: controllers/admin/import.Custom Fields:1554 Fields:1558 models/import/record.Custom Fields:1285
+#: views/admin/import/options/_reimport_options.Custom Fields:138 views/admin/import/template.Custom
+#: Fields:112
+msgid "Images"
+msgstr "图片"
+
+#: controllers/admin/import.Custom Fields:1564
+msgid "Images meta "
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1576
+msgid "Both name and value must be set for all custom parameters"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1579
+msgid "Custom Field Name"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1583
+msgid "Custom Field Value"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1596
+msgid "Both name and value must be set for all woocommerce attributes"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1599
+msgid "Attribute Field Name"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1602
+msgid "Attribute Field Value"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1613
+msgid "Tags"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1616 views/admin/history/index.Custom Fields:33
+msgid "Date"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1618 Fields:1619
+msgid "Start Date"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1653
+msgid "Template updated"
+msgstr "更新"
+
+#: controllers/admin/import.Custom Fields:1735
+msgid "%s template is invalid: %s"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1847
+msgid ""
+"Records to import must be specified or uncheck `Import only specified records` option to process "
+"all records"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1852
+msgid "Wrong format of `Import only specified records` value"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1855
+msgid ""
+"One of the numbers in `Import only specified records` value exceeds record quantity in XML file"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1862
+msgid ""
+"Expression for `Post Unique Key` must be set, use the same expression as specified for post title "
+"if you are not sure what to put there"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1864
+msgid "Post Unique Key"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1868
+msgid "Custom field name must be specified."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1870
+msgid "Custom field value must be specified."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1874
+msgid "Post ID must be specified."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1951
+msgid "WP All Import doesn't support this import type."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:1999
+msgid ""
+"<strong>Warning:</strong> this file does not have the same structure as the last file associated "
+"with this import. WP All Import won't be able to import this file with your current settings. "
+"Probably you'll need to adjust your XPath in the \"Configure Advanced Settings\" box below, and "
+"reconfigure your import by clicking \"Edit\" on the Manage Imports page."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2044
+msgid "Root element not found for uploaded feed."
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2096
+msgid "Import updated"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2096
+msgid "Import created"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2198
+msgid "Configuration updated"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2370 Fields:2660 Fields:2790
+msgid "%d %ss created %d updated %d deleted %d skipped"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2797
+msgid "Canceled"
+msgstr ""
+
+#: controllers/admin/import.Custom Fields:2797
+msgid "Complete"
+msgstr ""
+
+#: controllers/admin/license.Custom Fields:43
+msgid "Licenses saved"
+msgstr ""
+
+#: controllers/admin/manage.Custom Fields:257
+msgid ""
+"The other two files in this zip are the export file containing all of your data and the import "
+"template for WP All Import. \n"
+"\n"
+"To import this data, create a new import with WP All Import and upload this zip file."
+msgstr ""
+
+#: controllers/admin/manage.Custom Fields:312 views/admin/manage/index.Custom Fields:272
+msgid "Import canceled"
+msgstr ""
+
+#: controllers/admin/manage.Custom Fields:377
+msgid ""
+"This import appears to be using FTP. Unfortunately WP All Import no longer supports the FTP "
+"protocol. Please contact <a href=\"mailto:support@wpallimport.com\">support@wpallimport.com</a> if "
+"you have any questions."
+msgstr ""
+
+#: controllers/admin/manage.Custom Fields:477
+msgid "No matching elements found for Root element and XPath expression specified"
+msgstr ""
+
+#: controllers/admin/manage.Custom Fields:573
+msgid "File does not exists."
+msgstr ""
+
+#: controllers/admin/manage.Custom Fields:652 views/admin/manage/bulk.Custom Fields:10
+msgid "import"
+msgid_plural "imports"
+msgstr[0] ""
+
+#: controllers/admin/settings.Custom Fields:60
+msgid "History File Count must be a non-negative integer"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:63
+msgid "History Age must be a non-negative integer"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:83
+msgid "Settings saved"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:114
+msgid "Unknown File extension. Only txt files are permitted"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:127
+msgid "%d template imported"
+msgid_plural "%d templates imported"
+msgstr[0] ""
+
+#: controllers/admin/settings.Custom Fields:129
+msgid "Wrong imported data format"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:131
+msgid "File is empty or doesn't exests"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:134
+msgid "Undefined entry!"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:136
+msgid "Please select file."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:142
+msgid "Templates must be selected"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:151
+msgid "%d template deleted"
+msgid_plural "%d templates deleted"
+msgstr[0] ""
+
+#: controllers/admin/settings.Custom Fields:279
+msgid "Files not found"
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:287
+msgid "Clean Up has been successfully completed."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:445
+msgid "Uploads folder is not writable."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:502
+msgid "Failed to open temp directory."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:527 Fields:552
+msgid "Failed to open input stream."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:534 Fields:559
+msgid "Failed to open output stream."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:538
+msgid "Failed to move uploaded file."
+msgstr ""
+
+#: controllers/admin/settings.Custom Fields:709 views/admin/import/options/_import_file.Custom
+#: Fields:51
+msgid "This %s file has errors and is not valid."
+msgstr ""
+
+#: helpers/import_custom_meta_box.Custom Fields:25
+msgid ""
+"Custom fields can be used to add extra metadata to a post that you can <a href=\"http://codex."
+"wordpress.org/Using_Custom_Fields\" target=\"_blank\">use in your theme</a>."
+msgstr ""
+
+#: helpers/reverse_taxonomies_html.Custom Fields:18
+#: views/admin/import/template/_taxonomies_template.Custom Fields:41 Fields:63 Fields:97 Fields:107
+#: Fields:116 Fields:164 Fields:182 Fields:189 Fields:201
+msgid "Assign post to the taxonomy."
+msgstr ""
+
+#: helpers/wp_all_import_addon_notifications.Custom Fields:108
+msgid ""
+"Make imports easier with the <strong>Advanced Custom Fields Add-On</strong> for WP All Import: <a "
+"href=\"%s\" target=\"_blank\">Read More</a>"
+msgstr ""
+
+#: helpers/wp_all_import_addon_notifications.Custom Fields:124
+msgid "WP All Export"
+msgstr ""
+
+#: helpers/wp_all_import_addon_notifications.Custom Fields:125
+msgid "Export anything in WordPress to CSV, XML, or Excel."
+msgstr ""
+
+#: helpers/wp_all_import_addon_notifications.Custom Fields:128 views/admin/import/confirm.Custom
+#: Fields:53 views/admin/import/index.Custom Fields:287 Fields:304 views/admin/import/options.Custom
+#: Fields:70 views/admin/import/options/_import_file.Custom Fields:40 Fields:57
+#: views/admin/import/process.Custom Fields:76 Fields:110
+msgid "Read More"
+msgstr ""
+
+#: helpers/wp_all_import_addon_notifications.Custom Fields:141
+msgid ""
+"Make imports easier with the <strong>free %s Add-On</strong> for WP All Import: <a href=\"%s\" "
+"target=\"_blank\">Get Add-On</a>"
+msgstr ""
+
+#: helpers/wp_all_import_is_json.Custom Fields:13
+msgid "Maximum stack depth exceeded"
+msgstr ""
+
+#: helpers/wp_all_import_is_json.Custom Fields:16
+msgid "Underflow or the modes mismatch"
+msgstr ""
+
+#: helpers/wp_all_import_is_json.Custom Fields:19
+msgid "Unexpected control character found"
+msgstr ""
+
+#: helpers/wp_all_import_is_json.Custom Fields:22
+msgid "Syntax error, malformed JSON"
+msgstr ""
+
+#: helpers/wp_all_import_is_json.Custom Fields:25
+msgid "Malformed UTF-8 characters, possibly incorrectly encoded"
+msgstr ""
+
+#: helpers/wp_all_import_is_json.Custom Fields:28
+msgid "Unknown json error"
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:14
+msgid ""
+"The import template you are using requires the %s. If you continue without it your data may import "
+"incorrectly.<br/><br/><a href=\"%s\" target=\"_blank\">"
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:23
+msgid ""
+"The import template you are using requires the User Import Add-On. If you continue without it your "
+"data may import incorrectly.<br/><br/><a href=\"http://www.wpallimport.com/add-ons/user-import/?"
+"utm_source=wordpress.org&utm_medium=wpai-import-template&utm_campaign=free+wp+all+export+plugin\" "
+"target=\"_blank\">Purchase the User Import Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:27
+msgid ""
+"The import template you are using requires the WooCommerce Import Add-On. If you continue without "
+"it your data may import incorrectly.<br/><br/><a href=\"http://www.wpallimport.com/woocommerce-"
+"product-import/\" target=\"_blank\">Purchase the WooCommerce Import Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:32
+msgid ""
+"The import template you are using requires the Realia Add-On. If you continue without it your data "
+"may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/realia-xml-csv-property-"
+"listings-import/\" target=\"_blank\">Download the Realia Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:39
+msgid ""
+"The import template you are using requires the WP Residence Add-On. If you continue without it your "
+"data may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/wp-residence-add-on-"
+"for-wp-all-import/\" target=\"_blank\">Download the WP Residence Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:46
+msgid ""
+"The import template you are using requires the RealHomes Add-On. If you continue without it your "
+"data may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/realhomes-xml-csv-"
+"property-listings-import/\" target=\"_blank\">Download the RealHomes Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:52
+msgid ""
+"The import template you are using requires the Jobify Add-On. If you continue without it your data "
+"may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/jobify-xml-csv-listings-"
+"import/\" target=\"_blank\">Download the Jobify Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:58
+msgid ""
+"The import template you are using requires the Listify Add-On. If you continue without it your data "
+"may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/listify-xml-csv-listings-"
+"import/\" target=\"_blank\">Download the Listify Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:64
+msgid ""
+"The import template you are using requires the Reales WP Add-On. If you continue without it your "
+"data may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/reales-wp-xml-csv-"
+"property-listings-import/\" target=\"_blank\">Download the Reales WP Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:70
+msgid ""
+"The import template you are using requires the WP Job Manager Add-On. If you continue without it "
+"your data may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/wp-job-manager-"
+"xml-csv-listings-import/\" target=\"_blank\">Download the WP Job Manager Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:76
+msgid ""
+"The import template you are using requires the Yoast SEO Add-On. If you continue without it your "
+"data may import incorrectly.<br/><br/><a href=\"https://wordpress.org/plugins/yoast-seo-settings-"
+"xml-csv-import/\" target=\"_blank\">Download the Yoast SEO Add-On</a>."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:81
+msgid ""
+"The import template you are using requires an Add-On for WP All Import. If you continue without "
+"using this Add-On your data may import incorrectly."
+msgstr ""
+
+#: helpers/wp_all_import_template_notifications.Custom Fields:93
+msgid "<strong>Warning:</strong>"
+msgstr ""
+
+#: models/import/record.Custom Fields:44
+msgid ""
+"WP All Import can't read your file.<br/><br/>Probably, you are trying to import an invalid XML "
+"feed. Try opening the XML feed in a web browser (Google Chrome is recommended for opening XML "
+"files) to see if there is an error message.<br/>Alternatively, run the feed through a validator: "
+"http://validator.w3.org/<br/>99% of the time, the reason for this error is because your XML feed "
+"isn't valid.<br/>If you are 100% sure you are importing a valid XML feed, please contact WP All "
+"Import support."
+msgstr ""
+
+#: models/import/record.Custom Fields:56
+msgid "Invalid XML"
+msgstr ""
+
+#: models/import/record.Custom Fields:59
+msgid "Line"
+msgstr ""
+
+#: models/import/record.Custom Fields:60
+msgid "Column"
+msgstr ""
+
+#: models/import/record.Custom Fields:61
+msgid "Code"
+msgstr ""
+
+#: models/import/record.Custom Fields:72
+msgid "Required PHP components are missing."
+msgstr ""
+
+#: models/import/record.Custom Fields:73
+msgid ""
+"WP All Import requires the SimpleXML PHP module to be installed. This is a standard feature of PHP, "
+"and is necessary for WP All Import to read the files you are trying to import.<br/>Please contact "
+"your web hosting provider and ask them to install and activate the SimpleXML PHP module."
+msgstr ""
+
+#: models/import/record.Custom Fields:117
+msgid ""
+"This import appears to be using FTP. Unfortunately WP All Import no longer supports the FTP "
+"protocol. Please contact <a href=\"mailto:support@wpallimport.com\">%s</a> if you have any "
+"questions."
+msgstr ""
+
+#: models/import/record.Custom Fields:265
+msgid "#%s No matching elements found for Root element and XPath expression specified"
+msgstr ""
+
+#: models/import/record.Custom Fields:504
+msgid "Deleted missing records %s for import #%s"
+msgstr ""
+
+#: models/import/record.Custom Fields:566
+msgid "Updating stock status for missing records %s for import #%s"
+msgstr ""
+
+#: models/import/record.Custom Fields:594
+msgid "import finished & cron un-triggered<br>%s %s created %s updated %s deleted %s skipped"
+msgstr ""
+
+#: models/import/record.Custom Fields:620
+msgid "%d %s created %d updated %d deleted %d skipped"
+msgstr ""
+
+#: models/import/record.Custom Fields:646
+msgid "#%s source file not found"
+msgstr ""
+
+#: models/import/record.Custom Fields:699
+msgid "Composing titles..."
+msgstr ""
+
+#: models/import/record.Custom Fields:707
+msgid "Composing excerpts..."
+msgstr ""
+
+#: models/import/record.Custom Fields:717
+msgid "Composing statuses..."
+msgstr ""
+
+#: models/import/record.Custom Fields:728
+msgid "Composing comment statuses..."
+msgstr ""
+
+#: models/import/record.Custom Fields:739
+msgid "Composing ping statuses..."
+msgstr ""
+
+#: models/import/record.Custom Fields:750
+msgid "Composing post formats..."
+msgstr ""
+
+#: models/import/record.Custom Fields:761
+msgid "Composing post IDs..."
+msgstr ""
+
+#: models/import/record.Custom Fields:772
+msgid "Composing page templates..."
+msgstr ""
+
+#: models/import/record.Custom Fields:783
+msgid "Composing post types..."
+msgstr ""
+
+#: models/import/record.Custom Fields:797
+msgid "Composing page parent..."
+msgstr ""
+
+#: models/import/record.Custom Fields:857
+msgid "Composing authors..."
+msgstr ""
+
+#: models/import/record.Custom Fields:898
+msgid "Composing slugs..."
+msgstr ""
+
+#: models/import/record.Custom Fields:907
+msgid "Composing menu order..."
+msgstr ""
+
+#: models/import/record.Custom Fields:916
+msgid "Composing contents..."
+msgstr ""
+
+#: models/import/record.Custom Fields:929
+msgid "Composing dates..."
+msgstr ""
+
+#: models/import/record.Custom Fields:937 Fields:950 Fields:956
+msgid "<b>WARNING</b>: unrecognized date format `%s`, assigning current date"
+msgstr ""
+
+#: models/import/record.Custom Fields:972
+msgid "Composing terms for `%s` taxonomy..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1184
+msgid "Composing custom parameters..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1291 Fields:1409
+msgid "<b>WARNING</b>"
+msgstr ""
+
+#: models/import/record.Custom Fields:1292
+msgid "<b>WARNING</b>: No featured images will be created. Uploads folder is not found."
+msgstr ""
+
+#: models/import/record.Custom Fields:1303
+msgid "Composing URLs for "
+msgstr ""
+
+#: models/import/record.Custom Fields:1334 Fields:1346 Fields:1358 Fields:1370 Fields:1382 Fields:1393
+msgid "Composing "
+msgstr ""
+
+#: models/import/record.Custom Fields:1410
+msgid "<b>WARNING</b>: No attachments will be created"
+msgstr ""
+
+#: models/import/record.Custom Fields:1413
+msgid "Composing URLs for attachments files..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1442
+msgid "Composing unique keys..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1450
+msgid "Processing posts..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1456
+msgid "Data parsing via add-ons..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1499
+msgid "Calculate specified records to import..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1517
+msgid "---"
+msgstr ""
+
+#: models/import/record.Custom Fields:1518
+msgid "Record #%s"
+msgstr ""
+
+#: models/import/record.Custom Fields:1525 Fields:1684
+msgid "<b>SKIPPED</b>: by specified records option"
+msgstr ""
+
+#: models/import/record.Custom Fields:1534
+msgid "<b>ACTION</b>: pmxi_before_post_import ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1542
+msgid "<b>WARNING</b>: title is empty."
+msgstr ""
+
+#: models/import/record.Custom Fields:1562
+msgid "Combine all data for user %s..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1580
+msgid "Combine all data for post `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1609
+msgid "Find corresponding article among previously imported for post `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1617
+msgid "Duplicate post was found for post %s with unique key `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1626
+msgid "Duplicate post wasn't found with unique key `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1640
+msgid "Find corresponding article among database for post `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1653
+msgid "Duplicate post was found for post `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1662
+msgid "Duplicate post wasn't found for post `%s`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:1705
+msgid "<b>SKIPPED</b>: By filter wp_all_import_is_post_to_update `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1722
+msgid "<b>SKIPPED</b>: Previously imported record found for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1737
+msgid "Preserve taxonomies of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1742
+msgid ""
+"<b>WARNING</b>: Unable to get current taxonomies for article #%d, updating with those read from XML "
+"file"
+msgstr ""
+
+#: models/import/record.Custom Fields:1759
+msgid "Preserve date of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1763
+msgid "Preserve status of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1767
+msgid "Preserve content of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1771
+msgid "Preserve title of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1775
+msgid "Preserve slug of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1795
+msgid "Preserve excerpt of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1799
+msgid "Preserve menu order of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1803
+msgid "Preserve post parent of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1807
+msgid "Preserve comment status of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1811
+msgid "Preserve post author of already existing article for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1838
+msgid "Deleting attachments for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1843
+msgid "Deleting images for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1857
+msgid "Applying filter `pmxi_article_data` for `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1865
+msgid "<b>SKIPPED</b>: by do not create new posts option."
+msgstr ""
+
+#: models/import/record.Custom Fields:1937
+msgid "<b>WARNING</b>: Unable to create cloaked link for %s"
+msgstr ""
+
+#: models/import/record.Custom Fields:1964
+msgid "<b>SKIPPED</b>: By filter wp_all_import_is_post_to_create `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1974
+msgid "<b>CREATING</b> `%s` `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1977
+msgid "<b>UPDATING</b> `%s` `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:1983
+msgid "<b>ERROR</b> Sorry, that email address `%s` is already used!"
+msgstr ""
+
+#: models/import/record.Custom Fields:1994 Fields:1999 Fields:3085
+msgid "<b>ERROR</b>"
+msgstr ""
+
+#: models/import/record.Custom Fields:2018
+msgid "Associate post `%s` with current import ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2024
+msgid "Associate post `%s` with post format %s ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2036
+msgid "<b>CUSTOM FIELDS:</b>"
+msgstr ""
+
+#: models/import/record.Custom Fields:2073
+msgid ""
+"- Custom field %s has been deleted for `%s` attempted to `update all custom fields` setting ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2086
+msgid ""
+"- Custom field %s has been deleted for `%s` attempted to `update only these custom fields: %s, "
+"leave rest alone` setting ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2100
+msgid ""
+"- Custom field %s has been deleted for `%s` attempted to `leave these fields alone: %s, update all "
+"other Custom Fields` setting ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2171
+msgid "- Custom field `%s` has been skipped attempted to record matching options ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2179
+msgid "- <b>ACTION</b>: pmxi_custom_field"
+msgstr ""
+
+#: models/import/record.Custom Fields:2207
+msgid "- Custom field `%s` has been updated with value `%s` for post `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2208
+msgid "- <b>ACTION</b>: pmxi_update_post_meta"
+msgstr ""
+
+#: models/import/record.Custom Fields:2248
+msgid "<b>IMAGES:</b>"
+msgstr ""
+
+#: models/import/record.Custom Fields:2252
+msgid "<b>ERROR</b>: Target directory %s is not writable"
+msgstr ""
+
+#: models/import/record.Custom Fields:2281
+msgid "- Keep existing and add newest images ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2366
+msgid "- Importing image `%s` for `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2383
+msgid "- found base64_encoded image"
+msgstr ""
+
+#: models/import/record.Custom Fields:2445
+msgid "- <b>WARNING</b>: Image %s not found in media gallery."
+msgstr ""
+
+#: models/import/record.Custom Fields:2449
+msgid "- Using existing image `%s` for post `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2651
+msgid "- <b>ACTION</b>: "
+msgstr ""
+
+#: models/import/record.Custom Fields:2667
+msgid "- Attachment has been successfully updated for image `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:2684
+msgid "- Post `%s` saved as Draft, because no images are downloaded successfully"
+msgstr ""
+
+#: models/import/record.Custom Fields:2693
+msgid "Post `%s` saved as Draft, because no images are downloaded successfully"
+msgstr ""
+
+#: models/import/record.Custom Fields:2731
+msgid "Images import skipped for post `%s` according to 'pmxi_is_images_to_update' filter..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2743
+msgid "<b>ATTACHMENTS:</b>"
+msgstr ""
+
+#: models/import/record.Custom Fields:2746
+msgid "- <b>ERROR</b>: Target directory %s is not writable"
+msgstr ""
+
+#: models/import/record.Custom Fields:2755
+msgid "- Importing attachments for `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2787
+msgid "- Filename for attachment was generated as %s"
+msgstr ""
+
+#: models/import/record.Custom Fields:2794
+msgid "- <b>WARNING</b>: Attachment file %s cannot be saved locally as %s"
+msgstr ""
+
+#: models/import/record.Custom Fields:2795
+msgid "- <b>WP Error</b>: %s"
+msgstr ""
+
+#: models/import/record.Custom Fields:2809
+msgid "- File %s has been successfully downloaded"
+msgstr ""
+
+#: models/import/record.Custom Fields:2825
+msgid "- Attachment has been successfully created for post `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:2826 Fields:2832
+msgid "- <b>ACTION</b>: pmxi_attachment_uploaded"
+msgstr ""
+
+#: models/import/record.Custom Fields:2843
+msgid ""
+"Attachments import skipped for post `%s` according to 'pmxi_is_attachments_to_update' filter..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2850
+msgid "<b>TAXONOMIES:</b>"
+msgstr ""
+
+#: models/import/record.Custom Fields:2859
+msgid "- Importing taxonomy `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2862
+msgid "- Auto-nest enabled with separator `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2868
+msgid ""
+"- %s %s `%s` has been skipped attempted to `Leave these taxonomies alone, update all others`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2873
+msgid ""
+"- %s %s `%s` has been skipped attempted to `Update only these taxonomies, leave the rest alone`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2912
+msgid "- Creating parent %s %s `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2915
+msgid "- Creating child %s %s for %s named `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2922
+msgid "- <b>WARNING</b>: `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:2943
+msgid ""
+"- Attempted to create parent %s %s `%s`, duplicate detected. Importing %s to existing `%s` %s, ID "
+"%d, slug `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2946
+msgid ""
+"- Attempted to create child %s %s `%s`, duplicate detected. Importing %s to existing `%s` %s, ID "
+"%d, slug `%s` ..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2961
+msgid ""
+"- %s %s `%s` has been skipped attempted to `Do not update Taxonomies (incl. Categories and Tags)`..."
+msgstr ""
+
+#: models/import/record.Custom Fields:2980
+msgid "<b>CREATED</b> `%s` `%s` (ID: %s)"
+msgstr ""
+
+#: models/import/record.Custom Fields:2982
+msgid "<b>UPDATED</b> `%s` `%s` (ID: %s)"
+msgstr ""
+
+#: models/import/record.Custom Fields:3025
+msgid "<b>ACTION</b>: pmxi_saved_post"
+msgstr ""
+
+#: models/import/record.Custom Fields:3032
+msgid ""
+"<span class=\"processing_info\"><span class=\"created_count\">%s</span><span class=\"updated_count"
+"\">%s</span><span class=\"percents_count\">%s</span></span>"
+msgstr ""
+
+#: models/import/record.Custom Fields:3036
+msgid "<b>ACTION</b>: pmxi_after_post_import"
+msgstr ""
+
+#: models/import/record.Custom Fields:3065
+msgid "Update stock status previously imported posts which are no longer actual..."
+msgstr ""
+
+#: models/import/record.Custom Fields:3089
+msgid "Cleaning temporary data..."
+msgstr ""
+
+#: models/import/record.Custom Fields:3105
+msgid "Deleting source XML file..."
+msgstr ""
+
+#: models/import/record.Custom Fields:3109
+msgid "Deleting chunks files..."
+msgstr ""
+
+#: models/import/record.Custom Fields:3116 Fields:3125
+msgid "<b>WARNING</b>: Unable to remove %s"
+msgstr ""
+
+#: models/import/record.Custom Fields:3137
+msgid "Removing previously imported posts which are no longer actual..."
+msgstr ""
+
+#: models/import/record.Custom Fields:3159
+msgid "<b>ACTION</b>: pmxi_delete_post"
+msgstr ""
+
+#: models/import/record.Custom Fields:3161
+msgid "Deleting posts from database"
+msgstr ""
+
+#: models/import/record.Custom Fields:3177
+msgid "Instead of deletion user with ID `%s`, set Custom Field `%s` to value `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:3181
+msgid "Instead of deletion post with ID `%s`, set Custom Field `%s` to value `%s`"
+msgstr ""
+
+#: models/import/record.Custom Fields:3191
+msgid "Instead of deletion, change post with ID `%s` status to Draft"
+msgstr "change post with ID `%s` status to Draft"
+
+#: models/import/record.Custom Fields:3261
+msgid "%d Posts deleted from database. IDs (%s)"
+msgstr ""
+
+#: models/import/record.Custom Fields:3353
+msgid "<b>ERROR</b> Could not insert term relationship into the database"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:3
+msgid "WP All Import Add-ons"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:8
+msgid "Premium Add-ons"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:20 Fields:61
+msgid "Installed"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:22
+msgid "Free Version Installed"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:29 Fields:70
+msgid " required"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:36 Fields:77 Fields:82 views/admin/import/index.Custom
+#: Fields:115
+msgid "Download"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:41
+msgid "Purchase & Install"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:49
+msgid "Free Add-ons"
+msgstr ""
+
+#: views/admin/addons/index.Custom Fields:63
+msgid "Paid Version Installed"
+msgstr ""
+
+#: views/admin/help/index.Custom Fields:1
+msgid "WP All Import Help"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:16 Fields:18 Fields:20
+msgid "%s - Import History"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:32 views/admin/manage/index.Custom Fields:27
+msgid "ID"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:34
+msgid "Run Time"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:35
+msgid "Type"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:36 views/admin/manage/index.Custom Fields:30
+msgid "Summary"
+msgstr "摘要"
+
+#: views/admin/history/index.Custom Fields:42
+msgid "Scheduling Status"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:42
+msgid "triggered"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:42
+msgid "and processing"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:52 Fields:226 views/admin/manage/index.Custom Fields:44
+#: Fields:350
+msgid "Bulk Actions"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:53 Fields:228 views/admin/manage/index.Custom Fields:45
+#: Fields:192 Fields:352
+msgid "Delete"
+msgstr "删除"
+
+#: views/admin/history/index.Custom Fields:55 Fields:234 views/admin/import/element.Custom Fields:86
+#: views/admin/manage/index.Custom Fields:47 Fields:358
+msgid "Apply"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:61 views/admin/manage/index.Custom Fields:53
+msgid "Displaying %s&#8211;%s of %s"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:108
+msgid "No previous history found."
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:161
+msgid "manual run"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:164
+msgid "continue run"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:189
+msgid "Download Log"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:193
+msgid "Log Unavailable"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:230 views/admin/manage/index.Custom Fields:354
+msgid "Restore"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:231 views/admin/manage/index.Custom Fields:355
+msgid "Delete Permanently"
+msgstr ""
+
+#: views/admin/history/index.Custom Fields:238 views/admin/import/confirm.Custom Fields:345
+#: views/admin/import/element.Custom Fields:213 views/admin/import/index.Custom Fields:319
+#: views/admin/import/options.Custom Fields:97 views/admin/import/process.Custom Fields:114
+#: views/admin/import/template.Custom Fields:219 views/admin/manage/index.Custom Fields:363
+#: views/admin/manage/scheduling.Custom Fields:62 views/admin/settings/index.Custom Fields:229
+msgid "Created by"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:12 views/admin/import/element.Custom Fields:9
+#: views/admin/import/index.Custom Fields:44 views/admin/import/options.Custom Fields:19
+#: views/admin/import/process.Custom views/admin/import/template.Custom Fields:10
+msgid "Import XML / CSV"
+msgstr "导入excel文件"
+
+#: views/admin/import/confirm.Custom Fields:15 views/admin/import/element.Custom Fields:12
+#: views/admin/import/index.Custom Fields:47 views/admin/import/options.Custom Fields:22
+#: views/admin/import/process.Custom views/admin/import/template.Custom Fields:13
+msgid "Support"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:15 views/admin/import/element.Custom Fields:12
+#: views/admin/import/index.Custom Fields:47 views/admin/import/options.Custom Fields:22
+#: views/admin/import/process.Custom views/admin/import/template.Custom Fields:13
+msgid "Documentation"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:45 views/admin/import/options.Custom Fields:62
+msgid "This URL no longer returns an import file"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:46 views/admin/import/options.Custom Fields:63
+msgid "You must provide a URL that returns a valid import file."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:48 views/admin/import/index.Custom Fields:293
+#: views/admin/import/options.Custom Fields:65 views/admin/import/options/_import_file.Custom
+#: Fields:46
+msgid "There's a problem with your import file"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:49 views/admin/import/options.Custom Fields:66
+msgid "It has changed and is not compatible with this import template."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:63
+msgid "Your file is all set up!"
+msgstr "文件设置完毕"
+
+#: views/admin/import/confirm.Custom Fields:65
+msgid "This import did not finish successfuly last time it was run."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:69
+msgid "Check the settings below, then click the green button to run the import."
+msgstr "开始导入数据"
+
+#: views/admin/import/confirm.Custom Fields:71
+msgid "You can attempt to continue where it left off."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:79 Fields:334
+msgid "Confirm & Run Import"
+msgstr "确认&开始导入"
+
+#: views/admin/import/confirm.Custom Fields:89
+msgid "Continue from the last run"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:93
+msgid "Run from the beginning"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:96 views/admin/import/process.Custom Fields:89
+msgid "Continue Import"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:98
+msgid "Run entire import from the beginning"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:118
+msgid "Import Summary"
+msgstr "导入摘要"
+
+#: views/admin/import/confirm.Custom Fields:124
+msgid "Your max_execution_time is %s seconds"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:148
+msgid ""
+"WP All Import will import the file <span style=\"color:#40acad;\">%s</span>, which is <span style="
+"\"color:#000; font-weight:bold;\">%s</span>"
+msgstr ""
+"导入文件: <span style=\"color:#40acad;\">%s</span>,  <span style=\"color:#000; font-weight:bold;\">"
+"%s</span>"
+
+#: views/admin/import/confirm.Custom Fields:148
+msgid "undefined"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:151
+msgid ""
+"WP All Import will process the records matching the XPath expression: <span style=\"color:#46ba69; "
+"font-weight:bold;\">%s</span>"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:153
+msgid ""
+"WP All Import will process <span style=\"color:#46ba69; font-weight:bold;\">%s</span> rows in your "
+"file"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:155
+msgid ""
+"WP All Import will process all %s <span style=\"color:#46ba69; font-weight:bold;\">&lt;%s&gt;</"
+"span> records in your file"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:159
+msgid "WP All Import will process only specified records: %s"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:167
+msgid "Your unique key is <span style=\"color:#000; font-weight:bold;\">%s</span>"
+msgstr "数据库主键： <span style=\"color:#000; font-weight:bold;\">%s</span>"
+
+#: views/admin/import/confirm.Custom Fields:171
+msgid "%ss previously imported by this import (ID: %s) with the same unique key will be updated."
+msgstr "%s 导入的(ID: %s) 试题将更新"
+
+#: views/admin/import/confirm.Custom Fields:174
+msgid ""
+"%ss previously imported by this import (ID: %s) that aren't present for this run of the import will "
+"be deleted."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:178
+msgid ""
+"%ss previously imported by this import (ID: %s) that aren't present for this run of the import will "
+"be set to draft."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:182
+msgid ""
+"Records with unique keys that don't match any unique keys from %ss created by previous runs of this "
+"import (ID: %s) will be created."
+msgstr "从 %s 建立新的记录  (ID: %s) "
+
+#: views/admin/import/confirm.Custom Fields:196
+msgid "WP All Import will merge data into existing %ss, matching the following criteria: %s"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:199
+msgid "Existing data will be updated with the data specified in this import."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:202
+msgid "Next %s data will be updated, <strong>all other data will be left alone</strong>"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:205
+msgid "status"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:208
+msgid "title"
+msgstr "标题"
+
+#: views/admin/import/confirm.Custom Fields:211
+msgid "slug"
+msgstr "别名"
+
+#: views/admin/import/confirm.Custom Fields:214
+msgid "content"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:217
+msgid "excerpt"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:220
+msgid "dates"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:223
+msgid "menu order"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:226
+msgid "parent post"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:229
+msgid "attachments"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:236
+msgid "all advanced custom fields"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:239
+msgid "only ACF presented in import options"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:242
+msgid "only these ACF : %s"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:245
+msgid "all ACF except these: %s"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:255
+msgid "old images will be updated with new"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:258
+msgid "only new images will be added"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:268
+msgid "all custom fields"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:271
+msgid "only these custom fields : %s"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:274
+msgid "all cusom fields except these: %s"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:284
+msgid "remove existing taxonomies, add new taxonomies"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:287
+msgid "only add new"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:290
+msgid "update only these taxonomies: %s , leave the rest alone"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:293
+msgid "leave these taxonomies: %s alone, update all others"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:302
+msgid "New %ss will be created from records that don't match the above criteria."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:308
+msgid ""
+"High-Speed, Small File Processing enabled. Your import will fail if it takes longer than your "
+"server's max_execution_time."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:310
+msgid ""
+"Piece By Piece Processing enabled. %s records will be processed each iteration. If it takes longer "
+"than your server's max_execution_time to process %s records, your import will fail."
+msgstr " %s 条记录将被导入. 请确保服务器性能可同时处理 %s 条记录的导入。"
+
+#: views/admin/import/confirm.Custom Fields:314
+msgid "Your file will be split into %s records chunks before processing."
+msgstr "服务器最大可处理数：%s "
+
+#: views/admin/import/confirm.Custom Fields:318
+msgid "do_action calls will be disabled in wp_insert_post and wp_insert_attachment during the import."
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:337
+msgid "or go back to Step 4"
+msgstr ""
+
+#: views/admin/import/confirm.Custom Fields:339
+msgid "or go back to Manage Imports"
+msgstr "或者返回导入管理"
+
+#: views/admin/import/element.Custom Fields:23 Fields:210
+msgid "Continue to Step 3"
+msgstr "继续步骤3"
+
+#: views/admin/import/element.Custom Fields:36
+msgid "What element are you looking for?"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:65
+msgid "of <span class=\"wpallimport-elements-count-info\">%s</span>"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:83
+msgid "Set delimiter for CSV fields:"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:104
+msgid ""
+"Each <span>&lt;<span class=\"root_element\">%s</span>&gt;</span> element将会被导入 into a <span>New "
+"%s</span>"
+msgstr ""
+"每一个 <span>&lt;<span class=\"root_element\">%s</span>&gt;</span> 节点将会被导入到 <span>New %s</"
+"span>"
+
+#: views/admin/import/element.Custom Fields:108
+msgid ""
+"Data in <span>&lt;<span class=\"root_element\">%s</span>&gt;</span> elements将会被导入 to <span>%s</"
+"span>"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:113
+msgid "This doesn't look right, try manually selecting a different root element on the left."
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:125
+msgid "Add Filtering Options"
+msgstr "添加数据过滤（可选，仅供开发者操作）"
+
+#: views/admin/import/element.Custom Fields:132 Fields:184
+msgid "Element"
+msgstr "节点"
+
+#: views/admin/import/element.Custom Fields:133 Fields:185
+msgid "Rule"
+msgstr "规则"
+
+#: views/admin/import/element.Custom Fields:134 Fields:186
+#: views/admin/import/options/_reimport_options.Custom Fields:42
+#: views/admin/import/options/_reimport_template.Custom Fields:107
+#: views/admin/import/template/_custom_fields_template.Custom Fields:40 Fields:74 Fields:283
+#: Fields:417
+msgid "Value"
+msgstr "值"
+
+#: views/admin/import/element.Custom Fields:140
+msgid "Select Element"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:146
+msgid "Select Rule"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:147
+msgid "equals"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:148
+msgid "not equals"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:149
+msgid "greater than"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:150
+msgid "equals or greater than"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:151
+msgid "less than"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:152
+msgid "equals or less than"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:153
+msgid "contains"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:154
+msgid "not contains"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:155
+msgid "is empty"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:156
+msgid "is not empty"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:163
+msgid "Add Rule"
+msgstr "添加规则"
+
+#: views/admin/import/element.Custom Fields:172 views/admin/import/options/_settings_template.Custom
+#: Fields:111
+msgid "XPath"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:187
+msgid "Condition"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:192
+msgid ""
+"No filtering options. Add filtering options to only import records matching some specified criteria."
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:197
+msgid "Apply Filters To XPath"
+msgstr ""
+
+#: views/admin/import/element.Custom Fields:206
+msgid "Back to Step 1"
+msgstr "返回步骤1"
+
+#: views/admin/import/evaluate.Custom Fields:3
+msgid "<span class=\"matches_count\">%s</span> <strong>%s</strong>将会被导入"
+msgstr ""
+
+#: views/admin/import/evaluate.Custom Fields:3
+msgid "row"
+msgid_plural "rows"
+msgstr[0] ""
+
+#: views/admin/import/evaluate.Custom Fields:5
+msgid "<span class=\"matches_count\">%s</span> <strong>%s</strong> %s将会被导入"
+msgstr ""
+
+#: views/admin/import/evaluate.Custom Fields:7
+msgid "Click an element to select it, or scroll down to add filtering options."
+msgstr "单击一个元素选择它，或向下滚动以添加筛选选项.。"
+
+#: views/admin/import/evaluate.Custom Fields:9 views/admin/import/evaluate_variations.Custom Fields:5
+msgid ""
+"<strong>Note</strong>: Highlighting is turned off since can be very slow on large sets of elements."
+msgstr ""
+
+#: views/admin/import/evaluate_variations.Custom Fields:3
+msgid "Current selection matches <span class=\"matches_count\">%s</span> %s."
+msgstr ""
+
+#: views/admin/import/evaluate_variations.Custom Fields:14
+msgid "#<strong>%s</strong> out of <strong>%s</strong>"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:69
+msgid "First, specify how you want to import your data"
+msgstr "导入文件"
+
+#: views/admin/import/index.Custom Fields:71
+msgid "First, specify previously exported file"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:72
+msgid ""
+"The data in this file can be modified, but the structure of the file (column/element names) should "
+"not change."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:76 views/admin/import/options/_import_file.Custom Fields:74
+msgid "Upload a file"
+msgstr "导入文件"
+
+#: views/admin/import/index.Custom Fields:80 views/admin/import/options/_import_file.Custom Fields:78
+msgid "Download from URL"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:84 views/admin/import/options/_import_file.Custom Fields:82
+msgid "Use existing file"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:94 views/admin/import/options/_import_file.Custom Fields:92
+msgid "Click here to select file from your computer..."
+msgstr " "
+
+#: views/admin/import/index.Custom Fields:97
+msgid "上传完成"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:119
+msgid ""
+"<strong>Hint:</strong> After you create this import, you can schedule it to run automatically, on a "
+"pre-defined schedule, with cron jobs. If anything in your file has changed, WP All Import can "
+"update your site with the changed data automatically."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:159 views/admin/import/options/_import_file.Custom
+#: Fields:144
+msgid "Select a previously uploaded file"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:168 views/admin/import/options/_import_file.Custom
+#: Fields:156
+msgid "Upload files to <strong>%s</strong> and they will appear in this list"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:183
+msgid "Import data from this file into..."
+msgstr "从这个文件导入到...."
+
+#: views/admin/import/index.Custom Fields:187
+msgid "New Items"
+msgstr "新的项目"
+
+#: views/admin/import/index.Custom Fields:191
+msgid "Existing Items"
+msgstr "已存在的项目"
+
+#: views/admin/import/index.Custom Fields:213
+msgid "Create new"
+msgstr " "
+
+#: views/admin/import/index.Custom Fields:214
+msgid "Import to existing"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:217
+msgid "for each record in my data file."
+msgstr " "
+
+#: views/admin/import/index.Custom Fields:218
+msgid "and update some or all of their data."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:244 views/admin/import/options/_settings_template.Custom
+#: Fields:86
+msgid "Users"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:271
+msgid ""
+"In Step 4, you will map the records in your file to the existing items on your site and specify "
+"which data points will be updated and which will be left alone."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:272
+msgid ""
+"The Existing Items option is commonly used to update existing products with new stock quantities "
+"while leaving all their other data alone, update properties on your site with new pricing, etc."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:283 views/admin/import/options/_import_file.Custom Fields:36
+msgid "File upload rejected by server"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:284 views/admin/import/options/_import_file.Custom Fields:37
+msgid "Contact your host and have them check your server's error log."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:298
+msgid "Please verify that the file you using is a valid %s file."
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:313
+msgid "Skip to Step 4"
+msgstr ""
+
+#: views/admin/import/index.Custom Fields:314
+msgid "Continue to Step 2"
+msgstr "继续第二步"
+
+#: views/admin/import/options.Custom Fields:112 views/admin/import/options/_reimport_template.Custom
+#: Fields:14 Fields:81
+msgid "Record Matching"
+msgstr "设置导入规则"
+
+#: views/admin/import/options.Custom Fields:115
+msgid ""
+"Record Matching is how WP All Import matches records in your file with posts that already exist "
+"WordPress."
+msgstr ""
+
+#: views/admin/import/options.Custom Fields:119
+msgid ""
+"Record Matching is most commonly used to tell WP All Import how to match up records in your file "
+"with posts WP All Import has already created on your site, so that if your file is updated with new "
+"data, WP All Import can update your posts accordingly."
+msgstr ""
+
+#: views/admin/import/options.Custom Fields:124
+msgid "AUTOMATIC RECORD MATCHING"
+msgstr ""
+
+#: views/admin/import/options.Custom Fields:127
+msgid ""
+"Automatic Record Matching allows WP All Import to update records that were imported or updated "
+"during the last run of this same import."
+msgstr ""
+
+#: views/admin/import/options.Custom Fields:131
+msgid ""
+"Your unique key must be UNIQUE for each record in your feed. Make sure you get it right - you can't "
+"change it later. You'll have to re-create your import."
+msgstr ""
+
+#: views/admin/import/options.Custom Fields:136
+msgid "MANUAL RECORD MATCHING"
+msgstr ""
+
+#: views/admin/import/options.Custom Fields:139
+msgid ""
+"Manual record matching allows WP All Import to update any records, even records that were not "
+"imported with WP All Import, or are part of a different import."
+msgstr ""
+
+#: views/admin/import/options/_buttons_template.Custom Fields:2
+msgid "To run the import, click Run Import on the Manage Imports page."
+msgstr ""
+
+#: views/admin/import/options/_buttons_template.Custom Fields:11
+msgid "Back to Step 3"
+msgstr "返回第三步"
+
+#: views/admin/import/options/_buttons_template.Custom Fields:15
+msgid "Save Only"
+msgstr ""
+
+#: views/admin/import/options/_buttons_template.Custom Fields:18
+msgid "Continue"
+msgstr "继续"
+
+#: views/admin/import/options/_buttons_template.Custom Fields:21 views/admin/import/template.Custom
+#: Fields:212
+msgid "Back to Manage Imports"
+msgstr "返回导入管理"
+
+#: views/admin/import/options/_buttons_template.Custom Fields:22
+msgid "Save Import Configuration"
+msgstr "保存导入规则"
+
+#: views/admin/import/options/_import_file.Custom Fields:62
+msgid "Import File"
+msgstr "导入文件"
+
+#: views/admin/import/options/_import_file.Custom Fields:71
+msgid "Specify the location of the file to use for future runs of this import."
+msgstr " "
+
+#: views/admin/import/options/_import_file.Custom Fields:94
+msgid "<span>上传完成</span> - "
+msgstr ""
+
+#: views/admin/import/options/_import_file.Custom Fields:106
+msgid "Upload"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:2
+msgid "When WP All Import finds new or changed data..."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:4
+msgid "If this import is run again and WP All Import finds new or changed data..."
+msgstr "如果导入的是重复文件，那么......"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:9
+msgid "Create new posts from records newly present in your file"
+msgstr "建立新的记录替换之前的记录"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:11
+msgid "New posts will only be created when ID column is present and value in ID column is unique."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:18
+msgid "Delete posts that are no longer present in your file"
+msgstr "删除不再存在于当前文件中的旧记录"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:20
+msgid ""
+"Records removed from the import file can only be deleted when importing into New Items. This "
+"feature cannot be enabled when importing into Existing Items."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:27
+msgid "Do not remove attachments"
+msgstr "不删除附件"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:32
+msgid "Do not remove images"
+msgstr "不删除图片"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:37
+msgid "Instead of deletion, set Custom Field"
+msgstr "设置自定义字段（不删除）"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:40
+#: views/admin/import/options/_reimport_template.Custom Fields:105
+#: views/admin/import/template/_custom_fields_template.Custom Fields:39
+msgid "Name"
+msgstr "名字"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:50
+msgid "Instead of deletion, change post status to Draft"
+msgstr "改变发布状态（不删除）"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:57
+msgid "Update existing posts with changed data in your file"
+msgstr "更新已存在的被改变的数据"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:59
+msgid ""
+"These options will only be used if you run this import again later. All data is imported the first "
+"time you run an import."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:63
+msgid "Update all data"
+msgstr "更新所有数据"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:66
+msgid "Choose which data to update"
+msgstr "选择要更新的数据"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:69
+msgid "Unselect All"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:69
+msgid "Select All"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:74
+msgid "Post status"
+msgstr "发布状态"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:75
+msgid "Hint: uncheck this box to keep trashed posts in the trash."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:80
+#: views/admin/import/options/_reimport_template.Custom Fields:98
+msgid "Title"
+msgstr "标题"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:85
+msgid "Author"
+msgstr "作者"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:90
+#: views/admin/import/template/_other_template.Custom Fields:279
+msgid "Slug"
+msgstr "别名"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:95
+#: views/admin/import/options/_reimport_template.Custom Fields:100
+msgid "Content"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:100
+msgid "Excerpt/Short Description"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:105
+msgid "Dates"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:110
+msgid "Menu order"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:115
+msgid "Parent post"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:120
+msgid "Comment status"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:125
+msgid "Attachments"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:139
+msgid ""
+"This will keep the featured image if it exists, so you could modify the post image manually, and "
+"then do a reimport, and it would not overwrite the manually modified post image."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:143
+msgid "Update all images"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:149
+msgid "Don't touch existing images, append new images"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:158
+#: views/admin/import/template/_custom_fields_template.Custom Fields:5
+msgid "Custom Fields"
+msgstr "自定义字段（用于保存答案）"
+
+#: views/admin/import/options/_reimport_options.Custom Fields:159
+msgid ""
+"If Keep Custom Fields box is checked, it will keep all Custom Fields, and add any new Custom Fields "
+"specified in Custom Fields section, as long as they do not overwrite existing fields. If 'Only keep "
+"this Custom Fields' is specified, it will only keep the specified fields."
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:163
+msgid "Update all Custom Fields"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:167
+msgid "Update only these Custom Fields, leave the rest alone"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:175
+msgid "Leave these fields alone, update all other Custom Fields"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:187
+msgid "Taxonomies (incl. Categories and Tags)"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:201
+msgid "Leave these taxonomies alone, update all others"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:209
+msgid "Update only these taxonomies, leave the rest alone"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:217
+msgid "Remove existing taxonomies, add new taxonomies"
+msgstr ""
+
+#: views/admin/import/options/_reimport_options.Custom Fields:221
+msgid "Only add new"
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:22
+msgid "Choose how exported data will be re-imported."
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:28
+msgid "WP All Import will create new %s for each unique record in your file."
+msgstr "系统会新建 %s 记录，每一条记录必须有设定一个数据库主键（这里可以是 “试题题目”）"
+
+#: views/admin/import/options/_reimport_template.Custom Fields:41
+msgid ""
+"WP All Import will associate records in your file with %s it has already created from previous runs "
+"of this import based on the Unique Identifier."
+msgstr "%s 导入数据需要一个唯一的数据库主键。"
+
+#: views/admin/import/options/_reimport_template.Custom Fields:44
+msgid "Unique Identifier"
+msgstr "主键"
+
+#: views/admin/import/options/_reimport_template.Custom Fields:50 Fields:61
+msgid "Auto-detect"
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:53 views/admin/manage/index.Custom
+#: Fields:318
+msgid "Edit"
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:54
+msgid "Warning: Are you sure you want to edit the Unique Identifier?"
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:55
+msgid ""
+"It is recommended you delete all %s associated with this import before editing the unique "
+"identifier."
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:56
+msgid ""
+"Editing the unique identifier will dissociate all existing %s linked to this import. Future runs of "
+"the import will result in duplicates, as WP All Import will no longer be able to update these %s."
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:57
+msgid ""
+"You really should just re-create your import, and pick the right unique identifier to start with."
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:67
+msgid ""
+"Drag an element, or combo of elements, to the box above. The Unique Identifier should be unique for "
+"each record in your file, and should stay the same even if your file is updated. Things like "
+"product IDs, titles, and SKUs are good Unique Identifiers because they probably won't change. Don't "
+"use a description or price, since that might be changed."
+msgstr " "
+
+#: views/admin/import/options/_reimport_template.Custom Fields:68
+msgid ""
+"If you run this import again with an updated file, the Unique Identifier allows WP All Import to "
+"correctly link the records in your updated file with the %s it will create right now. If multiple "
+"records in this file have the same Unique Identifier, only the first will be created. The others "
+"will be detected as duplicates."
+msgstr " "
+
+#: views/admin/import/options/_reimport_template.Custom Fields:83
+msgid "WP All Import will merge data into existing %s."
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:93
+msgid "Records in your file will be matched with %ss on your site based on..."
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:103
+msgid "Custom field"
+msgstr ""
+
+#: views/admin/import/options/_reimport_template.Custom Fields:113
+msgid "Post ID"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:4
+msgid "Configure Advanced Settings"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:11
+msgid "Import Speed Optimization"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:15
+msgid "High Speed Small File Processing"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:15
+msgid ""
+"If the import takes longer than your server's timeout settings (max_execution_time, mod_fcgid read "
+"data timeout, etc.) it will fail."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:19
+msgid "Iterative, Piece-by-Piece Processing"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:23
+msgid "In each iteration, process"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:23 views/admin/import/process.Custom
+#: Fields:31
+msgid "records"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:24
+msgid ""
+"WP All Import must be able to process this many records in less than your server's timeout "
+"settings. If your import fails before completion, to troubleshoot you should lower this number. If "
+"you are importing images, especially high resolution images, high numbers here are probably a bad "
+"idea, since downloading the images can take lots of time - for example, 20 posts with 5 images each "
+"= 100 images. At 500Kb per image that's 50Mb that needs to be downloaded. Can your server download "
+"that before timing out? If not, the import will fail."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:29
+msgid "Split file up into <strong>"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:30
+msgid ""
+"This option will decrease the amount of slowdown experienced at the end of large imports. The "
+"slowdown is partially caused by the need for WP All Import to read deeper and deeper into the file "
+"on each successive iteration. Splitting the file into pieces means that, for example, instead of "
+"having to read 19000 records into a 20000 record file when importing the last 1000 records, WP All "
+"Import will just split it into 20 chunks, and then read the last chunk from the beginning."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:37
+msgid "Increase speed by disabling do_action calls in wp_insert_post during import."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:38
+msgid ""
+"This option is for advanced users with knowledge of WordPress development. Your theme or plugins "
+"may require these calls when posts are created. Next action will be disabled: "
+"'transition_post_status', 'save_post', 'pre_post_update', 'add_attachment', 'edit_attachment', "
+"'edit_post', 'post_updated', 'wp_insert_post'. Verify your created posts work properly if you check "
+"this box."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:42
+msgid "Post Type"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:43
+msgid ""
+"Editing this will change the post type of the posts processed by this import. Re-run the import for "
+"the changes to take effect."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:112
+msgid "Editing this can break your entire import. You will have to re-create it from scratch."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:117
+msgid "Downloads"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:120
+msgid "Import Template"
+msgstr "导入"
+
+#: views/admin/import/options/_settings_template.Custom Fields:121
+msgid "Import Bundle"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:124
+msgid "Other"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:128
+msgid "Import only specified records"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:128
+msgid ""
+"Enter records or record ranges separated by commas, e.g. <b>1,5,7-10</b> would import the first, "
+"the fifth, and the seventh to tenth."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:139
+msgid "Delete source XML file after importing"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:139
+msgid ""
+"This setting takes effect only when script has access rights to perform the action, e.g. file is "
+"not deleted when pulled via HTTP or delete permission is not granted to the user that script is "
+"executed under."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:146
+msgid "Auto-Cloak Links"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:146
+msgid "Automatically process all links present in body of created post or page with <b>%s</b> plugin"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:154 Fields:157
+msgid "Use StreamReader instead of XMLReader to parse import file"
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:154
+msgid ""
+"WP All Import is being forced to use Stream Reader for all imports. Go to WP All Import ▸ Settings "
+"to modify this setting."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:157 views/admin/settings/index.Custom
+#: Fields:188
+msgid ""
+"XMLReader is much faster, but has a bug that sometimes prevents certain records from being imported "
+"with import files that contain special cases."
+msgstr ""
+
+#: views/admin/import/options/_settings_template.Custom Fields:162
+msgid "Friendly Name"
+msgstr ""
+
+#: views/admin/import/preview.Custom Fields:6 views/admin/import/preview_images.Custom
+#: views/admin/import/preview_prices.Custom views/admin/import/preview_taxonomies.Custom
+#: views/admin/import/tag.Custom Fields:8
+msgid ""
+"<strong><input type=\"text\" value=\"%s\" name=\"tagno\" class=\"tagno\"/></strong><span class="
+"\"out_of\"> of <strong class=\"pmxi_count\">%s</strong></span>"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:17
+msgid "Test Images"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:24
+msgid "Click to test that your images are able to be accessed by WP All Import."
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:26
+msgid "Run Test"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:60
+msgid "Retrieving images..."
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:64
+msgid "WP All Import will import images from the following file paths:"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:65
+msgid "Please ensure the images exists at these file paths"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:73 Fields:115 Fields:154
+msgid "Here are the above URLs, in &lt;img&gt; tags. "
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:92
+msgid "Searching images..."
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:96
+msgid "WP All Import will import images from the media library"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:97
+msgid "Please ensure the images exists at media library"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:141
+msgid "Download in progress..."
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:145
+msgid "WP All Import will attempt to import images from the following URLs:"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:146
+msgid "Please check the URLs to ensure they point to valid images"
+msgstr ""
+
+#: views/admin/import/preview_images.Custom Fields:169
+msgid "Images not found for current record."
+msgstr ""
+
+#: views/admin/import/preview_prices.Custom Fields:16
+msgid "Preview Prices"
+msgstr ""
+
+#: views/admin/import/preview_prices.Custom Fields:18
+msgid "Regular Price"
+msgstr ""
+
+#: views/admin/import/preview_prices.Custom Fields:19
+msgid "Sale Price"
+msgstr ""
+
+#: views/admin/import/preview_taxonomies.Custom Fields:16
+msgid "Test Taxonomies Hierarchy"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:21
+msgid "Import <span id=\"status\">in Progress</span>"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:22
+msgid ""
+"Importing may take some time. Please do not close your browser or refresh the page until the "
+"process is complete."
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:29
+msgid "Time Elapsed"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:31
+msgid "Created"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:31
+msgid "Updated"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:31
+msgid "of"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:38
+msgid "Import Complete!"
+msgstr "导入完成"
+
+#: views/admin/import/process.Custom Fields:40
+msgid "Duplicate records detected during import"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:40
+msgid ""
+"The unique identifier is how WP All Import tells two items in your import file apart. If it is the "
+"same for two items, then the first item will be overwritten when the second is imported."
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:42
+msgid ""
+"The file you are importing has %s records, but WP All Import only created <span class="
+"\"inserted_count\"></span> %s. It detected the other records in your file as duplicates. This could "
+"be because they actually are duplicates or it could be because your Unique Identifier is not unique "
+"for each record.<br><br>If your import file has no duplicates and you want to import all %s "
+"records, you should delete everything that was just imported and then edit your Unique Identifier "
+"so it's unique for each item."
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:44 Fields:51
+msgid "Delete & Edit"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:47
+msgid "<span id=\"skipped_count\">%s</span> orders were skipped during this import"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:49
+msgid ""
+"WP All Import is unable import an order when it cannot match the products or customer specified. <a "
+"href=\"%s\" style=\"margin: 0;\">See the import log</a> for a list of which orders were skipped and "
+"why."
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:53
+msgid ""
+"WP All Import successfully imported your file <span>%s</span> into your WordPress installation!"
+msgstr "成功导入文件 <span>%s</span> 到系统中。"
+
+#: views/admin/import/process.Custom Fields:55 Fields:57
+msgid ""
+"There were <span class=\"wpallimport-errors-count\">%s</span> errors and <span class=\"wpallimport-"
+"warnings-count\">%s</span> warnings in this import. You can see these in the import log."
+msgstr ""
+" <span class=\"wpallimport-errors-count\">%s</span> 错误，<span class=\"wpallimport-warnings-count"
+"\">%s</span> 提示. 可以查看以下日志文件。"
+
+#: views/admin/import/process.Custom Fields:60
+msgid "View Logs"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:68
+msgid "Hide this notice."
+msgstr "隐藏提示"
+
+#: views/admin/import/process.Custom Fields:72
+msgid "Want to speed up your import?"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:73
+msgid "Check out our guide on increasing import speed."
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:77
+msgid "opens in new tab"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:85 Fields:106
+msgid "Your server terminated the import process"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:86
+msgid "<a href='%s' target='_blank'>Read more</a> about how to prevent this from happening again."
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:90
+msgid "with <span id='wpallimport-new-records-per-iteration'>%s</span> records per iteration"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:96
+msgid "Log"
+msgstr ""
+
+#: views/admin/import/process.Custom Fields:107
+msgid ""
+"Ask your host to check your server's error log. They will be able to determine why your server is "
+"terminating the import process."
+msgstr ""
+
+#: views/admin/import/tag.Custom Fields:5
+msgid "Elements"
+msgstr ""
+
+#: views/admin/import/tag.Custom Fields:27
+msgid "History file not found. Probably you are using wrong encoding."
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:41
+msgid "Title & Content"
+msgstr "在下方设置题目（左键拖拽最右侧 试题标签 到此输入框内）"
+
+#: views/admin/import/template.Custom Fields:48
+msgid "Drag & drop any element on the right to set the title."
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:67
+msgid "WooCommerce Short Description"
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:71
+#: views/admin/import/template/_taxonomies_template.Custom Fields:138
+msgid "Preview"
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:77
+msgid "Advanced Options"
+msgstr "高级设置"
+
+#: views/admin/import/template.Custom Fields:84
+msgid "Keep line breaks from file"
+msgstr "解码与编码的HTML实体"
+
+#: views/admin/import/template.Custom Fields:89
+msgid "Decode HTML entities with <b>html_entity_decode</b>"
+msgstr "解码与编码的HTML实体"
+
+#: views/admin/import/template.Custom Fields:146 views/admin/settings/index.Custom Fields:211
+msgid "Function Editor"
+msgstr "开发者功能测试（仅供开发者使用）"
+
+#: views/admin/import/template.Custom Fields:156 views/admin/settings/index.Custom Fields:219
+msgid "Save Functions"
+msgstr "保存"
+
+#: views/admin/import/template.Custom Fields:157 views/admin/settings/index.Custom Fields:220
+msgid "Add functions here for use during your import. You can access this file at %s"
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:182
+msgid "Save settings as a template"
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:185
+msgid "Template name..."
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:190
+msgid "Load Template..."
+msgstr ""
+
+#: views/admin/import/template.Custom Fields:210
+msgid "Back to Step 2"
+msgstr "返回第二步"
+
+#: views/admin/import/template.Custom Fields:214
+msgid "Continue to Step 4"
+msgstr "继续第四步"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:15
+msgid "Your website is using Custom Fields to store data for %s."
+msgstr ""
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:16
+msgid "See Detected Fields"
+msgstr "自动检测"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:18
+msgid "No Custom Fields are present in your database for %s."
+msgstr "数据库没有自定义字段在 %s 中。"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:19
+msgid ""
+"Manually create a %s, and fill out each field you want to import data to. WP All Import will then "
+"display these fields as available for import below."
+msgstr "你可以为 %s 新建一个新的自定义字段，保存数据到数据库中。比如（答案）"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:21 Fields:29
+msgid "Hide Notice"
+msgstr "隐藏提示"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:26
+msgid "Clear All Fields"
+msgstr ""
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:28
+msgid ""
+"If not all fields were detected, manually create a %s, and fill out each field you want to import "
+"data to. Then create a new import, and WP All Import will display these fields as available for "
+"import below."
+msgstr ""
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:55 Fields:264 Fields:398
+msgid "Click to specify"
+msgstr ""
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:60 Fields:269 Fields:403
+msgid "Serialized"
+msgstr "序列化"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:73 Fields:282 Fields:416
+msgid "Key"
+msgstr ""
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:144 Fields:524
+msgid "Add Custom Field"
+msgstr "添加自定义字段"
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:150 Fields:318 Fields:452
+msgid "Auto-Detect"
+msgstr ""
+
+#: views/admin/import/template/_custom_fields_template.Custom Fields:155 Fields:323 Fields:457
+#: views/admin/license/index.Custom Fields:40
+msgid "Save"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:8
+msgid "Show hints"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:15
+msgid "Download images hosted elsewhere"
+msgstr "从另外的地方下载图片"
+
+#: views/admin/import/template/_featured_template.Custom Fields:19
+msgid "Enter image URL one per line, or separate them with a "
+msgstr "输入图像URL每行一个,或分开"
+
+#: views/admin/import/template/_featured_template.Custom Fields:25
+msgid "Use images currently in Media Library"
+msgstr "使用媒体库中的图片"
+
+#: views/admin/import/template/_featured_template.Custom Fields:29 Fields:39
+msgid "Enter image filenames one per line, or separate them with a "
+msgstr "每行输入图像文件名,或分开"
+
+#: views/admin/import/template/_featured_template.Custom Fields:36
+msgid "Use images currently uploaded in %s"
+msgstr "使用上传的图片 %s"
+
+#: views/admin/import/template/_featured_template.Custom Fields:44
+msgid "Image Options"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:49
+msgid "Search through the Media Library for existing images before importing new images"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:50
+msgid ""
+"If an image with the same file name is found in the Media Library then that image will be attached "
+"to this record instead of importing a new image. Disable this setting if your import has different "
+"images with the same file name."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:55
+msgid "Keep images currently in Media Library"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:56
+msgid "If disabled, images attached to imported posts will be deleted and then all images将会被导入."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:62
+msgid "Preview & Test"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:67
+msgid "Set the first image to the Featured Image (_thumbnail_id)"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:72
+msgid "If no images are downloaded successfully, create entry as Draft."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:83
+msgid "SEO & Advanced Options"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:91
+msgid "Meta Data"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:95
+msgid "Set Title(s)"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:97 Fields:108 Fields:119
+msgid "Enter one per line, or separate them with a "
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:99
+msgid ""
+"The first title will be linked to the first image, the second title will be linked to the second "
+"image, ..."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:106
+msgid "Set Caption(s)"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:110
+msgid ""
+"The first caption will be linked to the first image, the second caption will be linked to the "
+"second image, ..."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:117
+msgid "Set Alt Text(s)"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:121
+msgid ""
+"The first alt text will be linked to the first image, the second alt text will be linked to the "
+"second image, ..."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:128
+msgid "Set Description(s)"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:132
+msgid "Separate them with a"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:137
+msgid "Enter them one per line"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:139
+msgid ""
+"The first description will be linked to the first image, the second description will be linked to "
+"the second image, ..."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:143 views/admin/settings/index.Custom
+#: Fields:79
+msgid "Files"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:145
+msgid "These options only available if Download images hosted elsewhere is selected above."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:149
+msgid "Change image file names to"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:152
+msgid "Multiple image will have numbers appended, i.e. image-name-1.jpg, image-name-2.jpg "
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:158
+msgid "Change image file extensions"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:176
+msgid "WP All Import will automatically ignore elements with blank image URLs/filenames."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:177
+msgid ""
+"WP All Import must download the images to your server. You can't have images in a Gallery that are "
+"referenced by external URL. That's just how WordPress works."
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:178
+msgid ""
+"Importing a variable number of images can be done using a <a href=\"%s\" target=\"_blank\">FOREACH "
+"LOOP</a>"
+msgstr ""
+
+#: views/admin/import/template/_featured_template.Custom Fields:179
+msgid ""
+"For more information check out our <a href=\"%s\" target=\"_blank\">comprehensive documentation</a>"
+msgstr ""
+
+#: views/admin/import/template/_nested_template.Custom Fields:35
+msgid "Nested XML/CSV files"
+msgstr ""
+
+#: views/admin/import/template/_nested_template.Custom Fields:48
+msgid "remove"
+msgstr ""
+
+#: views/admin/import/template/_nested_template.Custom Fields:69
+msgid "Specify the URL of the nested file to use."
+msgstr ""
+
+#: views/admin/import/template/_nested_template.Custom Fields:73
+msgid "Add"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:5
+msgid "Other %s Options"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:17
+msgid "Post Status"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:20
+msgid "Published"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:24
+msgid "Draft"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:32
+msgid "The value of presented XPath should be one of the following: ('publish', 'draft', 'trash')."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:41
+msgid "Post Dates"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:41
+msgid ""
+"Use any format supported by the PHP <b>strtotime</b> function. That means pretty much any human-"
+"readable date will work."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:45
+msgid "As specified"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:54
+msgid "Random dates"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:54
+msgid ""
+"Posts will be randomly assigned dates in this range. WordPress ensures posts with dates in the "
+"future will not appear until their date has been reached."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:58 views/admin/manage/delete.Custom
+#: Fields:46
+msgid "and"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:66
+msgid "Comments"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:69 Fields:92
+msgid "Open"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:73 Fields:96
+msgid "Closed"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:81 Fields:104
+msgid "The value of presented XPath should be one of the following: ('open', 'closed')."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:89
+msgid "Trackbacks and Pingbacks"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:112
+msgid "Post Slug"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:120
+msgid "Post Author"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:122
+msgid ""
+"Assign the post to an existing user account by specifying the user ID, username, or e-mail address."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:128
+msgid "Download & Import Attachments"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:129
+#: views/admin/import/template/_taxonomies_template.Custom Fields:65 Fields:122 Fields:134 Fields:212
+msgid "Separated by"
+msgstr "分割符"
+
+#: views/admin/import/template/_other_template.Custom Fields:137
+msgid "Search for existing attachments to prevent duplicates in media library"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:144
+msgid "Post Format"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:150
+msgid "Standard"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:182
+msgid "Page Template"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:185
+msgid "Select a template"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:189
+msgid "Default"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:211
+msgid "Page Parent"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:211
+msgid ""
+"Enter the slug of the desired page parent. If adding the child and parent pages in the same import, "
+"set 'Records per Iteration' to 1, run the import twice, or run separate imports for child and "
+"parent pages."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:215
+msgid "Select page parent"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:218
+msgid "(no parent)"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:237
+msgid "Post Parent"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:237
+msgid ""
+"Enter the slug of the desired post parent. If adding the child and parent posts in the same import, "
+"set 'Records per Iteration' to 1, run the import twice, or run separate imports for child and "
+"parent posts."
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:241
+msgid "Set post parent"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:265
+msgid "Menu Order"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:274
+msgid "Dynamic Post Type"
+msgstr ""
+
+#: views/admin/import/template/_other_template.Custom Fields:284
+msgid ""
+"If records in this import have different post types specify the slug of the desired post type "
+"here.\n"
+msgstr ""
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:13
+msgid "Taxonomies, Categories, Tags"
+msgstr "分类设置（比如多选，单选，文书，简答.....）"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:17
+msgid "Show Hints"
+msgstr ""
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:38
+msgid "Each %s has just one %s"
+msgstr "每一个 %s 只有一个 %s"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:46 Fields:70
+msgid "Try to match terms to existing child %s"
+msgstr "匹配已存在的 %s"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:51 Fields:75
+msgid "Only assign %s to the imported %s, not the entire hierarchy"
+msgstr "只有被 %s 分配的 %s"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:52 Fields:76
+msgid ""
+"By default all categories above the matched category will also be assigned to the post. If enabled, "
+"only the imported category will be assigned to the post."
+msgstr ""
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:60
+msgid "Each %s has multiple %s"
+msgstr "每一个 %s 有多个 %s"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:85
+msgid "%ss have hierarchical (parent/child) %s (i.e. Sports > Golf > Clubs > Putters)"
+msgstr "%s 有父类和子类目录 %s (比如，选择题 > 综合)"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:90
+msgid ""
+"An element in my file contains the entire hierarchy (i.e. you have an element with a value = Sports "
+"> Golf > Clubs > Putters)"
+msgstr "一个元素在文件中包含整个目录结构"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:127
+msgid "Only assign %s to the bottom level term in the hierarchy"
+msgstr "仅将 %s 匹配到最外层分类中。"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:132
+msgid "Separate hierarchy groups via symbol"
+msgstr "自定义分割符号"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:140
+msgid "Add Another Hierarchy Group"
+msgstr "添加一个分类层"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:147
+msgid "Manually design the hierarchy with drag & drop"
+msgstr "手动设置分类结构"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:149
+msgid ""
+"Drag the <img src=\"%s\" class=\"wpallimport-drag-icon\"/> to the right to create a child, drag up "
+"and down to re-order."
+msgstr "移动 <img src=\"%s\" class=\"wpallimport-drag-icon\"/> 的位置来匹配正确的分类结构"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:215
+msgid "Add Another Row"
+msgstr "增加一个分类层"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:227
+msgid "Enable Mapping for %s"
+msgstr "映射 %s"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:296
+msgid "Add Another Rule"
+msgstr "添加一个规则"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:306
+msgid "Apply mapping rules before splitting via separator symbol"
+msgstr "在分隔符拆分之前应用映射规则"
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:321
+msgid "Show \"private\" taxonomies"
+msgstr ""
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:332
+msgid "Taxonomies that don't already exist on your site will be created."
+msgstr ""
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:333
+msgid "To import to existing parent taxonomies, use the existing taxonomy name or slug."
+msgstr ""
+
+#: views/admin/import/template/_taxonomies_template.Custom Fields:334
+msgid ""
+"To import to existing hierarchical taxonomies, create the entire hierarchy using the taxonomy names "
+"or slugs."
+msgstr ""
+
+#: views/admin/license/index.Custom Fields:3
+msgid "WP All Import Licenses"
+msgstr ""
+
+#: views/admin/license/index.Custom Fields:23 views/admin/settings/index.Custom Fields:163
+msgid "Active"
+msgstr ""
+
+#: views/admin/license/index.Custom Fields:24
+msgid "Deactivate License"
+msgstr ""
+
+#: views/admin/license/index.Custom Fields:26 views/admin/settings/index.Custom Fields:165
+msgid "Activate License"
+msgstr ""
+
+#: views/admin/manage/bulk.Custom Fields:1
+msgid "Bulk Delete Imports"
+msgstr "删除导入的数据"
+
+#: views/admin/manage/bulk.Custom Fields:10
+msgid "Are you sure you want to delete <strong>%s</strong> selected %s?"
+msgstr "你确定要删除 <strong>%s</strong> selected %s?"
+
+#: views/admin/manage/bulk.Custom Fields:12
+msgid "Delete associated posts as well"
+msgstr ""
+
+#: views/admin/manage/bulk.Custom Fields:17 views/admin/manage/delete.Custom Fields:19
+msgid "Delete associated images from media gallery"
+msgstr "删除媒体库图片"
+
+#: views/admin/manage/bulk.Custom Fields:22 views/admin/manage/delete.Custom Fields:24
+msgid "Delete associated files from media gallery"
+msgstr "删除媒体库文件"
+
+#: views/admin/manage/bulk.Custom Fields:31 views/admin/manage/delete.Custom Fields:32
+msgid ""
+"<p class=\"wpallimport-delete-posts-warning\"><strong>Important</strong>: this import was created "
+"automatically by WP All Export. All posts exported by the \"%s\" export job have been automatically "
+"associated with this import.</p>"
+msgstr ""
+
+#: views/admin/manage/delete.Custom Fields:1
+msgid "Delete Import"
+msgstr "删除导入"
+
+#: views/admin/manage/delete.Custom Fields:8
+msgid "Delete import"
+msgstr "删除导入"
+
+#: views/admin/manage/delete.Custom Fields:13
+msgid "Delete posts created by %s"
+msgstr "删除通过 %s 发布的文件"
+
+#: views/admin/manage/delete.Custom Fields:46
+msgid "Are you sure you want to delete "
+msgstr "确定要删除"
+
+#: views/admin/manage/delete.Custom Fields:46
+msgid "the <strong>%s</strong> import"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:18 Fields:20
+msgid "Search Imports"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:28
+msgid "File"
+msgstr "文件"
+
+#: views/admin/manage/index.Custom Fields:31
+msgid "Info & Options"
+msgstr "日志&设置"
+
+#: views/admin/manage/index.Custom Fields:100
+msgid "No previous imports found. <a href=\"%s\">Start a new import...</a>"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:182
+msgid "Edit Import"
+msgstr "编辑导入"
+
+#: views/admin/manage/index.Custom Fields:187
+msgid "Import Settings"
+msgstr "导入设置"
+
+#: views/admin/manage/index.Custom Fields:228
+msgid "triggered with cron"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:235 Fields:250 Fields:264
+msgid "last activity %s ago"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:242
+msgid "currently processing with cron"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:257
+msgid "Import currently in progress"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:271 Fields:275
+msgid "Import Attempt at %s"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:276
+msgid "Import failed, please check logs"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:286
+msgid "Last run: %s"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:286
+msgid "never"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:287
+msgid "%d %s created"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:288
+msgid "%d updated, %d skipped, %d deleted"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:295
+msgid "settings edited since last run"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:307 views/admin/manage/scheduling.Custom Fields:2
+msgid "Cron Scheduling"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:309
+msgid "History Logs"
+msgstr "历史记录"
+
+#: views/admin/manage/index.Custom Fields:319
+msgid "Run Import"
+msgstr "开始导入"
+
+#: views/admin/manage/index.Custom Fields:321
+msgid "Cancel Cron"
+msgstr ""
+
+#: views/admin/manage/index.Custom Fields:323
+msgid "Cancel"
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:8
+msgid ""
+"To schedule an import, you must create two cron jobs in your web hosting control panel. One cron "
+"job will be used to run the Trigger script, the other to run the Execution script."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:19
+msgid "Trigger Script"
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:21
+msgid "Every time you want to schedule the import, run the trigger script."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:23
+msgid ""
+"To schedule the import to run once every 24 hours, run the trigger script every 24 hours. Most "
+"hosts require you to use “wget” to access a URL. Ask your host for details."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:25 Fields:37
+msgid "Example:"
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:29
+msgid "Execution Script"
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:31
+msgid ""
+"The Execution script actually executes the import, once it has been triggered with the Trigger "
+"script."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:33
+msgid ""
+"It processes in iteration (only importing a few records each time it runs) to optimize server load. "
+"It is recommended you run the execution script every 2 minutes."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:35
+msgid ""
+"It also operates this way in case of unexpected crashes by your web host. If it crashes before the "
+"import is finished, the next run of the cron job two minutes later will continue it where it left "
+"off, ensuring reliability."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:41
+msgid "Notes"
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:44
+msgid ""
+"Your web host may require you to use a command other than wget, although wget is most common. In "
+"this case, you must asking your web hosting provider for help."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:54
+msgid ""
+"To schedule this import with a cron job, you must use the \"Download from URL\" option on the "
+"Import Settings screen of WP All Import."
+msgstr ""
+
+#: views/admin/manage/scheduling.Custom Fields:57
+msgid "Go to Import Settings now..."
+msgstr ""
+
+#: views/admin/manage/update.Custom Fields:1
+msgid "Update Import"
+msgstr ""
+
+#: views/admin/manage/update.Custom Fields:9
+msgid "Are you sure you want to update <strong>%s</strong> import?"
+msgstr ""
+
+#: views/admin/manage/update.Custom Fields:10
+msgid "Source path is <strong>%s</strong>"
+msgstr ""
+
+#: views/admin/manage/update.Custom Fields:21
+msgid "Update feature is not available for this import since it has no external path linked."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:18
+msgid "Import/Export Templates"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:32
+msgid "Delete Selected"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:33
+msgid "Export Selected"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:36
+msgid "There are no templates saved"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:41
+msgid "Import Templates"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:49
+msgid "Cron Imports"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:54
+msgid "Secret Key"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:57
+msgid "Changing this will require you to re-create your existing cron jobs."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:61
+msgid "Cron Processing Time Limit"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:64
+msgid "Leave blank to use your server's limit on script run times."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:68
+msgid "Cron Sleep"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:71
+msgid ""
+"Sleep the specified number of seconds between each post created, updated, or deleted with cron. "
+"Leave blank to not sleep. Only necessary on servers  that are slowed down by the cron job because "
+"they have very minimal processing power and resources."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:84 Fields:87
+msgid "Secure Mode"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:89
+msgid "Randomize folder names"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:95
+msgid ""
+"Imported files, chunks, logs and temporary files will be placed in a folder with a randomized name "
+"inside of %s."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:100
+msgid "Log Storage"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:103
+msgid "Number of logs to store for each import. Enter 0 to never store logs."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:107
+msgid "Clean Up Temp Files"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:109
+msgid "Clean Up"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:110
+msgid "Attempt to remove temp files left over by imports that were improperly terminated."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:118
+msgid "Advanced Settings"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:123
+msgid "Chunk Size"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:126
+msgid "Split file into chunks containing the specified number of records."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:130
+msgid "WP_IMPORTING"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:134
+msgid "Enable WP_IMPORTING"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:136
+msgid "Setting this constant avoids triggering pingback."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:140
+msgid "Add Port To URL"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:143
+msgid ""
+"Specify the port number to add if you're having problems continuing to Step 2 and are running "
+"things on a custom port. Default is blank."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:150
+msgid "Licenses"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:157
+msgid "License Key"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:170
+msgid ""
+"A license key is required to access plugin updates. You can use your license key on an unlimited "
+"number of websites. Do not distribute your license key to 3rd parties. You can get your license key "
+"in the <a target=\"_blank\" href=\"http://www.wpallimport.com/portal\">customer portal</a>."
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:177
+msgid "Force Stream Reader"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:182
+msgid "Force WP All Import to use StreamReader instead of XMLReader to parse all import files"
+msgstr ""
+
+#: views/admin/settings/index.Custom Fields:186
+msgid "Enable Stream Reader | share to iiidea.cn"
+msgstr ""
+
+#: wp-all-import-pro.Custom Fields:20
+msgid "请取消和删除WP的免费版本导入之前激活付费版本."
+msgstr ""
+
+#: wp-all-import-pro.Custom Fields:335
+msgid ""
+"To enable updates, please enter your license key on the <a href=\"%s\">Licenses</a> page. If you "
+"don't have a licence key, please see <a href=\"%s\">details & pricing</a>"
+msgstr ""
+
+#: wp-all-import-pro.Custom Fields:826 Fields:830
+msgid "Uploads folder %s must be writable"
+msgstr ""
+
+#: wp-all-import-pro.Custom Fields:967
+msgid "<b>%s Plugin</b>: Current sql user %s doesn't have ALTER privileges"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Excel导入"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.wpallimport.com/"
+msgstr "http://www.bcoder.cn/"
+
+#. Description of the plugin/theme
+msgid ""
+"The most powerful solution for importing XML and CSV files to WordPress. Import to Posts, Pages, "
+"and Custom Post Types. Support for imports that run on a schedule, ability to update existing "
+"imports, and much more."
+msgstr "导入excel数据"
+
+#. Author of the plugin/theme
+msgid "themecoder"
+msgstr ""
