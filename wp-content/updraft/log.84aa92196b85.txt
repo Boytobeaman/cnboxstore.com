@@ -1,0 +1,286 @@
+0000.005 (0) Opened log file at time: Fri, 11 May 2018 14:05:41 +0000 on http://www.cnboxstore.com
+0000.050 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.14.5 WP: 4.9.5 PHP: 7.0.27 (fpm-fcgi, Linux ip-172-26-1-23 4.4.0-1054-aws #63-Ubuntu SMP Wed Mar 28 19:42:42 UTC 2018 x86_64) MySQL: 5.7.21 WPLANG: en_US Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 6.7M | 2M) multisite: N openssl: OpenSSL 1.0.2n  7 Dec 2017 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.053 (0) Free space on disk containing Updraft's temporary directory: 15933.7 MB
+0000.060 (0) Tasks: Backup files:  (schedule: manual) Backup DB: 1 (schedule: daily)
+0000.064 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 1
+0000.072 (0) Requesting semaphore lock (d) (apparently via scheduler: last_scheduled_action_called_at=1525960647, seconds_ago=86894)
+0000.084 (0) Set semaphore last lock (d) time to 2018-05-11 14:05:41
+0000.086 (0) Semaphore lock (d) complete
+0000.092 (0) Backup run: resumption=0, nonce=84aa92196b85, begun at=1526047541 (0s ago), job type=backup
+0000.095 (0) Scheduling a resumption (1) after 300 seconds (1526047841) in case this run gets aborted
+0000.100 (0) This backup run is not intended for files - skipping
+0000.102 (0) Beginning creation of database dump (WordPress DB)
+0000.153 (0) Table wp_options: Total expected rows (approximate): 629
+0000.177 (0) Table wp_options: Total rows added: 634 in 0.02 seconds
+0000.180 (0) Table wp_options: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_options.table.gz - 41.5 KB)
+0000.189 (0) Table wp_users: Total expected rows (approximate): 2
+0000.194 (0) Table wp_users: Total rows added: 1 in 0.00 seconds
+0000.196 (0) Table wp_users: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_users.table.gz - 0.5 KB)
+0000.203 (0) Table wp_usermeta: Total expected rows (approximate): 81
+0000.204 (0) Table wp_usermeta: Total rows added: 83 in 0.00 seconds
+0000.207 (0) Table wp_usermeta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_usermeta.table.gz - 2.8 KB)
+0000.213 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0000.216 (0) Table wp_commentmeta: Total rows added: 1 in 0.00 seconds
+0000.219 (0) Table wp_commentmeta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0000.224 (0) Table wp_comments: Total expected rows (approximate): 1
+0000.227 (0) Table wp_comments: Total rows added: 1 in 0.00 seconds
+0000.228 (0) Table wp_comments: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_comments.table.gz - 0.8 KB)
+0000.235 (0) Table wp_links: Total expected rows (approximate): 0
+0000.237 (0) Table wp_links: Total rows added: 0 in 0.00 seconds
+0000.240 (0) Table wp_links: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_links.table.gz - 0.4 KB)
+0000.245 (0) Table wp_postmeta: Total expected rows (approximate): 5828
+0000.291 (0) Table wp_postmeta: Total rows added: 5856 in 0.04 seconds
+0000.294 (0) Table wp_postmeta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_postmeta.table.gz - 56.7 KB)
+0000.299 (0) Table wp_posts: Total expected rows (approximate): 305
+0000.319 (0) Table wp_posts: Total rows added: 305 in 0.02 seconds
+0000.322 (0) Table wp_posts: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_posts.table.gz - 27 KB)
+0000.331 (0) Table wp_term_relationships: Total expected rows (approximate): 222
+0000.333 (0) Table wp_term_relationships: Total rows added: 222 in 0.00 seconds
+0000.336 (0) Table wp_term_relationships: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_term_relationships.table.gz - 0.9 KB)
+0000.343 (0) Table wp_term_taxonomy: Total expected rows (approximate): 57
+0000.344 (0) Table wp_term_taxonomy: Total rows added: 57 in 0.00 seconds
+0000.347 (0) Table wp_term_taxonomy: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_term_taxonomy.table.gz - 2.5 KB)
+0000.354 (0) Table wp_termmeta: Total expected rows (approximate): 38
+0000.357 (0) Table wp_termmeta: Total rows added: 38 in 0.00 seconds
+0000.360 (0) Table wp_termmeta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_termmeta.table.gz - 0.7 KB)
+0000.367 (0) Table wp_terms: Total expected rows (approximate): 57
+0000.370 (0) Table wp_terms: Total rows added: 57 in 0.00 seconds
+0000.372 (0) Table wp_terms: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_terms.table.gz - 1.2 KB)
+0000.380 (0) Table wp_woocommerce_order_itemmeta: Total expected rows (approximate): 0
+0000.383 (0) Table wp_woocommerce_order_itemmeta: Total rows added: 0 in 0.00 seconds
+0000.386 (0) Table wp_woocommerce_order_itemmeta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_order_itemmeta.table.gz - 0.4 KB)
+0000.391 (0) Table wp_woocommerce_payment_tokenmeta: Total expected rows (approximate): 0
+0000.392 (0) Table wp_woocommerce_payment_tokenmeta: Total rows added: 0 in 0.00 seconds
+0000.395 (0) Table wp_woocommerce_payment_tokenmeta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_payment_tokenmeta.table.gz - 0.4 KB)
+0000.401 (0) Table wp_pmxi_files: Total expected rows (approximate): 1
+0000.404 (0) Table wp_pmxi_files: Total rows added: 1 in 0.00 seconds
+0000.406 (0) Table wp_pmxi_files: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_files.table.gz - 0.5 KB)
+0000.411 (0) Table wp_pmxi_history: Total expected rows (approximate): 1
+0000.414 (0) Table wp_pmxi_history: Total rows added: 1 in 0.00 seconds
+0000.416 (0) Table wp_pmxi_history: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_history.table.gz - 0.5 KB)
+0000.422 (0) Table wp_pmxi_imports: Total expected rows (approximate): 1
+0000.426 (0) Table wp_pmxi_imports: Total rows added: 1 in 0.00 seconds
+0000.428 (0) Table wp_pmxi_imports: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_imports.table.gz - 4.4 KB)
+0000.435 (0) Table wp_pmxi_posts: Total expected rows (approximate): 57
+0000.436 (0) Table wp_pmxi_posts: Total rows added: 57 in 0.00 seconds
+0000.439 (0) Table wp_pmxi_posts: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_posts.table.gz - 1.1 KB)
+0000.444 (0) Table wp_pmxi_templates: Total expected rows (approximate): 0
+0000.447 (0) Table wp_pmxi_templates: Total rows added: 0 in 0.00 seconds
+0000.448 (0) Table wp_pmxi_templates: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_templates.table.gz - 0.4 KB)
+0000.455 (0) Table wp_w3tc_cdn_pathmap: Total expected rows (approximate): 0
+0000.456 (0) Table wp_w3tc_cdn_pathmap: Total rows added: 0 in 0.00 seconds
+0000.459 (0) Table wp_w3tc_cdn_pathmap: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_w3tc_cdn_pathmap.table.gz - 0.4 KB)
+0000.465 (0) Table wp_w3tc_cdn_queue: Total expected rows (approximate): 0
+0000.467 (0) Table wp_w3tc_cdn_queue: Total rows added: 0 in 0.00 seconds
+0000.470 (0) Table wp_w3tc_cdn_queue: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_w3tc_cdn_queue.table.gz - 0.4 KB)
+0000.475 (0) Table wp_wc_download_log: Total expected rows (approximate): 0
+0000.476 (0) Table wp_wc_download_log: Total rows added: 0 in 0.00 seconds
+0000.478 (0) Table wp_wc_download_log: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_wc_download_log.table.gz - 0.4 KB)
+0000.484 (0) Table wp_wc_webhooks: Total expected rows (approximate): 0
+0000.487 (0) Table wp_wc_webhooks: Total rows added: 0 in 0.00 seconds
+0000.488 (0) Table wp_wc_webhooks: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_wc_webhooks.table.gz - 0.5 KB)
+0000.495 (0) Table wp_woocommerce_api_keys: Total expected rows (approximate): 0
+0000.496 (0) Table wp_woocommerce_api_keys: Total rows added: 0 in 0.00 seconds
+0000.498 (0) Table wp_woocommerce_api_keys: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_api_keys.table.gz - 0.4 KB)
+0000.504 (0) Table wp_woocommerce_attribute_taxonomies: Total expected rows (approximate): 0
+0000.507 (0) Table wp_woocommerce_attribute_taxonomies: Total rows added: 0 in 0.00 seconds
+0000.508 (0) Table wp_woocommerce_attribute_taxonomies: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_attribute_taxonomies.table.gz - 0.4 KB)
+0000.517 (0) Table wp_woocommerce_downloadable_product_permissions: Total expected rows (approximate): 0
+0000.526 (0) Table wp_woocommerce_downloadable_product_permissions: Total rows added: 0 in 0.00 seconds
+0000.536 (0) Table wp_woocommerce_downloadable_product_permissions: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_downloadable_product_permissions.table.gz - 0.5 KB)
+0000.541 (0) Table wp_woocommerce_log: Total expected rows (approximate): 0
+0000.544 (0) Table wp_woocommerce_log: Total rows added: 0 in 0.00 seconds
+0000.547 (0) Table wp_woocommerce_log: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_log.table.gz - 0.4 KB)
+0000.554 (0) Table wp_woocommerce_order_items: Total expected rows (approximate): 0
+0000.557 (0) Table wp_woocommerce_order_items: Total rows added: 0 in 0.00 seconds
+0000.559 (0) Table wp_woocommerce_order_items: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_order_items.table.gz - 0.4 KB)
+0000.567 (0) Table wp_woocommerce_payment_tokens: Total expected rows (approximate): 0
+0000.570 (0) Table wp_woocommerce_payment_tokens: Total rows added: 0 in 0.00 seconds
+0000.572 (0) Table wp_woocommerce_payment_tokens: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_payment_tokens.table.gz - 0.4 KB)
+0000.576 (0) Table wp_woocommerce_sessions: Total expected rows (approximate): 0
+0000.579 (0) Table wp_woocommerce_sessions: Total rows added: 0 in 0.00 seconds
+0000.582 (0) Table wp_woocommerce_sessions: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_sessions.table.gz - 0.4 KB)
+0000.589 (0) Table wp_woocommerce_shipping_zone_locations: Total expected rows (approximate): 0
+0000.592 (0) Table wp_woocommerce_shipping_zone_locations: Total rows added: 0 in 0.00 seconds
+0000.594 (0) Table wp_woocommerce_shipping_zone_locations: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_shipping_zone_locations.table.gz - 0.4 KB)
+0000.599 (0) Table wp_woocommerce_shipping_zone_methods: Total expected rows (approximate): 0
+0000.602 (0) Table wp_woocommerce_shipping_zone_methods: Total rows added: 0 in 0.00 seconds
+0000.604 (0) Table wp_woocommerce_shipping_zone_methods: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_shipping_zone_methods.table.gz - 0.4 KB)
+0000.610 (0) Table wp_woocommerce_shipping_zones: Total expected rows (approximate): 0
+0000.613 (0) Table wp_woocommerce_shipping_zones: Total rows added: 0 in 0.00 seconds
+0000.615 (0) Table wp_woocommerce_shipping_zones: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_shipping_zones.table.gz - 0.3 KB)
+0000.620 (0) Table wp_woocommerce_tax_rate_locations: Total expected rows (approximate): 0
+0000.624 (0) Table wp_woocommerce_tax_rate_locations: Total rows added: 0 in 0.00 seconds
+0000.626 (0) Table wp_woocommerce_tax_rate_locations: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_tax_rate_locations.table.gz - 0.4 KB)
+0000.632 (0) Table wp_woocommerce_tax_rates: Total expected rows (approximate): 0
+0000.636 (0) Table wp_woocommerce_tax_rates: Total rows added: 0 in 0.00 seconds
+0000.640 (0) Table wp_woocommerce_tax_rates: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_tax_rates.table.gz - 0.4 KB)
+0000.647 (0) Table wp_yoast_seo_links: Total expected rows (approximate): 519
+0000.651 (0) Table wp_yoast_seo_links: Total rows added: 519 in 0.00 seconds
+0000.654 (0) Table wp_yoast_seo_links: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_yoast_seo_links.table.gz - 4 KB)
+0000.660 (0) Table wp_yoast_seo_meta: Total expected rows (approximate): 147
+0000.664 (0) Table wp_yoast_seo_meta: Total rows added: 147 in 0.00 seconds
+0000.666 (0) Table wp_yoast_seo_meta: finishing file (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_yoast_seo_meta.table.gz - 0.7 KB)
+0000.672 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_options.table.gz (1/37): adding to final database dump
+0000.690 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_users.table.gz (2/37): adding to final database dump
+0000.692 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_usermeta.table.gz (3/37): adding to final database dump
+0000.696 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_commentmeta.table.gz (4/37): adding to final database dump
+0000.698 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_comments.table.gz (5/37): adding to final database dump
+0000.699 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_links.table.gz (6/37): adding to final database dump
+0000.701 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_postmeta.table.gz (7/37): adding to final database dump
+0000.740 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_posts.table.gz (8/37): adding to final database dump
+0000.761 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_term_relationships.table.gz (9/37): adding to final database dump
+0000.764 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_term_taxonomy.table.gz (10/37): adding to final database dump
+0000.767 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_termmeta.table.gz (11/37): adding to final database dump
+0000.768 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_terms.table.gz (12/37): adding to final database dump
+0000.770 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_order_itemmeta.table.gz (13/37): adding to final database dump
+0000.772 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_payment_tokenmeta.table.gz (14/37): adding to final database dump
+0000.774 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_files.table.gz (15/37): adding to final database dump
+0000.775 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_history.table.gz (16/37): adding to final database dump
+0000.778 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_imports.table.gz (17/37): adding to final database dump
+0000.781 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_posts.table.gz (18/37): adding to final database dump
+0000.783 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_pmxi_templates.table.gz (19/37): adding to final database dump
+0000.784 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_w3tc_cdn_pathmap.table.gz (20/37): adding to final database dump
+0000.786 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_w3tc_cdn_queue.table.gz (21/37): adding to final database dump
+0000.788 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_wc_download_log.table.gz (22/37): adding to final database dump
+0000.790 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_wc_webhooks.table.gz (23/37): adding to final database dump
+0000.792 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_api_keys.table.gz (24/37): adding to final database dump
+0000.794 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_attribute_taxonomies.table.gz (25/37): adding to final database dump
+0000.795 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_downloadable_product_permissions.table.gz (26/37): adding to final database dump
+0000.796 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_log.table.gz (27/37): adding to final database dump
+0000.798 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_order_items.table.gz (28/37): adding to final database dump
+0000.799 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_payment_tokens.table.gz (29/37): adding to final database dump
+0000.800 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_sessions.table.gz (30/37): adding to final database dump
+0000.803 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_shipping_zone_locations.table.gz (31/37): adding to final database dump
+0000.804 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_shipping_zone_methods.table.gz (32/37): adding to final database dump
+0000.806 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_shipping_zones.table.gz (33/37): adding to final database dump
+0000.808 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_tax_rate_locations.table.gz (34/37): adding to final database dump
+0000.810 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_woocommerce_tax_rates.table.gz (35/37): adding to final database dump
+0000.811 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_yoast_seo_links.table.gz (36/37): adding to final database dump
+0000.814 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db-table-wp_yoast_seo_meta.table.gz (37/37): adding to final database dump
+0000.817 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz: finished writing out complete database file (128 KB)
+0000.828 (0) Total database tables backed up: 37 (backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz, size: 147895, sha256)
+0000.840 (0) backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz: db: This file has not yet been successfully uploaded: will queue
+0000.843 (0) Saving backup history. Total backup size: 144.4 KB
+0000.848 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0000.852 (0) Cloud backup selection (1/1): s3 with instance (1/1) (last)
+0000.855 (0) Beginning dispatch of backup to remote (s3) (instance identifier s-4c9f28d878d94fdf129aae8d8cb7e7df)
+0000.922 (0) Set region: us-west-1
+0000.925 (0) S3 upload (us-west-1): backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz (chunks: 1) -> s3://website-database-lxc/cnboxstore.com/backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz
+0001.514 (0) S3 regular upload: success
+0001.525 (0) Recording as successfully uploaded: backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz (234397eecdc00b6d866144be680904c3)
+0001.532 (0) Deleting local file: backup_2018-05-11-1405_CnBoxStorecom_84aa92196b85-db.gz: OK
+0001.536 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=10, retain_db=120
+0001.538 (0) Number of backup sets in history: 26; groups (db): 1
+0001.539 (0) Examining (for databases) backup set with group_id=0, nonce=84aa92196b85, datestamp=1526047541 (May 11 2018 14:05:41)
+0001.542 (0) This backup set is the backup set just made, so will not be deleted.
+0001.542 (0) Examining (for databases) backup set with group_id=0, nonce=722e2790b6d4, datestamp=1525960647 (May 10 2018 13:57:27)
+0001.542 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=a484a770bf46, datestamp=1525874225 (May 09 2018 13:57:05)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=b482a174e95f, datestamp=1525788386 (May 08 2018 14:06:26)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=89d24310297c, datestamp=1525701403 (May 07 2018 13:56:43)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=a2b674000986, datestamp=1525615374 (May 06 2018 14:02:54)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=792402f5f332, datestamp=1525538724 (May 05 2018 16:45:24)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=a97545a470ea, datestamp=1525442373 (May 04 2018 13:59:33)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=034a6f2bd1f0, datestamp=1525356525 (May 03 2018 14:08:45)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=2a21aaae8148, datestamp=1525269674 (May 02 2018 14:01:14)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=d8d1cb544c42, datestamp=1525188281 (May 01 2018 15:24:41)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=63d46f7a8476, datestamp=1525099463 (Apr 30 2018 14:44:23)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=3131ad667686, datestamp=1525011756 (Apr 29 2018 14:22:36)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=dd682316ed50, datestamp=1524923697 (Apr 28 2018 13:54:57)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=624e15909d3b, datestamp=1524837215 (Apr 27 2018 13:53:35)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=1fc6ff2ebb5d, datestamp=1524751262 (Apr 26 2018 14:01:02)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.543 (0) Examining (for databases) backup set with group_id=0, nonce=82ffb899e094, datestamp=1524664447 (Apr 25 2018 13:54:07)
+0001.543 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=fb2935449fbb, datestamp=1524578697 (Apr 24 2018 14:04:57)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=424c3cbd7ee2, datestamp=1524492179 (Apr 23 2018 14:02:59)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=e8b54570697b, datestamp=1524405266 (Apr 22 2018 13:54:26)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=d07435a10727, datestamp=1524319067 (Apr 21 2018 13:57:47)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=82d7aa1e8a99, datestamp=1524232463 (Apr 20 2018 13:54:23)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=441b40e90593, datestamp=1524146139 (Apr 19 2018 13:55:39)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=2d2c9cea91de, datestamp=1524059976 (Apr 18 2018 13:59:36)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=891e20ce20c1, datestamp=1523973389 (Apr 17 2018 13:56:29)
+0001.544 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.544 (0) Examining (for databases) backup set with group_id=0, nonce=0947f43f580b, datestamp=1523973095 (Apr 17 2018 13:51:35)
+0001.544 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0001.546 (0) Number of backup sets in history: 26; groups (files): 1
+0001.547 (0) Examining (for files) backup set with nonce=84aa92196b85, datestamp=1526047541 (May 11 2018 14:05:41)
+0001.547 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=722e2790b6d4, datestamp=1525960647 (May 10 2018 13:57:27)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=a484a770bf46, datestamp=1525874225 (May 09 2018 13:57:05)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=b482a174e95f, datestamp=1525788386 (May 08 2018 14:06:26)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=89d24310297c, datestamp=1525701403 (May 07 2018 13:56:43)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=a2b674000986, datestamp=1525615374 (May 06 2018 14:02:54)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=792402f5f332, datestamp=1525538724 (May 05 2018 16:45:24)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=a97545a470ea, datestamp=1525442373 (May 04 2018 13:59:33)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=034a6f2bd1f0, datestamp=1525356525 (May 03 2018 14:08:45)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=2a21aaae8148, datestamp=1525269674 (May 02 2018 14:01:14)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=d8d1cb544c42, datestamp=1525188281 (May 01 2018 15:24:41)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=63d46f7a8476, datestamp=1525099463 (Apr 30 2018 14:44:23)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=3131ad667686, datestamp=1525011756 (Apr 29 2018 14:22:36)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.550 (0) Examining (for files) backup set with nonce=dd682316ed50, datestamp=1524923697 (Apr 28 2018 13:54:57)
+0001.550 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=624e15909d3b, datestamp=1524837215 (Apr 27 2018 13:53:35)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=1fc6ff2ebb5d, datestamp=1524751262 (Apr 26 2018 14:01:02)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=82ffb899e094, datestamp=1524664447 (Apr 25 2018 13:54:07)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=fb2935449fbb, datestamp=1524578697 (Apr 24 2018 14:04:57)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=424c3cbd7ee2, datestamp=1524492179 (Apr 23 2018 14:02:59)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=e8b54570697b, datestamp=1524405266 (Apr 22 2018 13:54:26)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=d07435a10727, datestamp=1524319067 (Apr 21 2018 13:57:47)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=82d7aa1e8a99, datestamp=1524232463 (Apr 20 2018 13:54:23)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=441b40e90593, datestamp=1524146139 (Apr 19 2018 13:55:39)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=2d2c9cea91de, datestamp=1524059976 (Apr 18 2018 13:59:36)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=891e20ce20c1, datestamp=1523973389 (Apr 17 2018 13:56:29)
+0001.551 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.551 (0) Examining (for files) backup set with nonce=0947f43f580b, datestamp=1523973095 (Apr 17 2018 13:51:35)
+0001.551 (0) This backup set remains non-empty (f=1/d=1); will retain in history
+0001.552 (0) Retain: saving new backup history (sets now: 26) and finishing retain operation
+0001.556 (0) Resume backup (84aa92196b85, 0): finish run
+0001.562 (0) Decremented the semaphore (d) by 1
+0001.564 (0) Semaphore (d) unlocked
+0001.566 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0001.572 (0) No email will/can be sent - the user has not configured an email address.
+0001.574 (0) The backup apparently succeeded and is now complete
