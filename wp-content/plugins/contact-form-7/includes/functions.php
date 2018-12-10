@@ -253,12 +253,12 @@ function wpcf7_enctype_value( $enctype ) {
 
 function wpcf7_rmdir_p( $dir ) {
 	if ( is_file( $dir ) ) {
-		if ( ! $result = unlink( $dir ) ) {
+		if ( ! $result = @unlink( $dir ) ) {
 			$stat = stat( $dir );
 			$perms = $stat['mode'];
 			chmod( $dir, $perms | 0200 ); // add write for owner
 
-			if ( ! $result = unlink( $dir ) ) {
+			if ( ! $result = @unlink( $dir ) ) {
 				chmod( $dir, $perms );
 			}
 		}
@@ -367,4 +367,39 @@ function wpcf7_deprecated_function( $function, $version, $replacement ) {
 			trigger_error( sprintf( '%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', $function, $version, $replacement ) );
 		}
 	}
+}
+
+function wpcf7_anonymize_ip_addr( $ip_addr ) {
+	if ( ! function_exists( 'inet_ntop' ) || ! function_exists( 'inet_pton' ) ) {
+		return $ip_addr;
+	}
+
+	$packed = inet_pton( $ip_addr );
+
+	if ( false === $packed ) {
+		return $ip_addr;
+	}
+
+	if ( 4 == strlen( $packed ) ) { // IPv4
+		$mask = '255.255.255.0';
+	} elseif ( 16 == strlen( $packed ) ) { // IPv6
+		$mask = 'ffff:ffff:ffff:0000:0000:0000:0000:0000';
+	} else {
+		return $ip_addr;
+	}
+
+	return inet_ntop( $packed & inet_pton( $mask ) );
+}
+
+function wpcf7_is_file_path_in_content_dir( $path ) {
+	if ( 0 === strpos( realpath( $path ), WP_CONTENT_DIR ) ) {
+		return true;
+	}
+
+	if ( defined( 'UPLOADS' )
+	and 0 === strpos( realpath( $path ), ABSPATH . UPLOADS ) ) {
+		return true;
+	}
+
+	return false;
 }

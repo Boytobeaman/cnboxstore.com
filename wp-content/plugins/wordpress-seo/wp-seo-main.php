@@ -15,7 +15,8 @@ if ( ! function_exists( 'add_filter' ) ) {
  * {@internal Nobody should be able to overrule the real version number as this can cause
  *            serious issues with the options, so no if ( ! defined() ).}}
  */
-define( 'WPSEO_VERSION', '7.5.1' );
+define( 'WPSEO_VERSION', '9.2.1' );
+
 
 if ( ! defined( 'WPSEO_PATH' ) ) {
 	define( 'WPSEO_PATH', plugin_dir_path( WPSEO_FILE ) );
@@ -24,6 +25,24 @@ if ( ! defined( 'WPSEO_PATH' ) ) {
 if ( ! defined( 'WPSEO_BASENAME' ) ) {
 	define( 'WPSEO_BASENAME', plugin_basename( WPSEO_FILE ) );
 }
+
+/*
+ * {@internal The prefix constants are used to build prefixed versions of dependencies.
+ *            These should not be changed on run-time, thus missing the ! defined() check.}}
+ */
+define( 'YOAST_VENDOR_NS_PREFIX', 'YoastSEO_Vendor' );
+define( 'YOAST_VENDOR_DEFINE_PREFIX', 'YOASTSEO_VENDOR__' );
+define( 'YOAST_VENDOR_PREFIX_DIRECTORY', 'vendor_prefixed' );
+
+if ( ! defined( 'WPSEO_NAMESPACES' ) ) {
+	if ( version_compare( phpversion(), '5.3', '>=' ) ) {
+		define( 'WPSEO_NAMESPACES', true );
+	}
+	else {
+		define( 'WPSEO_NAMESPACES', false );
+	}
+}
+
 
 /* ***************************** CLASS AUTOLOADING *************************** */
 
@@ -41,7 +60,6 @@ function wpseo_auto_load( $class ) {
 		$classes = array(
 			'wp_list_table'   => ABSPATH . 'wp-admin/includes/class-wp-list-table.php',
 			'walker_category' => ABSPATH . 'wp-includes/category-template.php',
-			'pclzip'          => ABSPATH . 'wp-admin/includes/class-pclzip.php',
 		);
 	}
 
@@ -52,8 +70,13 @@ function wpseo_auto_load( $class ) {
 	}
 }
 
-if ( file_exists( WPSEO_PATH . 'vendor/autoload_52.php' ) ) {
-	require WPSEO_PATH . 'vendor/autoload_52.php';
+$yoast_autoload_file = WPSEO_PATH . 'vendor/autoload_52.php';
+if ( WPSEO_NAMESPACES ) {
+	$yoast_autoload_file = WPSEO_PATH . 'vendor/autoload.php';
+}
+
+if ( is_readable( $yoast_autoload_file ) ) {
+	require $yoast_autoload_file;
 }
 elseif ( ! class_exists( 'WPSEO_Options' ) ) { // Still checking since might be site-level autoload R.
 	add_action( 'admin_init', 'yoast_wpseo_missing_autoload', 1 );
@@ -274,7 +297,7 @@ function wpseo_init() {
 
 	if ( version_compare( WPSEO_Options::get( 'version', 1 ), WPSEO_VERSION, '<' ) ) {
 		if ( function_exists( 'opcache_reset' ) ) {
-			opcache_reset();
+			@opcache_reset();
 		}
 
 		new WPSEO_Upgrade();
@@ -303,12 +326,25 @@ function wpseo_init() {
 	$link_watcher = new WPSEO_Link_Watcher_Loader();
 	$link_watcher->load();
 
+	$integrations   = array();
+	$integrations[] = new WPSEO_Slug_Change_Watcher();
+	$integrations[] = new WPSEO_Structured_Data_Blocks();
+
+	foreach ( $integrations as $integration ) {
+		$integration->register_hooks();
+	}
+
 	// Loading Ryte integration.
 	$wpseo_onpage = new WPSEO_OnPage();
 	$wpseo_onpage->register_hooks();
 
 	$wpseo_content_images = new WPSEO_Content_Images();
 	$wpseo_content_images->register_hooks();
+
+	// When namespaces are not available, stop further execution.
+	if ( version_compare( PHP_VERSION, '5.3.0', '>=' ) ) {
+		require_once WPSEO_PATH . 'src/loaders/indexable.php';
+	}
 }
 
 /**
@@ -371,7 +407,6 @@ function wpseo_frontend_head_init() {
 	if ( WPSEO_Options::get( 'opengraph' ) === true ) {
 		$GLOBALS['wpseo_og'] = new WPSEO_OpenGraph();
 	}
-
 }
 
 /**
@@ -381,6 +416,53 @@ function wpseo_admin_init() {
 	new WPSEO_Admin_Init();
 }
 
+/**
+ * Initialize the WP-CLI integration.
+ *
+ * The WP-CLI integration needs PHP 5.3 support, which should be automatically
+ * enforced by the check for the WP_CLI constant. As WP-CLI itself only runs
+ * on PHP 5.3+, the constant should only be set when requirements are met.
+ */
+function wpseo_cli_init() {
+	if ( WPSEO_Utils::is_yoast_seo_premium() ) {
+		WP_CLI::add_command( 'yoast redirect list', 'WPSEO_CLI_Redirect_List_Command', array(
+			'before_invoke' => 'WPSEO_CLI_Premium_Requirement::enforce',
+		) );
+
+		WP_CLI::add_command( 'yoast redirect create', 'WPSEO_CLI_Redirect_Create_Command', array(
+			'before_invoke' => 'WPSEO_CLI_Premium_Requirement::enforce',
+		) );
+
+		WP_CLI::add_command( 'yoast redirect update', 'WPSEO_CLI_Redirect_Update_Command', array(
+			'before_invoke' => 'WPSEO_CLI_Premium_Requirement::enforce',
+		) );
+
+		WP_CLI::add_command( 'yoast redirect delete', 'WPSEO_CLI_Redirect_Delete_Command', array(
+			'before_invoke' => 'WPSEO_CLI_Premium_Requirement::enforce',
+		) );
+
+		WP_CLI::add_command( 'yoast redirect has', 'WPSEO_CLI_Redirect_Has_Command', array(
+			'before_invoke' => 'WPSEO_CLI_Premium_Requirement::enforce',
+		) );
+
+		WP_CLI::add_command( 'yoast redirect follow', 'WPSEO_CLI_Redirect_Follow_Command', array(
+			'before_invoke' => 'WPSEO_CLI_Premium_Requirement::enforce',
+		) );
+	}
+
+	// Only add the namespace if the required base class exists (WP-CLI 1.5.0+).
+	// This is optional and only adds the description of the root `yoast`
+	// command.
+	if ( class_exists( 'WP_CLI\Dispatcher\CommandNamespace' ) ) {
+		WP_CLI::add_command( 'yoast', 'WPSEO_CLI_Yoast_Command_Namespace' );
+		if ( WPSEO_Utils::is_yoast_seo_premium() ) {
+			WP_CLI::add_command( 'yoast redirect', 'WPSEO_CLI_Redirect_Command_Namespace' );
+		}
+		else {
+			WP_CLI::add_command( 'yoast redirect', 'WPSEO_CLI_Redirect_Upsell_Command_Namespace' );
+		}
+	}
+}
 
 /* ***************************** BOOTSTRAP / HOOK INTO WP *************************** */
 $spl_autoload_exists = function_exists( 'spl_autoload_register' );
@@ -421,6 +503,10 @@ if ( ! wp_installing() && ( $spl_autoload_exists && $filter_exists ) ) {
 	}
 
 	add_action( 'plugins_loaded', 'load_yoast_notifications' );
+
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		add_action( 'plugins_loaded', 'wpseo_cli_init', 20 );
+	}
 }
 
 // Activation and deactivation hook.

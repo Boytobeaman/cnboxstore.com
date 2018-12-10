@@ -5,8 +5,8 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: SEO, XML sitemap, Google Search Console, Content analysis, Readability
 Requires at least: 4.8
-Tested up to: 4.9.5
-Stable tag: 7.5.1
+Tested up to: 5.0
+Stable tag: 9.2.1
 Requires PHP: 5.2.4
 
 Improve your WordPress SEO: Write better content and have a fully optimized WordPress site using the Yoast SEO plugin.
@@ -34,8 +34,8 @@ Yoast SEO does everything in its power to please both visitors and search engine
 
 * Content & SEO analysis: Invaluable tools to write SEO-friendly texts.
 * The snippet preview shows you how your post or page will look in the search results - even on mobile. Yoast SEO Premium even has social media previews!
-* **[Premium]** The Insights tool shows you what your text focuses on so you can keep your article in line with your keywords.
-* **[Premium]** Multiple focus keywords: Optimize your article for synonyms and related keywords.
+* **[Premium]** The Insights tool shows you what your text focuses on so you can keep your article in line with your keyphrases.
+* **[Premium]** Synonyms & related keyphrases: Optimize your article for synonyms and related keyphrases.
 * **[Premium]** Automatic internal linking suggestions: write your article and get automatic suggested posts to link to.
 
 #### Keep your site in perfect shape
@@ -52,7 +52,7 @@ Yoast SEO does everything in its power to please both visitors and search engine
 
 The Yoast team does not always provide active support for the Yoast SEO plugin on the WordPress.org forums, as we prioritize our email support. One-on-one email support is available to people who [bought Yoast SEO Premium](https://yoa.st/1v8) only.
 
-Note that the [Yoast SEO Premium](https://yoa.st/1v8) also has several extra features too, including the option to have multiple focus keywords, internal linking suggestions, cornerstone content checks and a redirect manager, so it is well worth your investment!
+Note that the [Yoast SEO Premium](https://yoa.st/1v8) also has several extra features too, including the option to have synonyms and related keyphrases, internal linking suggestions, cornerstone content checks and a redirect manager, so it is well worth your investment!
 
 You should also check out the [Yoast Local SEO](https://yoa.st/1uu), [Yoast News SEO](https://yoa.st/1uv) and [Yoast Video SEO](https://yoa.st/1uw) extensions to Yoast SEO. They work with the free version of Yoast SEO already, and these premium extensions of course come with support too.
 
@@ -106,60 +106,77 @@ You'll find answers to many of your questions on [kb.yoast.com](https://yoa.st/1
 
 == Changelog ==
 
-= 7.5.1 =
-Release Date: May 16th, 2018
+= 9.2.1 =
+Release Date: November 21th, 2018
 
 Bugfixes:
-* Fixes a bug where the auto-generating of the slug did not work as expected due to persisting of the post name too agressively.
 
-= 7.5.0 =
-Release Date: May 15th, 2018
+* Fixes a bug where the title and meta description field's cursor would jump to the start when typing.
+
+= 9.2.0 =
+Release Date: November 20th, 2018
 
 Enhancements:
-* Adds readability analysis for Russian.
-* Improves accessibility.
+
+* Adds support for the 'eye' markers in Gutenberg using the experimental annotations API in Gutenberg. They will work for the paragraph, quote, heading and list blocks.
+* Adds the latest og:locale options provided by Facebook. Props to [valtlfelipe](https://github.com/valtlfelipe)
+* Adds support for oEmbed utilization of Yoast custom fields (post meta) values. Specifically the image and the title. Props to [ben-caplan](https://github.com/ben-caplan)
+* Defines attachment as non-accessible when attachment urls are redirected to the attachment file itself. Props to [stodorovic](https://github.com/stodorovic)
+* Improves the accessibility of the "Bulk editor" and "Search console" tables.
+* Hides SEO title and metadescription fields on the author edit page when the author archives are disabled.
+* Replaces Settings ZIP download (export) and upload (import) functionality with Settings fields.
 
 Bugfixes:
-* Fixes a bug where images with specific aspect ratios where removed from OpenGraph consideration. This was causing unexpected results with Facebook sharing. The aspect ratio check has been removed completely.
-* Fixes a bug where sentences ending in multiple sentence marks, exclamation marks or ellipses were treated as multiple sentences.
-* Fixes a bug where attempting to get Yoast SEO options in multi-site, would result in wrong values being returned.
-* Fixes a bug where the sitemap styling could not be loaded when the Site domain differs from the Admin domain.
-* Fixes a bug where the admin bar still used old copy: Dashboard has been renamed to General.
 
-= 7.4.2 =
-Release Date: May 3rd, 2018
+* Fixes a bug where assessments would fail if a "<" character is present in the content.
+* Fixes a bug where the excerpt replacement variable will output a piece of the post content when no excerpt is given.
+* Fixes a bug where the wrong title is rendered for the WooCommerce product archive.
+* Fixes a bug where the Yoast metabox is visible even when the attachment urls are redirected to the attachment file itself.
+* Fixes a bug where the Dashboard Widget was not displayed in the correct language.
+* Fixes a bug in combination with Gutenberg where paragraphs were sometimes not correctly detected because paragraph tags were not automatically added in WordPress-like fashion.
+* Fixes a bug in combination with Gutenberg where multiple marker buttons could be active at the same time.
+* Fixes a bug in combination with Gutenberg where escaped HTML is shown in the OpenGraph description.
 
-Bugfixes:
-* Fixes automatic image size detection for OpenGraph images. When an image was used that was too large, we wouldn't output the `og:image` tag. That is now fixed.
-* Fixes a bug where portrait images where not allowed for the OpenGraph image.
+Compatibility:
 
+* Adds the `__block_editor_compatible_meta_box` flag to our metabox registrations to indicate they are compatible with WordPress 5.0.
+* Revise the enqueue order of the JavaScript assets to ensure compatibility with the classic editor plugin and WordPress 5.0.
 
-= 7.4.1 =
-Release Date: May 2nd, 2018
+Security:
 
-Bugfixes:
-* Re-adds `wpseo_opengraph_image_size` filter. This will completely override any automatic size determination our code does. This filter now also applies to all ways an `og:image` can be determined: In the content, as a featured image or as set in our Facebook image setting.
-* Fixes an unintended backwards incompatible change which caused "Warning: Illegal string offset ‘url’ in".
-* Fixes an unintended change which caused SVGs to be included in consideration for the `og:image` tag. SVG images are not allowed by Facebook, so these should never be used in the `og:image` tag.
-
-= 7.4.0 =
-Release Date: May 1st, 2018
-
-Enhancements:
-* Adds OpenGraph image dimension-meta tags for more images.
-* Excludes images from being used in OpenGraph meta tags, if the image is larger than 2MB.
-* Adds caching for images found in a post to reduce load.
-* Adds image alt tag to the OpenGraph output, using the meta tag `og:image:alt`.
-* Adds the `is_post_type_viewable` WordPress function to improve support for the `wpseo_accessible_post_types` filters.
-
-Bugfixes:
-* Fixes a bug where a non-array value causes a fatal error when `cron_schedules` filter has been executed.
-* Fixes a bug where not all database tables were removed when a subsite was deleted in a multisite environment.
-* Fixes a bug where deleting multiple posts might cause performance issues. Props to [Moeini](https://github.com/abolfazl-moeini).
+* Fixes a possible command execution by users with SEO Manager roles. Props to [Dimopoulos Elias](https://twitter.com/gweeperx)
 
 Other:
-* Introduces a message, warning about dropping of PHP 5.2 support in an upcoming version.
-* Alters the configuration service text in the Configuration Wizard when a user is already running Yoast SEO Premium. Previously the text contained a reference to getting a bundled copy of Premium, even if the user was already running Premium.
+
+* Disables the non-functioning markers for the subheading distribution assessment.
+* Refactor SEO assessment filenames and exports. Props to [Kingdutch](https://github.com/Kingdutch)
+* Deprecates the `Yoast_Modal` class.
+
+= 9.1.0 =
+Release Date: November 6th, 2018
+
+Enhancements:
+
+* Improves keyphrase recognition in the first paragraph on texts which start with images and captions.
+* Adds a warning notification to the permalink settings page, linking to a knowledge base article. Props to [valtlfelipe](https://github.com/valtlfelipe)
+* Adds the filter `wpseo_opengraph_is_valid_image_url` that allows custom image URL validation. Props to [petenelson](https://github.com/petenelson)
+* Updates the font size of the snippet title measure element to correctly mimic Google desktop snippet title. Props to [ol0lll](https://github.com/ol0lll)
+
+Bugfixes:
+
+* Fixes a bug where the featured image was not recognized in the SEO analysis when using Gutenberg.
+* Fixes an accessibility issue where focus would be lost when removing an uploaded image in the configuration wizard.
+* Fixes a bug where notices were being thrown when quick editing a post and no post type object could be found.
+* Fixes a bug where a dependency wasn't loaded for the SEO -> Tools page.
+* Fixes a faulty reference to the old SEOAssessor class.
+* Fixes the copy of the date archives help text which contains faulty information. Props to [mkronenfeld](https://github.com/mkronenfeld)
+* Fixes the spelling of the words "plug-in" and "set-up". Props to [pedro-mendonca](https://github.com/pedro-mendonca)
+* Fixes a bug where a type error is thrown when the posts or terms focus keyword isn't of the type WP_Post as this can collide with third-party plugins.
+
+Other:
+
+* Changes the reference in the admin bar menu from "AdWords External" to "Google Ads".
+* Removes non-functioning eye-markers for the link keyphrase assessment.
 
 = Earlier versions =
 

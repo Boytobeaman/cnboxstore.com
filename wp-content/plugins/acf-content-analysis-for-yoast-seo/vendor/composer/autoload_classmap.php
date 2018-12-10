@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'AC_Yoast_SEO_ACF_Content_Analysis' => $baseDir . '/inc/class-ac-yoast-acf-content-analysis.php',
+    'AC_Yoast_SEO_ACF_Content_Analysis' => $baseDir . '/inc/ac-yoast-seo-acf-content-analysis.php',
     'Composer\\Installers\\AglInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/AglInstaller.php',
     'Composer\\Installers\\AimeosInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/AimeosInstaller.php',
     'Composer\\Installers\\AnnotateCmsInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/AnnotateCmsInstaller.php',
@@ -92,15 +92,15 @@ return array(
     'Composer\\Installers\\YawikInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/YawikInstaller.php',
     'Composer\\Installers\\ZendInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/ZendInstaller.php',
     'Composer\\Installers\\ZikulaInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/ZikulaInstaller.php',
-    'Yoast_ACF_Analysis_Assets' => $baseDir . '/inc/class-yoast-acf-analysis-assets.php',
-    'Yoast_ACF_Analysis_Configuration' => $baseDir . '/inc/configuration/class-yoast-acf-analysis-configuration.php',
-    'Yoast_ACF_Analysis_Dependency' => $baseDir . '/inc/dependencies/interface-yoast-acf-analysis-depencency.php',
-    'Yoast_ACF_Analysis_Dependency_ACF' => $baseDir . '/inc/dependencies/class-yoast-acf-analysis-dependency-afc.php',
-    'Yoast_ACF_Analysis_Dependency_Yoast_SEO' => $baseDir . '/inc/dependencies/class-yoast-acf-analysis-dependency-yoast-seo.php',
-    'Yoast_ACF_Analysis_Facade' => $baseDir . '/inc/class-yoast-acf-analysis-facade.php',
-    'Yoast_ACF_Analysis_Registry' => $baseDir . '/inc/class-yoast-acf-analysis-registry.php',
-    'Yoast_ACF_Analysis_Requirements' => $baseDir . '/inc/class-yoast-acf-analysis-requirements.php',
-    'Yoast_ACF_Analysis_String_Store' => $baseDir . '/inc/configuration/class-yoast-acf-analysis-string-store.php',
+    'Yoast_ACF_Analysis_Assets' => $baseDir . '/inc/assets.php',
+    'Yoast_ACF_Analysis_Configuration' => $baseDir . '/inc/configuration/configuration.php',
+    'Yoast_ACF_Analysis_Dependency' => $baseDir . '/inc/dependencies/dependency-interface.php',
+    'Yoast_ACF_Analysis_Dependency_ACF' => $baseDir . '/inc/dependencies/dependency-acf.php',
+    'Yoast_ACF_Analysis_Dependency_Yoast_SEO' => $baseDir . '/inc/dependencies/dependency-yoast-seo.php',
+    'Yoast_ACF_Analysis_Facade' => $baseDir . '/inc/facade.php',
+    'Yoast_ACF_Analysis_Registry' => $baseDir . '/inc/registry.php',
+    'Yoast_ACF_Analysis_Requirements' => $baseDir . '/inc/requirements.php',
+    'Yoast_ACF_Analysis_String_Store' => $baseDir . '/inc/configuration/string-store.php',
     'xrstf\\Composer52\\AutoloadGenerator' => $vendorDir . '/xrstf/composer-php52/lib/xrstf/Composer52/AutoloadGenerator.php',
     'xrstf\\Composer52\\Generator' => $vendorDir . '/xrstf/composer-php52/lib/xrstf/Composer52/Generator.php',
 );

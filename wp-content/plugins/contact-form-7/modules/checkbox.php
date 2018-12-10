@@ -61,58 +61,36 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 	$html = '';
 	$count = 0;
 
-	$values = (array) $tag->values;
-	$labels = (array) $tag->labels;
-
 	if ( $data = (array) $tag->get_data_option() ) {
 		if ( $free_text ) {
-			$values = array_merge(
-				array_slice( $values, 0, -1 ),
+			$tag->values = array_merge(
+				array_slice( $tag->values, 0, -1 ),
 				array_values( $data ),
-				array_slice( $values, -1 ) );
-			$labels = array_merge(
-				array_slice( $labels, 0, -1 ),
+				array_slice( $tag->values, -1 ) );
+			$tag->labels = array_merge(
+				array_slice( $tag->labels, 0, -1 ),
 				array_values( $data ),
-				array_slice( $labels, -1 ) );
+				array_slice( $tag->labels, -1 ) );
 		} else {
-			$values = array_merge( $values, array_values( $data ) );
-			$labels = array_merge( $labels, array_values( $data ) );
+			$tag->values = array_merge( $tag->values, array_values( $data ) );
+			$tag->labels = array_merge( $tag->labels, array_values( $data ) );
 		}
 	}
 
-	$defaults = array();
+	$values = $tag->values;
+	$labels = $tag->labels;
 
-	$default_choice = $tag->get_default_option( null, 'multiple=1' );
-
-	foreach ( $default_choice as $value ) {
-		$key = array_search( $value, $values, true );
-
-		if ( false !== $key ) {
-			$defaults[] = (int) $key + 1;
-		}
-	}
-
-	if ( $matches = $tag->get_first_match_option( '/^default:([0-9_]+)$/' ) ) {
-		$defaults = array_merge( $defaults, explode( '_', $matches[1] ) );
-	}
-
-	$defaults = array_unique( $defaults );
+	$default_choice = $tag->get_default_option( null, array(
+		'multiple' => $multiple,
+	) );
 
 	$hangover = wpcf7_get_hangover( $tag->name, $multiple ? array() : '' );
 
 	foreach ( $values as $key => $value ) {
-		$class = 'wpcf7-list-item';
-
-		$checked = false;
-
 		if ( $hangover ) {
-			if ( $multiple ) {
-				$checked = in_array( $value, (array) $hangover, true );
-			} else {
-				$checked = ( $hangover === $value );
-			}
+			$checked = in_array( $value, (array) $hangover, true );
 		} else {
-			$checked = in_array( $key + 1, (array) $defaults );
+			$checked = in_array( $value, (array) $default_choice, true );
 		}
 
 		if ( isset( $labels[$key] ) ) {
@@ -149,6 +127,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 			$tabindex += 1;
 		}
 
+		$class = 'wpcf7-list-item';
 		$count += 1;
 
 		if ( 1 == $count ) {

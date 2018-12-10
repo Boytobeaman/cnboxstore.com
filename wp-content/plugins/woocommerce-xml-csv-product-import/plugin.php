@@ -3,9 +3,9 @@
 Plugin Name: WP All Import - WooCommerce Add-On
 Plugin URI: http://www.wpallimport.com/
 Description: An extremely easy, drag & drop importer to import WooCommerce simple products. A paid upgrade is available for premium support and support for Variable, Grouped, and External/Affiliate products
-Version: 1.3.7
+Version: 1.3.9
 Author: Soflyy
-WC tested up to: 3.3.1
+WC tested up to: 3.4.0
 */
 /**
  * Plugin root dir with forward slashes as directory separator regardless of actuall DIRECTORY_SEPARATOR value
@@ -25,7 +25,7 @@ define('PMWI_ROOT_URL', rtrim(plugin_dir_url(__FILE__), '/'));
  */
 define('PMWI_PREFIX', 'pmwi_');
 
-define('PMWI_FREE_VERSION', '1.3.7');
+define('PMWI_FREE_VERSION', '1.3.9');
 
 define('PMWI_EDITION', 'free');
 
@@ -404,7 +404,6 @@ final class PMWI_Plugin {
 						'is_user' => is_user_admin(),
 					);
 					add_filter('current_screen', array($this, 'getAdminCurrentScreen'));
-					add_filter('admin_body_class', create_function('', 'return "' . PMWI_Plugin::PREFIX . 'plugin";'));
 					
 					$controller = new $controllerName();
 					if ( ! $controller instanceof PMWI_Controller_Admin) {
@@ -508,7 +507,7 @@ final class PMWI_Plugin {
 	public function activation() {
 
 		// uncaught exception doesn't prevent plugin from being activated, therefore replace it with fatal error so it does
-		set_exception_handler(create_function('$e', 'trigger_error($e->getMessage(), E_USER_ERROR);'));
+        set_exception_handler(function($e){trigger_error($e->getMessage(), E_USER_ERROR);});
 
 		// create plugin options
 		$option_name = get_class($this) . '_Options';

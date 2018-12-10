@@ -1,0 +1,672 @@
+0000.005 (0) Opened log file at time: Tue, 09 Oct 2018 14:22:11 +0000 on https://www.cnboxstore.com
+0000.009 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.14.5 WP: 4.9.6 PHP: 7.0.27 (fpm-fcgi, Linux ip-172-26-1-23 4.4.0-1054-aws #63-Ubuntu SMP Wed Mar 28 19:42:42 UTC 2018 x86_64) MySQL: 5.7.21 WPLANG: en_US Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 6.8M | 2M) multisite: N openssl: OpenSSL 1.0.2n  7 Dec 2017 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.011 (0) Free space on disk containing Updraft's temporary directory: 14711.7 MB
+0000.017 (0) Tasks: Backup files:  (schedule: manual) Backup DB: 1 (schedule: daily)
+0000.020 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 1
+0000.032 (0) Requesting semaphore lock (d) (apparently via scheduler: last_scheduled_action_called_at=1539007160, seconds_ago=87771)
+0000.041 (0) Set semaphore last lock (d) time to 2018-10-09 14:22:11
+0000.042 (0) Semaphore lock (d) complete
+0000.049 (0) Backup run: resumption=0, nonce=c4fa7310954f, begun at=1539094931 (0s ago), job type=backup
+0000.054 (0) Scheduling a resumption (1) after 300 seconds (1539095231) in case this run gets aborted
+0000.059 (0) This backup run is not intended for files - skipping
+0000.062 (0) Beginning creation of database dump (WordPress DB)
+0000.114 (0) Table wp_options: Total expected rows (approximate): 481
+0000.144 (0) Table wp_options: Total rows added: 485 in 0.03 seconds
+0000.148 (0) Table wp_options: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_options.table.gz - 58 KB)
+0000.158 (0) Table wp_users: Total expected rows (approximate): 2
+0000.161 (0) Table wp_users: Total rows added: 1 in 0.00 seconds
+0000.163 (0) Table wp_users: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_users.table.gz - 0.5 KB)
+0000.169 (0) Table wp_usermeta: Total expected rows (approximate): 81
+0000.173 (0) Table wp_usermeta: Total rows added: 83 in 0.00 seconds
+0000.176 (0) Table wp_usermeta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_usermeta.table.gz - 2.7 KB)
+0000.181 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0000.185 (0) Table wp_commentmeta: Total rows added: 1 in 0.00 seconds
+0000.186 (0) Table wp_commentmeta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0000.193 (0) Table wp_comments: Total expected rows (approximate): 6
+0000.199 (0) Table wp_comments: Total rows added: 6 in 0.00 seconds
+0000.202 (0) Table wp_comments: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_comments.table.gz - 1.5 KB)
+0000.209 (0) Table wp_links: Total expected rows (approximate): 0
+0000.213 (0) Table wp_links: Total rows added: 0 in 0.00 seconds
+0000.214 (0) Table wp_links: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_links.table.gz - 0.4 KB)
+0000.221 (0) Table wp_postmeta: Total expected rows (approximate): 5822
+0000.278 (0) Table wp_postmeta: Total rows added: 5850 in 0.05 seconds
+0000.281 (0) Table wp_postmeta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_postmeta.table.gz - 56.6 KB)
+0000.288 (0) Table wp_posts: Total expected rows (approximate): 301
+0000.314 (0) Table wp_posts: Total rows added: 301 in 0.02 seconds
+0000.318 (0) Table wp_posts: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_posts.table.gz - 26.6 KB)
+0000.324 (0) Table wp_term_relationships: Total expected rows (approximate): 222
+0000.327 (0) Table wp_term_relationships: Total rows added: 222 in 0.00 seconds
+0000.329 (0) Table wp_term_relationships: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_term_relationships.table.gz - 0.9 KB)
+0000.336 (0) Table wp_term_taxonomy: Total expected rows (approximate): 57
+0000.338 (0) Table wp_term_taxonomy: Total rows added: 57 in 0.00 seconds
+0000.341 (0) Table wp_term_taxonomy: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_term_taxonomy.table.gz - 2.5 KB)
+0000.346 (0) Table wp_termmeta: Total expected rows (approximate): 38
+0000.350 (0) Table wp_termmeta: Total rows added: 38 in 0.00 seconds
+0000.352 (0) Table wp_termmeta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_termmeta.table.gz - 0.7 KB)
+0000.357 (0) Table wp_terms: Total expected rows (approximate): 57
+0000.361 (0) Table wp_terms: Total rows added: 57 in 0.00 seconds
+0000.362 (0) Table wp_terms: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_terms.table.gz - 1.2 KB)
+0000.368 (0) Table wp_woocommerce_order_itemmeta: Total expected rows (approximate): 0
+0000.370 (0) Table wp_woocommerce_order_itemmeta: Total rows added: 0 in 0.00 seconds
+0000.373 (0) Table wp_woocommerce_order_itemmeta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_order_itemmeta.table.gz - 0.4 KB)
+0000.378 (0) Table wp_woocommerce_payment_tokenmeta: Total expected rows (approximate): 0
+0000.382 (0) Table wp_woocommerce_payment_tokenmeta: Total rows added: 0 in 0.00 seconds
+0000.384 (0) Table wp_woocommerce_payment_tokenmeta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_payment_tokenmeta.table.gz - 0.4 KB)
+0000.390 (0) Table wp_yoast_seo_links: Total expected rows (approximate): 519
+0000.396 (0) Table wp_yoast_seo_links: Total rows added: 519 in 0.00 seconds
+0000.398 (0) Table wp_yoast_seo_links: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_yoast_seo_links.table.gz - 4 KB)
+0000.406 (0) Table wp_yoast_seo_meta: Total expected rows (approximate): 153
+0000.409 (0) Table wp_yoast_seo_meta: Total rows added: 153 in 0.00 seconds
+0000.412 (0) Table wp_yoast_seo_meta: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_yoast_seo_meta.table.gz - 0.7 KB)
+0000.418 (0) Table wp_pmxi_files: Total expected rows (approximate): 1
+0000.421 (0) Table wp_pmxi_files: Total rows added: 1 in 0.00 seconds
+0000.422 (0) Table wp_pmxi_files: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_files.table.gz - 0.5 KB)
+0000.429 (0) Table wp_pmxi_history: Total expected rows (approximate): 1
+0000.431 (0) Table wp_pmxi_history: Total rows added: 1 in 0.00 seconds
+0000.434 (0) Table wp_pmxi_history: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_history.table.gz - 0.5 KB)
+0000.441 (0) Table wp_pmxi_imports: Total expected rows (approximate): 1
+0000.444 (0) Table wp_pmxi_imports: Total rows added: 1 in 0.00 seconds
+0000.447 (0) Table wp_pmxi_imports: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_imports.table.gz - 4.4 KB)
+0000.453 (0) Table wp_pmxi_posts: Total expected rows (approximate): 57
+0000.457 (0) Table wp_pmxi_posts: Total rows added: 57 in 0.00 seconds
+0000.458 (0) Table wp_pmxi_posts: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_posts.table.gz - 1.1 KB)
+0000.465 (0) Table wp_pmxi_templates: Total expected rows (approximate): 0
+0000.466 (0) Table wp_pmxi_templates: Total rows added: 0 in 0.00 seconds
+0000.470 (0) Table wp_pmxi_templates: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_templates.table.gz - 0.4 KB)
+0000.476 (0) Table wp_w3tc_cdn_pathmap: Total expected rows (approximate): 0
+0000.478 (0) Table wp_w3tc_cdn_pathmap: Total rows added: 0 in 0.00 seconds
+0000.481 (0) Table wp_w3tc_cdn_pathmap: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_w3tc_cdn_pathmap.table.gz - 0.4 KB)
+0000.486 (0) Table wp_w3tc_cdn_queue: Total expected rows (approximate): 0
+0000.489 (0) Table wp_w3tc_cdn_queue: Total rows added: 0 in 0.00 seconds
+0000.492 (0) Table wp_w3tc_cdn_queue: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_w3tc_cdn_queue.table.gz - 0.4 KB)
+0000.497 (0) Table wp_wc_download_log: Total expected rows (approximate): 0
+0000.502 (0) Table wp_wc_download_log: Total rows added: 0 in 0.00 seconds
+0000.504 (0) Table wp_wc_download_log: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_wc_download_log.table.gz - 0.4 KB)
+0000.509 (0) Table wp_wc_webhooks: Total expected rows (approximate): 0
+0000.512 (0) Table wp_wc_webhooks: Total rows added: 0 in 0.00 seconds
+0000.514 (0) Table wp_wc_webhooks: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_wc_webhooks.table.gz - 0.5 KB)
+0000.520 (0) Table wp_woocommerce_api_keys: Total expected rows (approximate): 0
+0000.522 (0) Table wp_woocommerce_api_keys: Total rows added: 0 in 0.00 seconds
+0000.524 (0) Table wp_woocommerce_api_keys: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_api_keys.table.gz - 0.4 KB)
+0000.529 (0) Table wp_woocommerce_attribute_taxonomies: Total expected rows (approximate): 0
+0000.532 (0) Table wp_woocommerce_attribute_taxonomies: Total rows added: 0 in 0.00 seconds
+0000.534 (0) Table wp_woocommerce_attribute_taxonomies: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_attribute_taxonomies.table.gz - 0.4 KB)
+0000.540 (0) Table wp_woocommerce_downloadable_product_permissions: Total expected rows (approximate): 0
+0000.542 (0) Table wp_woocommerce_downloadable_product_permissions: Total rows added: 0 in 0.00 seconds
+0000.544 (0) Table wp_woocommerce_downloadable_product_permissions: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_downloadable_product_permissions.table.gz - 0.5 KB)
+0000.550 (0) Table wp_woocommerce_log: Total expected rows (approximate): 0
+0000.553 (0) Table wp_woocommerce_log: Total rows added: 0 in 0.00 seconds
+0000.554 (0) Table wp_woocommerce_log: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_log.table.gz - 0.4 KB)
+0000.561 (0) Table wp_woocommerce_order_items: Total expected rows (approximate): 0
+0000.562 (0) Table wp_woocommerce_order_items: Total rows added: 0 in 0.00 seconds
+0000.565 (0) Table wp_woocommerce_order_items: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_order_items.table.gz - 0.4 KB)
+0000.578 (0) Table wp_woocommerce_payment_tokens: Total expected rows (approximate): 0
+0000.582 (0) Table wp_woocommerce_payment_tokens: Total rows added: 0 in 0.00 seconds
+0000.585 (0) Table wp_woocommerce_payment_tokens: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_payment_tokens.table.gz - 0.4 KB)
+0000.590 (0) Table wp_woocommerce_sessions: Total expected rows (approximate): 0
+0000.593 (0) Table wp_woocommerce_sessions: Total rows added: 0 in 0.00 seconds
+0000.596 (0) Table wp_woocommerce_sessions: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_sessions.table.gz - 0.4 KB)
+0000.601 (0) Table wp_woocommerce_shipping_zone_locations: Total expected rows (approximate): 0
+0000.604 (0) Table wp_woocommerce_shipping_zone_locations: Total rows added: 0 in 0.00 seconds
+0000.605 (0) Table wp_woocommerce_shipping_zone_locations: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_shipping_zone_locations.table.gz - 0.4 KB)
+0000.612 (0) Table wp_woocommerce_shipping_zone_methods: Total expected rows (approximate): 0
+0000.614 (0) Table wp_woocommerce_shipping_zone_methods: Total rows added: 0 in 0.00 seconds
+0000.616 (0) Table wp_woocommerce_shipping_zone_methods: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_shipping_zone_methods.table.gz - 0.4 KB)
+0000.622 (0) Table wp_woocommerce_shipping_zones: Total expected rows (approximate): 0
+0000.625 (0) Table wp_woocommerce_shipping_zones: Total rows added: 0 in 0.00 seconds
+0000.626 (0) Table wp_woocommerce_shipping_zones: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_shipping_zones.table.gz - 0.3 KB)
+0000.632 (0) Table wp_woocommerce_tax_rate_locations: Total expected rows (approximate): 0
+0000.634 (0) Table wp_woocommerce_tax_rate_locations: Total rows added: 0 in 0.00 seconds
+0000.637 (0) Table wp_woocommerce_tax_rate_locations: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_tax_rate_locations.table.gz - 0.4 KB)
+0000.644 (0) Table wp_woocommerce_tax_rates: Total expected rows (approximate): 0
+0000.646 (0) Table wp_woocommerce_tax_rates: Total rows added: 0 in 0.00 seconds
+0000.648 (0) Table wp_woocommerce_tax_rates: finishing file (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_tax_rates.table.gz - 0.4 KB)
+0000.658 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_options.table.gz (1/37): adding to final database dump
+0000.686 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_users.table.gz (2/37): adding to final database dump
+0000.689 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_usermeta.table.gz (3/37): adding to final database dump
+0000.693 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_commentmeta.table.gz (4/37): adding to final database dump
+0000.694 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_comments.table.gz (5/37): adding to final database dump
+0000.697 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_links.table.gz (6/37): adding to final database dump
+0000.698 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_postmeta.table.gz (7/37): adding to final database dump
+0000.777 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_posts.table.gz (8/37): adding to final database dump
+0000.806 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_term_relationships.table.gz (9/37): adding to final database dump
+0000.810 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_term_taxonomy.table.gz (10/37): adding to final database dump
+0000.813 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_termmeta.table.gz (11/37): adding to final database dump
+0000.816 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_terms.table.gz (12/37): adding to final database dump
+0000.817 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_order_itemmeta.table.gz (13/37): adding to final database dump
+0000.819 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_payment_tokenmeta.table.gz (14/37): adding to final database dump
+0000.821 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_yoast_seo_links.table.gz (15/37): adding to final database dump
+0000.826 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_yoast_seo_meta.table.gz (16/37): adding to final database dump
+0000.829 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_files.table.gz (17/37): adding to final database dump
+0000.830 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_history.table.gz (18/37): adding to final database dump
+0000.833 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_imports.table.gz (19/37): adding to final database dump
+0000.836 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_posts.table.gz (20/37): adding to final database dump
+0000.839 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_pmxi_templates.table.gz (21/37): adding to final database dump
+0000.842 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_w3tc_cdn_pathmap.table.gz (22/37): adding to final database dump
+0000.844 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_w3tc_cdn_queue.table.gz (23/37): adding to final database dump
+0000.846 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_wc_download_log.table.gz (24/37): adding to final database dump
+0000.848 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_wc_webhooks.table.gz (25/37): adding to final database dump
+0000.849 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_api_keys.table.gz (26/37): adding to final database dump
+0000.851 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_attribute_taxonomies.table.gz (27/37): adding to final database dump
+0000.853 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_downloadable_product_permissions.table.gz (28/37): adding to final database dump
+0000.854 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_log.table.gz (29/37): adding to final database dump
+0000.856 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_order_items.table.gz (30/37): adding to final database dump
+0000.857 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_payment_tokens.table.gz (31/37): adding to final database dump
+0000.860 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_sessions.table.gz (32/37): adding to final database dump
+0000.861 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_shipping_zone_locations.table.gz (33/37): adding to final database dump
+0000.864 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_shipping_zone_methods.table.gz (34/37): adding to final database dump
+0000.865 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_shipping_zones.table.gz (35/37): adding to final database dump
+0000.866 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_tax_rate_locations.table.gz (36/37): adding to final database dump
+0000.869 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db-table-wp_woocommerce_tax_rates.table.gz (37/37): adding to final database dump
+0000.870 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz: finished writing out complete database file (152 KB)
+0000.882 (0) Total database tables backed up: 37 (backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz, size: 165719, sha256)
+0000.905 (0) backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz: db: This file has not yet been successfully uploaded: will queue
+0000.908 (0) Saving backup history. Total backup size: 161.8 KB
+0000.916 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0000.922 (0) Cloud backup selection (1/1): s3 with instance (1/1) (last)
+0000.924 (0) Beginning dispatch of backup to remote (s3) (instance identifier s-4c9f28d878d94fdf129aae8d8cb7e7df)
+0000.997 (0) Set region: us-west-1
+0001.000 (0) S3 upload (us-west-1): backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz (chunks: 1) -> s3://website-database-lxc/cnboxstore.com/backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz
+0001.747 (0) S3 regular upload: success
+0001.753 (0) Recording as successfully uploaded: backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz (179e1c243781c482ebf4112e6a0c78d2)
+0001.760 (0) Deleting local file: backup_2018-10-09-1422_CnBoxStorecom_c4fa7310954f-db.gz: OK
+0001.764 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=10, retain_db=120
+0001.766 (0) Number of backup sets in history: 122; groups (db): 1
+0001.768 (0) Examining (for databases) backup set with group_id=0, nonce=c4fa7310954f, datestamp=1539094931 (Oct 09 2018 14:22:11)
+0001.769 (0) This backup set is the backup set just made, so will not be deleted.
+0001.769 (0) Examining (for databases) backup set with group_id=0, nonce=c67794980b6c, datestamp=1539007160 (Oct 08 2018 13:59:20)
+0001.769 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=baf401e7e0ec, datestamp=1538920827 (Oct 07 2018 14:00:27)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=a4353b57fba0, datestamp=1538834171 (Oct 06 2018 13:56:11)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=81ec6a609178, datestamp=1538747611 (Oct 05 2018 13:53:31)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=e592c98c6d6f, datestamp=1538664045 (Oct 04 2018 14:40:45)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=4d3bec608d59, datestamp=1538574802 (Oct 03 2018 13:53:22)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=bc2412d5315d, datestamp=1538490487 (Oct 02 2018 14:28:07)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=0dc7dbc020f5, datestamp=1538402118 (Oct 01 2018 13:55:18)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=9ff943882746, datestamp=1538317366 (Sep 30 2018 14:22:46)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=ad3517381750, datestamp=1538229334 (Sep 29 2018 13:55:34)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=2ba732f89736, datestamp=1538143210 (Sep 28 2018 14:00:10)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=14c9a5f8e2a8, datestamp=1538057266 (Sep 27 2018 14:07:46)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=1aca003de9af, datestamp=1537971224 (Sep 26 2018 14:13:44)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=894892bbeb3f, datestamp=1537883845 (Sep 25 2018 13:57:25)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=063b4958b751, datestamp=1537800615 (Sep 24 2018 14:50:15)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.772 (0) Examining (for databases) backup set with group_id=0, nonce=2c4c0ac4cb71, datestamp=1537711002 (Sep 23 2018 13:56:42)
+0001.772 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=ec6ed4671340, datestamp=1537624739 (Sep 22 2018 13:58:59)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=16617e3918ea, datestamp=1537539283 (Sep 21 2018 14:14:43)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=8703f323a9e1, datestamp=1537453108 (Sep 20 2018 14:18:28)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=5ab2d6ea717d, datestamp=1537365660 (Sep 19 2018 14:01:00)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=83864192390b, datestamp=1537279612 (Sep 18 2018 14:06:52)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=8f954c64f874, datestamp=1537194046 (Sep 17 2018 14:20:46)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=9e9c687d7b97, datestamp=1537106373 (Sep 16 2018 13:59:33)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=e865ffb6848a, datestamp=1537019731 (Sep 15 2018 13:55:31)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=abae32e279a0, datestamp=1536933335 (Sep 14 2018 13:55:35)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=d231c17b8cf9, datestamp=1536847676 (Sep 13 2018 14:07:56)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=330abaa31636, datestamp=1536760970 (Sep 12 2018 14:02:50)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=5b4fb9e95328, datestamp=1536675004 (Sep 11 2018 14:10:04)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=d462296eceff, datestamp=1536587740 (Sep 10 2018 13:55:40)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=20c2edeb6aba, datestamp=1536501384 (Sep 09 2018 13:56:24)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=14c8a80a55ec, datestamp=1536414933 (Sep 08 2018 13:55:33)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=23256fd4fa75, datestamp=1536329311 (Sep 07 2018 14:08:31)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=44e612c72581, datestamp=1536242121 (Sep 06 2018 13:55:21)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.773 (0) Examining (for databases) backup set with group_id=0, nonce=c1bbd581fbe5, datestamp=1536158791 (Sep 05 2018 14:46:31)
+0001.773 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=b9590c5f5c8c, datestamp=1536069302 (Sep 04 2018 13:55:02)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=7ab7affbc07f, datestamp=1535984674 (Sep 03 2018 14:24:34)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=62bd81c8bb40, datestamp=1535896432 (Sep 02 2018 13:53:52)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=927371de1247, datestamp=1535810991 (Sep 01 2018 14:09:51)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=636667754a92, datestamp=1535724114 (Aug 31 2018 14:01:54)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=dc1c9fcb94f3, datestamp=1535637726 (Aug 30 2018 14:02:06)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=22d4b1b127be, datestamp=1535550849 (Aug 29 2018 13:54:09)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=e537e5e2f03c, datestamp=1535464540 (Aug 28 2018 13:55:40)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=87b1e0902868, datestamp=1535378200 (Aug 27 2018 13:56:40)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=3e319fa76980, datestamp=1535291851 (Aug 26 2018 13:57:31)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=8143e6458d9e, datestamp=1535206655 (Aug 25 2018 14:17:35)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=041178e80f31, datestamp=1535119202 (Aug 24 2018 14:00:02)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=6d78caa871d2, datestamp=1535032467 (Aug 23 2018 13:54:27)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=c714aba138b9, datestamp=1534946399 (Aug 22 2018 13:59:59)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=5b14796a4671, datestamp=1534859668 (Aug 21 2018 13:54:28)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=17326aa65ff3, datestamp=1534773441 (Aug 20 2018 13:57:21)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.774 (0) Examining (for databases) backup set with group_id=0, nonce=b256ead324c6, datestamp=1534689562 (Aug 19 2018 14:39:22)
+0001.774 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=d33b4a02e219, datestamp=1534600552 (Aug 18 2018 13:55:52)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=79b1745494c7, datestamp=1534514037 (Aug 17 2018 13:53:57)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=cf0575fe0d60, datestamp=1534429546 (Aug 16 2018 14:25:46)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=9b8c68e23450, datestamp=1534341672 (Aug 15 2018 14:01:12)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=76ed41b92149, datestamp=1534255007 (Aug 14 2018 13:56:47)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=779345668a6c, datestamp=1534168897 (Aug 13 2018 14:01:37)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=aeeaa0d1374a, datestamp=1534082147 (Aug 12 2018 13:55:47)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=d1830d14cca2, datestamp=1533995602 (Aug 11 2018 13:53:22)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=e4bd2bd5d4ff, datestamp=1533909212 (Aug 10 2018 13:53:32)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=de5fb206d73d, datestamp=1533823479 (Aug 09 2018 14:04:39)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=5890c4b869eb, datestamp=1533736623 (Aug 08 2018 13:57:03)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=b60756108bc2, datestamp=1533650356 (Aug 07 2018 13:59:16)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=ca0c6a084a74, datestamp=1533564191 (Aug 06 2018 14:03:11)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=9c49e2ac072b, datestamp=1533477948 (Aug 05 2018 14:05:48)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=d003a0a5b93a, datestamp=1533391818 (Aug 04 2018 14:10:18)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=d2498a20bbab, datestamp=1533305236 (Aug 03 2018 14:07:16)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=51f171058248, datestamp=1533219153 (Aug 02 2018 14:12:33)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.775 (0) Examining (for databases) backup set with group_id=0, nonce=a4a845a1fe47, datestamp=1533132279 (Aug 01 2018 14:04:39)
+0001.775 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=5a968ce6df71, datestamp=1533047938 (Jul 31 2018 14:38:58)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=c430bd279126, datestamp=1532959327 (Jul 30 2018 14:02:07)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=7061dee843fa, datestamp=1532872553 (Jul 29 2018 13:55:53)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=cd935e29564d, datestamp=1532786398 (Jul 28 2018 13:59:58)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=42772378b245, datestamp=1532699936 (Jul 27 2018 13:58:56)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=148f8c9dd490, datestamp=1532613316 (Jul 26 2018 13:55:16)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=9594f9e3154a, datestamp=1532528411 (Jul 25 2018 14:20:11)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=6b60e68df3cc, datestamp=1532440456 (Jul 24 2018 13:54:16)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=d116fee230f1, datestamp=1532354554 (Jul 23 2018 14:02:34)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=5c5d9a0585c8, datestamp=1532267701 (Jul 22 2018 13:55:01)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=aecb43a4534a, datestamp=1532181597 (Jul 21 2018 13:59:57)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=e5256708048b, datestamp=1532096539 (Jul 20 2018 14:22:19)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=04c74663739f, datestamp=1532009549 (Jul 19 2018 14:12:29)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=049f22556365, datestamp=1531922961 (Jul 18 2018 14:09:21)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=783fcee75082, datestamp=1531836275 (Jul 17 2018 14:04:35)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=a63db4b41e50, datestamp=1531749808 (Jul 16 2018 14:03:28)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.776 (0) Examining (for databases) backup set with group_id=0, nonce=823b7112fd02, datestamp=1531664270 (Jul 15 2018 14:17:50)
+0001.776 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=0f77a11b5e47, datestamp=1531577160 (Jul 14 2018 14:06:00)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=70949cfe446b, datestamp=1531490689 (Jul 13 2018 14:04:49)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=c3d188ac2e1a, datestamp=1531404371 (Jul 12 2018 14:06:11)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=c81a7c1abc26, datestamp=1531318738 (Jul 11 2018 14:18:58)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=097fcbd0aa22, datestamp=1531233282 (Jul 10 2018 14:34:42)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=48129b4f4135, datestamp=1531144924 (Jul 09 2018 14:02:04)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=29e52c599288, datestamp=1531059095 (Jul 08 2018 14:11:35)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=9e407396490f, datestamp=1530972317 (Jul 07 2018 14:05:17)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=8fda0bb4a710, datestamp=1530885265 (Jul 06 2018 13:54:25)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=ee562fbb20e2, datestamp=1530799391 (Jul 05 2018 14:03:11)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=760e888e0b31, datestamp=1530713114 (Jul 04 2018 14:05:14)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=de0464e68b7b, datestamp=1530626039 (Jul 03 2018 13:53:59)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=25764ce51e5d, datestamp=1530540377 (Jul 02 2018 14:06:17)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=4f4c36d1ec25, datestamp=1530455280 (Jul 01 2018 14:28:00)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=c9afd0e64598, datestamp=1530367320 (Jun 30 2018 14:02:00)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=546cdc1e0dfc, datestamp=1530280858 (Jun 29 2018 14:00:58)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.777 (0) Examining (for databases) backup set with group_id=0, nonce=39ca9d3ce67f, datestamp=1530194149 (Jun 28 2018 13:55:49)
+0001.777 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=1bfef827844e, datestamp=1530108105 (Jun 27 2018 14:01:45)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=65b4d434a4f3, datestamp=1530021486 (Jun 26 2018 13:58:06)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=c5c7d22a261f, datestamp=1529935003 (Jun 25 2018 13:56:43)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=97dfbd119846, datestamp=1529848619 (Jun 24 2018 13:56:59)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=974ecf622a50, datestamp=1529762146 (Jun 23 2018 13:55:46)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=51dd5ad12d9a, datestamp=1529675761 (Jun 22 2018 13:56:01)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=cdddbb56a58a, datestamp=1529589376 (Jun 21 2018 13:56:16)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=ccb79a496aab, datestamp=1529503078 (Jun 20 2018 13:57:58)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=6fdae243a48e, datestamp=1529416424 (Jun 19 2018 13:53:44)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=3afc3b87da99, datestamp=1529330030 (Jun 18 2018 13:53:50)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=597d4f2ec7f5, datestamp=1529243645 (Jun 17 2018 13:54:05)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=fd9af78af67a, datestamp=1529157278 (Jun 16 2018 13:54:38)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=06e0b5de60fa, datestamp=1529070997 (Jun 15 2018 13:56:37)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=4c6c96e9af25, datestamp=1528984403 (Jun 14 2018 13:53:23)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=1a3eea5bbae6, datestamp=1528898030 (Jun 13 2018 13:53:50)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=15c4dc750646, datestamp=1528811800 (Jun 12 2018 13:56:40)
+0001.778 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.778 (0) Examining (for databases) backup set with group_id=0, nonce=3cc89ef7e179, datestamp=1528725477 (Jun 11 2018 13:57:57)
+0001.778 (0) 1528725477: db: this set includes a database (backup_2018-06-11-1357_CnBoxStorecom_3cc89ef7e179-db.gz); db count is now 120
+0001.778 (0) 1528725477: db: over retain limit (120); will delete this database
+0001.778 (0) Delete file: backup_2018-06-11-1357_CnBoxStorecom_3cc89ef7e179-db.gz, service=s3
+0001.781 (0) S3: Delete remote: bucket=website-database-lxc, URI=cnboxstore.com/backup_2018-06-11-1357_CnBoxStorecom_3cc89ef7e179-db.gz
+0001.867 (0) This backup set is now empty; will remove from history
+0001.869 (0) Deleting log file (log.3cc89ef7e179.txt)
+0001.871 (0) Examining (for databases) backup set with group_id=0, nonce=0947f43f580b, datestamp=1523973095 (Apr 17 2018 13:51:35)
+0001.871 (0) Number of backup sets in history: 121; groups (files): 1
+0001.872 (0) Examining (for files) backup set with nonce=c4fa7310954f, datestamp=1539094931 (Oct 09 2018 14:22:11)
+0001.872 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.873 (0) Examining (for files) backup set with nonce=c67794980b6c, datestamp=1539007160 (Oct 08 2018 13:59:20)
+0001.873 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=baf401e7e0ec, datestamp=1538920827 (Oct 07 2018 14:00:27)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=a4353b57fba0, datestamp=1538834171 (Oct 06 2018 13:56:11)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=81ec6a609178, datestamp=1538747611 (Oct 05 2018 13:53:31)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=e592c98c6d6f, datestamp=1538664045 (Oct 04 2018 14:40:45)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=4d3bec608d59, datestamp=1538574802 (Oct 03 2018 13:53:22)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=bc2412d5315d, datestamp=1538490487 (Oct 02 2018 14:28:07)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=0dc7dbc020f5, datestamp=1538402118 (Oct 01 2018 13:55:18)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=9ff943882746, datestamp=1538317366 (Sep 30 2018 14:22:46)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=ad3517381750, datestamp=1538229334 (Sep 29 2018 13:55:34)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=2ba732f89736, datestamp=1538143210 (Sep 28 2018 14:00:10)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=14c9a5f8e2a8, datestamp=1538057266 (Sep 27 2018 14:07:46)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=1aca003de9af, datestamp=1537971224 (Sep 26 2018 14:13:44)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=894892bbeb3f, datestamp=1537883845 (Sep 25 2018 13:57:25)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=063b4958b751, datestamp=1537800615 (Sep 24 2018 14:50:15)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=2c4c0ac4cb71, datestamp=1537711002 (Sep 23 2018 13:56:42)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=ec6ed4671340, datestamp=1537624739 (Sep 22 2018 13:58:59)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=16617e3918ea, datestamp=1537539283 (Sep 21 2018 14:14:43)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.874 (0) Examining (for files) backup set with nonce=8703f323a9e1, datestamp=1537453108 (Sep 20 2018 14:18:28)
+0001.874 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=5ab2d6ea717d, datestamp=1537365660 (Sep 19 2018 14:01:00)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=83864192390b, datestamp=1537279612 (Sep 18 2018 14:06:52)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=8f954c64f874, datestamp=1537194046 (Sep 17 2018 14:20:46)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=9e9c687d7b97, datestamp=1537106373 (Sep 16 2018 13:59:33)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=e865ffb6848a, datestamp=1537019731 (Sep 15 2018 13:55:31)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=abae32e279a0, datestamp=1536933335 (Sep 14 2018 13:55:35)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=d231c17b8cf9, datestamp=1536847676 (Sep 13 2018 14:07:56)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=330abaa31636, datestamp=1536760970 (Sep 12 2018 14:02:50)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=5b4fb9e95328, datestamp=1536675004 (Sep 11 2018 14:10:04)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=d462296eceff, datestamp=1536587740 (Sep 10 2018 13:55:40)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=20c2edeb6aba, datestamp=1536501384 (Sep 09 2018 13:56:24)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=14c8a80a55ec, datestamp=1536414933 (Sep 08 2018 13:55:33)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=23256fd4fa75, datestamp=1536329311 (Sep 07 2018 14:08:31)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=44e612c72581, datestamp=1536242121 (Sep 06 2018 13:55:21)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=c1bbd581fbe5, datestamp=1536158791 (Sep 05 2018 14:46:31)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=b9590c5f5c8c, datestamp=1536069302 (Sep 04 2018 13:55:02)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=7ab7affbc07f, datestamp=1535984674 (Sep 03 2018 14:24:34)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=62bd81c8bb40, datestamp=1535896432 (Sep 02 2018 13:53:52)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=927371de1247, datestamp=1535810991 (Sep 01 2018 14:09:51)
+0001.875 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.875 (0) Examining (for files) backup set with nonce=636667754a92, datestamp=1535724114 (Aug 31 2018 14:01:54)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=dc1c9fcb94f3, datestamp=1535637726 (Aug 30 2018 14:02:06)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=22d4b1b127be, datestamp=1535550849 (Aug 29 2018 13:54:09)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=e537e5e2f03c, datestamp=1535464540 (Aug 28 2018 13:55:40)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=87b1e0902868, datestamp=1535378200 (Aug 27 2018 13:56:40)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=3e319fa76980, datestamp=1535291851 (Aug 26 2018 13:57:31)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=8143e6458d9e, datestamp=1535206655 (Aug 25 2018 14:17:35)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=041178e80f31, datestamp=1535119202 (Aug 24 2018 14:00:02)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=6d78caa871d2, datestamp=1535032467 (Aug 23 2018 13:54:27)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=c714aba138b9, datestamp=1534946399 (Aug 22 2018 13:59:59)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=5b14796a4671, datestamp=1534859668 (Aug 21 2018 13:54:28)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=17326aa65ff3, datestamp=1534773441 (Aug 20 2018 13:57:21)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=b256ead324c6, datestamp=1534689562 (Aug 19 2018 14:39:22)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=d33b4a02e219, datestamp=1534600552 (Aug 18 2018 13:55:52)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=79b1745494c7, datestamp=1534514037 (Aug 17 2018 13:53:57)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=cf0575fe0d60, datestamp=1534429546 (Aug 16 2018 14:25:46)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=9b8c68e23450, datestamp=1534341672 (Aug 15 2018 14:01:12)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=76ed41b92149, datestamp=1534255007 (Aug 14 2018 13:56:47)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=779345668a6c, datestamp=1534168897 (Aug 13 2018 14:01:37)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.876 (0) Examining (for files) backup set with nonce=aeeaa0d1374a, datestamp=1534082147 (Aug 12 2018 13:55:47)
+0001.876 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=d1830d14cca2, datestamp=1533995602 (Aug 11 2018 13:53:22)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=e4bd2bd5d4ff, datestamp=1533909212 (Aug 10 2018 13:53:32)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=de5fb206d73d, datestamp=1533823479 (Aug 09 2018 14:04:39)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=5890c4b869eb, datestamp=1533736623 (Aug 08 2018 13:57:03)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=b60756108bc2, datestamp=1533650356 (Aug 07 2018 13:59:16)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=ca0c6a084a74, datestamp=1533564191 (Aug 06 2018 14:03:11)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=9c49e2ac072b, datestamp=1533477948 (Aug 05 2018 14:05:48)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=d003a0a5b93a, datestamp=1533391818 (Aug 04 2018 14:10:18)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=d2498a20bbab, datestamp=1533305236 (Aug 03 2018 14:07:16)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=51f171058248, datestamp=1533219153 (Aug 02 2018 14:12:33)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=a4a845a1fe47, datestamp=1533132279 (Aug 01 2018 14:04:39)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=5a968ce6df71, datestamp=1533047938 (Jul 31 2018 14:38:58)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=c430bd279126, datestamp=1532959327 (Jul 30 2018 14:02:07)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=7061dee843fa, datestamp=1532872553 (Jul 29 2018 13:55:53)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=cd935e29564d, datestamp=1532786398 (Jul 28 2018 13:59:58)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=42772378b245, datestamp=1532699936 (Jul 27 2018 13:58:56)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=148f8c9dd490, datestamp=1532613316 (Jul 26 2018 13:55:16)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=9594f9e3154a, datestamp=1532528411 (Jul 25 2018 14:20:11)
+0001.877 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.877 (0) Examining (for files) backup set with nonce=6b60e68df3cc, datestamp=1532440456 (Jul 24 2018 13:54:16)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=d116fee230f1, datestamp=1532354554 (Jul 23 2018 14:02:34)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=5c5d9a0585c8, datestamp=1532267701 (Jul 22 2018 13:55:01)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=aecb43a4534a, datestamp=1532181597 (Jul 21 2018 13:59:57)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=e5256708048b, datestamp=1532096539 (Jul 20 2018 14:22:19)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=04c74663739f, datestamp=1532009549 (Jul 19 2018 14:12:29)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=049f22556365, datestamp=1531922961 (Jul 18 2018 14:09:21)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=783fcee75082, datestamp=1531836275 (Jul 17 2018 14:04:35)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=a63db4b41e50, datestamp=1531749808 (Jul 16 2018 14:03:28)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=823b7112fd02, datestamp=1531664270 (Jul 15 2018 14:17:50)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=0f77a11b5e47, datestamp=1531577160 (Jul 14 2018 14:06:00)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=70949cfe446b, datestamp=1531490689 (Jul 13 2018 14:04:49)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=c3d188ac2e1a, datestamp=1531404371 (Jul 12 2018 14:06:11)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=c81a7c1abc26, datestamp=1531318738 (Jul 11 2018 14:18:58)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=097fcbd0aa22, datestamp=1531233282 (Jul 10 2018 14:34:42)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=48129b4f4135, datestamp=1531144924 (Jul 09 2018 14:02:04)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=29e52c599288, datestamp=1531059095 (Jul 08 2018 14:11:35)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=9e407396490f, datestamp=1530972317 (Jul 07 2018 14:05:17)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.878 (0) Examining (for files) backup set with nonce=8fda0bb4a710, datestamp=1530885265 (Jul 06 2018 13:54:25)
+0001.878 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=ee562fbb20e2, datestamp=1530799391 (Jul 05 2018 14:03:11)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=760e888e0b31, datestamp=1530713114 (Jul 04 2018 14:05:14)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=de0464e68b7b, datestamp=1530626039 (Jul 03 2018 13:53:59)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=25764ce51e5d, datestamp=1530540377 (Jul 02 2018 14:06:17)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=4f4c36d1ec25, datestamp=1530455280 (Jul 01 2018 14:28:00)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=c9afd0e64598, datestamp=1530367320 (Jun 30 2018 14:02:00)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=546cdc1e0dfc, datestamp=1530280858 (Jun 29 2018 14:00:58)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=39ca9d3ce67f, datestamp=1530194149 (Jun 28 2018 13:55:49)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=1bfef827844e, datestamp=1530108105 (Jun 27 2018 14:01:45)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=65b4d434a4f3, datestamp=1530021486 (Jun 26 2018 13:58:06)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=c5c7d22a261f, datestamp=1529935003 (Jun 25 2018 13:56:43)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=97dfbd119846, datestamp=1529848619 (Jun 24 2018 13:56:59)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=974ecf622a50, datestamp=1529762146 (Jun 23 2018 13:55:46)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=51dd5ad12d9a, datestamp=1529675761 (Jun 22 2018 13:56:01)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=cdddbb56a58a, datestamp=1529589376 (Jun 21 2018 13:56:16)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=ccb79a496aab, datestamp=1529503078 (Jun 20 2018 13:57:58)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=6fdae243a48e, datestamp=1529416424 (Jun 19 2018 13:53:44)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=3afc3b87da99, datestamp=1529330030 (Jun 18 2018 13:53:50)
+0001.879 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.879 (0) Examining (for files) backup set with nonce=597d4f2ec7f5, datestamp=1529243645 (Jun 17 2018 13:54:05)
+0001.880 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.880 (0) Examining (for files) backup set with nonce=fd9af78af67a, datestamp=1529157278 (Jun 16 2018 13:54:38)
+0001.880 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.880 (0) Examining (for files) backup set with nonce=06e0b5de60fa, datestamp=1529070997 (Jun 15 2018 13:56:37)
+0001.880 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.880 (0) Examining (for files) backup set with nonce=4c6c96e9af25, datestamp=1528984403 (Jun 14 2018 13:53:23)
+0001.880 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.880 (0) Examining (for files) backup set with nonce=1a3eea5bbae6, datestamp=1528898030 (Jun 13 2018 13:53:50)
+0001.880 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.880 (0) Examining (for files) backup set with nonce=15c4dc750646, datestamp=1528811800 (Jun 12 2018 13:56:40)
+0001.880 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0001.880 (0) Examining (for files) backup set with nonce=0947f43f580b, datestamp=1523973095 (Apr 17 2018 13:51:35)
+0001.880 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0001.882 (0) Retain: saving new backup history (sets now: 121) and finishing retain operation
+0001.895 (0) Resume backup (c4fa7310954f, 0): finish run
+0001.901 (0) Decremented the semaphore (d) by 1
+0001.904 (0) Semaphore (d) unlocked
+0001.905 (0) There were no errors in the uploads, so the 'resume' event (1) is being unscheduled
+0001.911 (0) No email will/can be sent - the user has not configured an email address.
+0001.913 (0) The backup apparently succeeded and is now complete

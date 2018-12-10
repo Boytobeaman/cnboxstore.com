@@ -406,7 +406,12 @@
     "cdn.cf2.secret": "cOccWbxuDV8LwZyfiS\/bIIp12QwiZKtdfwp\/nCKQ",
     "cdn.cf2.id": "d1j7z8ernyunq",
     "cdn.cf2.cname": [
-        "cdn.cnboxstore.com"
+        "cdn.cnboxstore.com",
+        "cdn1.cnboxstore.com",
+        "cdn2.cnboxstore.com",
+        "cdn3.cnboxstore.com",
+        "cdn4.cnboxstore.com",
+        "cdn5.cnboxstore.com"
     ],
     "cdn.cf2.ssl": "auto",
     "cdn.rscf.user": "",

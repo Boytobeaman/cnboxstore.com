@@ -1,12 +1,12 @@
 === ACF Content Analysis for Yoast SEO ===
 Contributors: yoast, angrycreative, kraftner, marcusforsberg, viktorfroberg, joostdevalk, atimmer, jipmoors, theorboman
 Tags: Yoast, SEO, ACF, Advanced Custom Fields, analysis, Search Engine Optimization
-Requires at least: 4.3.1
-Tested up to: 4.8.2
+Requires at least: 4.8
+Tested up to: 4.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
-Stable tag: 2.0.1
-Text Domain: acf-content-analysis-for-yoast-seo
+Stable tag: 2.1.0
+Requires PHP: 5.2.4
 
 WordPress plugin that adds the content of all ACF fields to the Yoast SEO score analysis.
 
@@ -24,7 +24,48 @@ This Plugin is compatible with the free ACF 4 Version as well as with the PRO Ve
 
 Previously called Yoast ACF Analysis.
 
+== Filters ==
+
+= Remove specific field from scoring =
+`add_filter( 'yoast-acf-analysis/blacklist_name', function ( $blacklist_name ) {
+    $blacklist_name->add( 'my-field-name' );
+    return $blacklist_name;
+});`
+
+= Remove field type from scoring =
+`add_filter( 'yoast-acf-analysis/blacklist_type', function ( $blacklist_type ) {
+    // text, image etc
+    $blacklist_type->add( 'text' );
+    $blacklist_type->add( 'image' );
+    return $blacklist_type;
+});`
+
+= Define custom field a specific heading value =
+`add_filter( 'yoast-acf-analysis/headlines', function ( $headlines ) {
+    // value from 1-6, 1=h1, 6=h6
+    $headlines['field_591eb45f2be86'] = 3;
+    return $headlines;
+});`
+
+= Change refresh rate =
+`add_filter( 'yoast-acf-analysis/refresh_rate', function () {
+    // Refresh rates in milliseconds
+    return 1000;
+});`
+
 == Changelog ==
+
+= 2.1.0 =
+
+Released July 10th, 2018
+
+Bugfixes:
+ * Fixes a bug where attempting to get the ACF version, wouldn't always be reliable. This would lead the plugin to think that a newer version was installed than what was actually present.
+ * Fixes potential conflicts with other plugins due to generic variable naming.
+ * Fixes a bug where the YoastSEO ACF Content analysis would attempted to be loaded, although it wasn't available.
+
+Other:
+ * Adds filter examples to the readme.
 
 = 2.0.1 =
 
