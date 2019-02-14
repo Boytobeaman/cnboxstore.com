@@ -3,8 +3,9 @@ Contributors: wpecommerce, wp.insider, alexanderfoxc
 Donate link: https://wp-ecommerce.net/easy-wordpress-smtp-send-emails-from-your-wordpress-site-using-a-smtp-server-2197
 Tags: mail, wordpress smtp, phpmailer, smtp, wp_mail, email, gmail, outgoing mail, privacy, security, sendmail, ssl, tls, wp-phpmailer, mail smtp, wp smtp
 Requires at least: 4.3
-Tested up to: 4.9
-Stable tag: 1.3.7
+Tested up to: 5.0.3
+Requires PHP: 5.3
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,8 +78,14 @@ Inspired by [WP Mail SMTP](http://wordpress.org/plugins/wp-mail-smtp/) plugin
 
 == Changelog ==
 
+= 1.3.8 =
+* Set reasonable timeout for SMTP server connection attempt. This prevents admin area from being locked up for too long if your SMTP server refuses connections.
+* Added spinner to indicate that test email is being sent.
+* "Send Test Email" button is now disabled if there are unsaved settings changes.
+* Minor settings page adjustments.
+
 = 1.3.7 =
-- Renamed SSL and TLS to what they actually are.
+* Renamed SSL and TLS to what they actually are.
 
 = 1.3.6 =
 * SMTP Username and SMTP Host fields are no longer multiplying slashes (thanks to jstepak for reporting).

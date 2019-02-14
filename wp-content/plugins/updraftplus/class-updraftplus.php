@@ -171,7 +171,7 @@ class UpdraftPlus {
 	 *
 	 * @return String - filtered value
 	 */
-	public function upgrader_source_selection($source, $remote_source, $upgrader_object, $hook_extra = array()) {
+	public function upgrader_source_selection($source, $remote_source, $upgrader_object, $hook_extra = array()) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 
 		static $been_here_already = false;
 	
@@ -198,7 +198,7 @@ class UpdraftPlus {
 	 *
 	 * @return Boolean - filtered value
 	 */
-	public function itsec_scheduled_external_backup($x) {
+	public function itsec_scheduled_external_backup($x) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		return wp_next_scheduled('updraft_backup') ? true : false;
 	}
 	
@@ -209,7 +209,7 @@ class UpdraftPlus {
 	 *
 	 * @return String - filtered value
 	 */
-	public function itsec_external_backup_link($x) {
+	public function itsec_external_backup_link($x) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 			return UpdraftPlus_Options::admin_page_url().'?page=updraftplus';
 	}
 
@@ -1911,15 +1911,16 @@ class UpdraftPlus {
 			$label = $this->jobdata_get('label');
 			if ($label) $resumption_extralog = ", label=$label";
 		} else {
-			$this->file_nonce = apply_filters('updraftplus_incremental_backup_file_nonce', $bnonce);
 			$this->nonce = $bnonce;
+			$file_nonce = $this->jobdata_get('file_nonce');
+			$this->file_nonce = $file_nonce ? $file_nonce : $bnonce;
 			$this->backup_time = $this->jobdata_get('backup_time');
 			$this->job_time_ms = $this->jobdata_get('job_time_ms');
 			
 			// Get the warnings before opening the log file, as opening the log file may generate new ones (which then leads to $this->errors having duplicate entries when they are copied over below)
 			$warnings = $this->jobdata_get('warnings');
 			
-			$this->logfile_open($bnonce);
+			$this->logfile_open($this->file_nonce);
 			
 			// Import existing warnings. The purpose of this is so that when save_backup_to_history() is called, it has a complete set - because job data expires quickly, whilst the warnings of the last backup run need to persist
 			if (is_array($warnings)) {
@@ -1998,7 +1999,7 @@ class UpdraftPlus {
 
 		$time_ago = time()-$btime;
 
-		$this->log("Backup run: resumption=$resumption_no, nonce=$bnonce, begun at=$btime (${time_ago}s ago), job type=$job_type".$resumption_extralog);
+		$this->log("Backup run: resumption=$resumption_no, nonce=$bnonce, file_nonce=".$this->file_nonce." begun at=$btime (${time_ago}s ago), job type=$job_type".$resumption_extralog);
 
 		// This works round a bizarre bug seen in one WP install, where delete_transient and wp_clear_scheduled_hook both took no effect, and upon 'resumption' the entire backup would repeat.
 		// Argh. In fact, this has limited effect, as apparently (at least on another install seen), the saving of the updated transient via jobdata_set() also took no effect. Still, it does not hurt.
@@ -2330,8 +2331,15 @@ class UpdraftPlus {
 
 	}
 
-	public function jobdata_getarray($non) {
-		return get_site_option("updraft_jobdata_".$non, array());
+	/**
+	 * Get all the job data in a single array
+	 *
+	 * @param String $job_id - the job identifier (nonce) for the job whose data is to be retrieved
+	 *
+	 * @return Array
+	 */
+	public function jobdata_getarray($job_id) {
+		return get_site_option('updraft_jobdata_'.$job_id, array());
 	}
 
 	public function jobdata_set_from_array($array) {
@@ -2367,13 +2375,21 @@ class UpdraftPlus {
 		if (!empty($this->nonce)) update_site_option('updraft_jobdata_'.$this->nonce, $this->jobdata);
 	}
 
+	/**
+	 * Set a job-data key/value pair for the current job
+	 *
+	 * @param String $key	- the key
+	 * @param Mixed	 $value	- needs to be serializable
+	 *
+	 * @uses update_site_option()
+	 */
 	public function jobdata_set($key, $value) {
 		if (empty($this->jobdata)) {
-			$this->jobdata = empty($this->nonce) ? array() : get_site_option("updraft_jobdata_".$this->nonce);
+			$this->jobdata = empty($this->nonce) ? array() : get_site_option('updraft_jobdata_'.$this->nonce);
 			if (!is_array($this->jobdata)) $this->jobdata = array();
 		}
 		$this->jobdata[$key] = $value;
-		if ($this->nonce) update_site_option("updraft_jobdata_".$this->nonce, $this->jobdata);
+		if ($this->nonce) update_site_option('updraft_jobdata_'.$this->nonce, $this->jobdata);
 	}
 
 	public function jobdata_delete($key) {
@@ -2388,7 +2404,7 @@ class UpdraftPlus {
 	public function get_job_option($opt) {
 		// These are meant to be read-only
 		if (empty($this->jobdata['option_cache']) || !is_array($this->jobdata['option_cache'])) {
-			if (!is_array($this->jobdata)) $this->jobdata = get_site_option("updraft_jobdata_".$this->nonce, array());
+			if (!is_array($this->jobdata) && $this->nonce) $this->jobdata = get_site_option("updraft_jobdata_".$this->nonce, array());
 			$this->jobdata['option_cache'] = array();
 		}
 		return isset($this->jobdata['option_cache'][$opt]) ? $this->jobdata['option_cache'][$opt] : UpdraftPlus_Options::get_updraft_option($opt);
@@ -2402,6 +2418,9 @@ class UpdraftPlus {
 		return isset($this->jobdata[$key]) ? $this->jobdata[$key] : $default;
 	}
 
+	/**
+	 * Reset the job data for the currently active job
+	 */
 	public function jobdata_reset() {
 		$this->jobdata = null;
 	}
@@ -2492,6 +2511,8 @@ class UpdraftPlus {
 			'blog_name' => '',
 			'db_backups' => $db_backups
 		);
+
+		if (!is_array($db_backups)) return $backup_database_info;
 
 		/*
 			We need to tweak the database array here by setting each database entity to finished or encrypted if it's an encrypted archive.
@@ -2668,12 +2689,12 @@ class UpdraftPlus {
 
 		if (false === $restrict_files_to_override && isset($options['restrict_files_to_override'])) $restrict_files_to_override = $options['restrict_files_to_override'];
 		// Generate backup information
-		$use_nonce = (empty($options['use_nonce'])) ? false : $options['use_nonce'];
-		$use_timestamp = (empty($options['use_timestamp'])) ? false : $options['use_timestamp'];
+		$use_nonce = empty($options['use_nonce']) ? false : $options['use_nonce'];
+		$use_timestamp = empty($options['use_timestamp']) ? false : $options['use_timestamp'];
 		$this->backup_time_nonce($use_nonce, $use_timestamp);
 		// The current_resumption is consulted within logfile_open()
 		$this->current_resumption = 0;
-		$this->logfile_open($this->nonce);
+		$this->logfile_open($this->file_nonce);
 
 		if (!is_file($this->logfile_name)) {
 			$this->log('Failed to open log file ('.$this->logfile_name.') - you need to check your UpdraftPlus settings (your chosen directory for creating files in is not writable, or you ran out of disk space). Backup aborted.');
@@ -2754,7 +2775,7 @@ class UpdraftPlus {
 		if (is_string($service)) $service = array($service);
 		if (!is_array($service)) $service = array('none');
 
-		if (!empty($options['extradata']) && preg_match('#services=remotesend/(\d+)#', $options['extradata'])) {
+		if (!empty($options['extradata']) && !empty($options['extradata']['services']) && preg_match('#remotesend/(\d+)#', $options['extradata']['services'])) {
 			if (array('none') === $service) $service = array();
 			$service[] = 'remotesend';
 		}
@@ -2849,8 +2870,10 @@ class UpdraftPlus {
 
 		if ($one_shot) update_site_option('updraft_oneshotnonce', $this->nonce);
 
-		if (!empty($options['extradata']) && 'autobackup' == $options['extradata']) array_push($initial_jobdata, 'is_autobackup', true);
-
+		if ($this->file_nonce && $this->file_nonce != $this->nonce) array_push($initial_jobdata, 'file_nonce', $this->file_nonce);
+		
+		// 'autobackup' == $options['extradata'] might be set from another plugin so keeping here to keep support
+		if (!empty($options['extradata']) && (!empty($options['extradata']['autobackup']) || 'autobackup' === $options['extradata'])) array_push($initial_jobdata, 'is_autobackup', true);
 		// Save what *should* be done, to make it resumable from this point on
 		if ($backup_database) {
 			$dbs = apply_filters('updraft_backup_databases', array('wp' => 'begun'));
@@ -2874,7 +2897,7 @@ class UpdraftPlus {
 			// Use of jobdata_set_multi saves around 200ms
 			call_user_func_array(array($this, 'jobdata_set_multi'), apply_filters('updraftplus_initial_jobdata', $initial_jobdata, $options, $split_every));
 		} catch (Exception $e) {
-			$this->log($e->getMessage());
+			$this->log("Exception when calling jobdata_set_multi: ".$e->getMessage().' ('.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')');
 			return false;
 		}
 
@@ -3153,7 +3176,7 @@ class UpdraftPlus {
 	 * This should be called whenever a file is successfully uploaded
 	 *
 	 * @param  String  $file  - full filepath
-	 * @param  boolean $force - mark as successfully uploaded even if not on the last server
+	 * @param  Boolean $force - mark as successfully uploaded even if not on the last service
 	 * @return Void
 	 */
 	public function uploaded_file($file, $force = false) {
@@ -3166,7 +3189,7 @@ class UpdraftPlus {
 		$instance_id = empty($updraftplus_backup->current_instance) ? '' : $updraftplus_backup->current_instance;
 		$shash = $service.(('' == $service) ? '' : '-').$instance_id.(('' == $instance_id) ? '' : '-').md5($file);
 
-		if ($force || !empty($updraftplus_backup->last_service)) {
+		if ($force || !empty($updraftplus_backup->last_storage_instance)) {
 			$this->log("Recording as successfully uploaded: $file");
 			$new_jobdata = $this->get_uploaded_jobdata_items($file, $service, $instance_id);
 		} else {
@@ -3192,7 +3215,7 @@ class UpdraftPlus {
 		// Delete local files immediately if the option is set
 		// Where we are only backing up locally, only the "prune" function should do deleting
 		$service = $this->jobdata_get('service');
-		if (!empty($updraftplus_backup->last_service) && ('' !== $service && ((is_array($service) && count($service)>0 && (count($service) > 1 || ('' !== $service[0] && 'none' !== $service[0]))) || (is_string($service) && 'none' !== $service)))) {
+		if (!empty($updraftplus_backup->last_storage_instance) && ('' !== $service && ((is_array($service) && count($service)>0 && (count($service) > 1 || (array('') !== $service && array('none') !== $service))) || (is_string($service) && 'none' !== $service)))) {
 			$this->delete_local($file);
 		}
 	}
@@ -3408,11 +3431,13 @@ class UpdraftPlus {
 			$this->log(__('Could not save backup history because we have no backup array. Backup probably failed.', 'updraftplus'), 'error');
 			return;
 		}
+
+		$job_type = $this->jobdata_get('job_type');
 		
 		$backup_array['nonce'] = $this->file_nonce;
 		$backup_array['service'] = $this->jobdata_get('service');
 		$backup_array['service_instance_ids'] = array();
-		$backup_array['always_keep'] = $this->jobdata_get('always_keep', false);
+		if ('incremental' != $job_type) $backup_array['always_keep'] = $this->jobdata_get('always_keep', false);
 		$backup_array['files_enumerated_at'] = $this->jobdata_get('files_enumerated_at');
 		
 		// N.B. Though the saved 'service' option can have various forms (especially if upgrading from (very) old versions), in the jobdata, it is always an array.
@@ -3424,8 +3449,9 @@ class UpdraftPlus {
 			$backup_array['service_instance_ids'][$method] = array_keys($method_information['instance_settings']);
 		}
 		
-		if ('' != ($label = $this->jobdata_get('label', ''))) $backup_array['label'] = $label;
-		$backup_array['created_by_version'] = $this->version;
+		if ('incremental' != $job_type && '' != ($label = $this->jobdata_get('label', ''))) $backup_array['label'] = $label;
+		if (!isset($backup_array['created_by_version'])) $backup_array['created_by_version'] = $this->version;
+		$backup_array['last_saved_by_version'] = $this->version;
 		$backup_array['is_multisite'] = is_multisite() ? true : false;
 		$remotesend_info = $this->jobdata_get('remotesend_info');
 		if (is_array($remotesend_info) && !empty($remotesend_info['url'])) $backup_array['remotesend_url'] = $remotesend_info['url'];
@@ -3434,7 +3460,7 @@ class UpdraftPlus {
 		if (false != ($morefiles_linked_indexes = $this->jobdata_get('morefiles_linked_indexes', false))) $backup_array['morefiles_linked_indexes'] = $morefiles_linked_indexes;
 		if (false != ($morefiles_more_locations = $this->jobdata_get('morefiles_more_locations', false))) $backup_array['morefiles_more_locations'] = $morefiles_more_locations;
 		
-		UpdraftPlus_Backup_History::save_backup(apply_filters('updraftplus_backup_timestamp', $this->backup_time), $backup_array);
+		UpdraftPlus_Backup_History::save_backup(apply_filters('updraftplus_save_backup_history_timestamp', $this->backup_time), $backup_array);
 	}
 	
 	 /**
@@ -3551,7 +3577,7 @@ class UpdraftPlus {
 
 		// Clear schedule so that we don't stack up scheduled backups
 		wp_clear_scheduled_hook('updraft_backup_increments');
-		if ('none' == $interval) return 'none';
+		if ('none' == $interval || empty($interval)) return 'none';
 		$previous_interval = UpdraftPlus_Options::get_updraft_option('updraft_interval_increments');
 
 		$valid_schedules = wp_get_schedules();
@@ -3619,7 +3645,7 @@ class UpdraftPlus {
 		// index.php is for a sanity check - make sure that we're not somewhere unexpected
 		if ((!is_dir($updraft_dir) || !is_file($updraft_dir.'/index.html') || !is_file($updraft_dir.'/.htaccess')) && !is_file($updraft_dir.'/index.php') || !is_file($updraft_dir.'/web.config')) {
 			@mkdir($updraft_dir, 0775, true);
-			@file_put_contents($updraft_dir.'/index.html', "<html><body><a href=\"https://updraftplus.com\">WordPress backups by UpdraftPlus</a></body></html>");
+			@file_put_contents($updraft_dir.'/index.html', "<html><body><a href=\"https://updraftplus.com\" target=\"_blank\">WordPress backups by UpdraftPlus</a></body></html>");
 			if (!is_file($updraft_dir.'/.htaccess')) @file_put_contents($updraft_dir.'/.htaccess', 'deny from all');
 			if (!is_file($updraft_dir.'/web.config')) @file_put_contents($updraft_dir.'/web.config', "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n");
 		}
@@ -3789,6 +3815,17 @@ class UpdraftPlus {
 	}
 
 	/**
+	 * Sets up the nonce, basic job data, opens a log file for a new restore job, and makes sure that the Updraft_Restorer class is available
+	 */
+	public function initiate_restore_job() {
+		$this->backup_time_nonce();
+		$this->jobdata_set('job_type', 'restore');
+		$this->jobdata_set('job_time_ms', $this->job_time_ms);
+		$this->logfile_open($this->nonce);
+		if (!class_exists('Updraft_Restorer')) include_once(UPDRAFTPLUS_DIR.'/restorer.php');
+	}
+
+	/**
 	 * Analyse a database file and return information about it
 	 *
 	 * @param Integer		 $timestamp	  - the database time in the backup history
@@ -3931,9 +3968,9 @@ class UpdraftPlus {
 								if (('https' == $old_siteurl_parsed['scheme'] && 'http' == $actual_siteurl_parsed['scheme']) || ('http' == $old_siteurl_parsed['scheme'] && 'https' == $actual_siteurl_parsed['scheme'])) {
 									$powarn .= sprintf(__('This backup set is of this site, but at the time of the backup you were using %s, whereas the site now uses %s.', 'updraftplus'), $old_siteurl_parsed['scheme'], $actual_siteurl_parsed['scheme']);
 									if ('https' == $old_siteurl_parsed['scheme']) {
-										$powarn .= ' '.apply_filters('updraftplus_https_to_http_additional_warning', sprintf(__('This restoration will work if you still have an SSL certificate (i.e. can use https) to access the site. Otherwise, you will want to use %s to search/replace the site address so that the site can be visited without https.', 'updraftplus'), '<a href="https://updraftplus.com/shop/migrator/">'.__('the migrator add-on', 'updraftplus').'</a>'));
+										$powarn .= ' '.apply_filters('updraftplus_https_to_http_additional_warning', sprintf(__('This restoration will work if you still have an SSL certificate (i.e. can use https) to access the site. Otherwise, you will want to use %s to search/replace the site address so that the site can be visited without https.', 'updraftplus'), '<a href="https://updraftplus.com/shop/migrator/" target="_blank">'.__('the migrator add-on', 'updraftplus').'</a>'));
 									} else {
-										$powarn .= ' '.apply_filters('updraftplus_http_to_https_additional_warning', sprintf(__('As long as your web hosting allows http (i.e. non-SSL access) or will forward requests to https (which is almost always the case), this is no problem. If that is not yet set up, then you should set it up, or use %s so that the non-https links are automatically replaced.', 'updraftplus'), apply_filters('updraftplus_migrator_addon_link', '<a href="https://updraftplus.com/shop/migrator/">'.__('the migrator add-on', 'updraftplus').'</a>')));
+										$powarn .= ' '.apply_filters('updraftplus_http_to_https_additional_warning', sprintf(__('As long as your web hosting allows http (i.e. non-SSL access) or will forward requests to https (which is almost always the case), this is no problem. If that is not yet set up, then you should set it up, or use %s so that the non-https links are automatically replaced.', 'updraftplus'), apply_filters('updraftplus_migrator_addon_link', '<a href="https://updraftplus.com/shop/migrator/" target="_blank">'.__('the migrator add-on', 'updraftplus').'</a>')));
 									}
 								} else {
 									$powarn .= apply_filters('updraftplus_dbscan_urlchange_www_append_warning', '');
@@ -3942,10 +3979,10 @@ class UpdraftPlus {
 							} else {
 								// For completely different site migration
 								$info['same_url'] = false;
-								$warn[] = apply_filters('updraftplus_dbscan_urlchange', '<a href="https://updraftplus.com/shop/migrator/">'.sprintf(__('This backup set is from a different site (%s) - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work.', 'updraftplus'), htmlspecialchars($old_siteurl.' / '.untrailingslashit(site_url()))).'</a>', $old_siteurl, $res);
+								$warn[] = apply_filters('updraftplus_dbscan_urlchange', '<a href="https://updraftplus.com/shop/migrator/" target="_blank">'.sprintf(__('This backup set is from a different site (%s) - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work.', 'updraftplus'), htmlspecialchars($old_siteurl.' / '.untrailingslashit(site_url()))).'</a>', $old_siteurl, $res);
 							}
 							if (!class_exists('UpdraftPlus_Addons_Migrator')) {
-								$warn[] .= '<strong><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/tell-me-more-about-the-search-and-replace-site-location-in-the-database-option/").'">'.__('You can search and replace your database (for migrating a website to a new location/URL) with the Migrator add-on - follow this link for more information', 'updraftplus').'</a></strong>';
+								$warn[] .= '<strong><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/tell-me-more-about-the-search-and-replace-site-location-in-the-database-option/").'" target="_blank">'.__('You can search and replace your database (for migrating a website to a new location/URL) with the Migrator add-on - follow this link for more information', 'updraftplus').'</a></strong>';
 							}
 						}
 
@@ -3962,7 +3999,7 @@ class UpdraftPlus {
 					// Check for should-be migration
 					if (!$migration_warning && UpdraftPlus_Manipulation_Functions::normalise_url(home_url()) != UpdraftPlus_Manipulation_Functions::normalise_url($old_home)) {
 						$migration_warning = true;
-						$powarn = apply_filters('updraftplus_dbscan_urlchange', '<a href="https://updraftplus.com/shop/migrator/">'.sprintf(__('This backup set is from a different site (%s) - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work.', 'updraftplus'), htmlspecialchars($old_home.' / '.home_url())).'</a>', $old_home, $res);
+						$powarn = apply_filters('updraftplus_dbscan_urlchange', '<a href="https://updraftplus.com/shop/migrator/" target="_blank">'.sprintf(__('This backup set is from a different site (%s) - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work.', 'updraftplus'), htmlspecialchars($old_home.' / '.home_url())).'</a>', $old_home, $res);
 						if (!empty($powarn)) $warn[] = $powarn;
 					}
 				} elseif (!isset($info['created_by_version']) && preg_match('/^\# Created by UpdraftPlus version ([\d\.]+)/', $buffer, $matches)) {
@@ -3998,7 +4035,7 @@ class UpdraftPlus {
 							// $err[] =  sprintf(__('Error: %s', 'updraftplus'), __('You are running on WordPress multisite - but your backup is not of a multisite site.', 'updraftplus'));
 							// return array($mess, $warn, $err, $info);
 							// } else {
-							$warn[] = __('You are running on WordPress multisite - but your backup is not of a multisite site.', 'updraftplus').' '.__('It will be imported as a new site.', 'updraftplus').' <a href="https://updraftplus.com/information-on-importing-a-single-site-wordpress-backup-into-a-wordpress-network-i-e-multisite/">'.__('Please read this link for important information on this process.', 'updraftplus').'</a>';
+							$warn[] = __('You are running on WordPress multisite - but your backup is not of a multisite site.', 'updraftplus').' '.__('It will be imported as a new site.', 'updraftplus').' <a href="https://updraftplus.com/information-on-importing-a-single-site-wordpress-backup-into-a-wordpress-network-i-e-multisite/" target="_blank">'.__('Please read this link for important information on this process.', 'updraftplus').'</a>';
 							// }
 							// Got the needed code?
 							if (!class_exists('UpdraftPlusAddOn_MultiSite') || !class_exists('UpdraftPlus_Addons_Migrator')) {
@@ -4006,7 +4043,7 @@ class UpdraftPlus {
 								return array($mess, $warn, $err, $info);
 							}
 						} elseif (isset($old_siteinfo['multisite']) && $old_siteinfo['multisite'] && !is_multisite()) {
-							$warn[] = __('Warning:', 'updraftplus').' '.__('Your backup is of a WordPress multisite install; but this site is not. Only the first site of the network will be accessible.', 'updraftplus').' <a href="https://codex.wordpress.org/Create_A_Network">'.__('If you want to restore a multisite backup, you should first set up your WordPress installation as a multisite.', 'updraftplus').'</a>';
+							$warn[] = __('Warning:', 'updraftplus').' '.__('Your backup is of a WordPress multisite install; but this site is not. Only the first site of the network will be accessible.', 'updraftplus').' <a href="https://codex.wordpress.org/Create_A_Network" target="_blank">'.__('If you want to restore a multisite backup, you should first set up your WordPress installation as a multisite.', 'updraftplus').'</a>';
 						}
 					} elseif (preg_match('/^([^=]+)=(.*)$/', $matches[1], $kvmatches)) {
 						$key = $kvmatches[1];
@@ -4094,7 +4131,7 @@ class UpdraftPlus {
 			}
 			if ($db_charset_forbidden) {
 				$db_unsupported_charset_unique = array_unique($db_unsupported_charset);
-				$warn[] = sprintf(_n("The database server that this WordPress site is running on doesn't support the character set (%s) which you are trying to import.", "The database server that this WordPress site is running on doesn't support the character sets (%s) which you are trying to import.", count($db_unsupported_charset_unique), 'updraftplus'), implode(', ', $db_unsupported_charset_unique)).' '.__('You can choose another suitable character set instead and continue with the restoration at your own risk.', 'updraftplus').' <a target="_blank" href="https://updraftplus.com/faqs/implications-changing-tables-character-set/">'.__('Go here for more information.', 'updraftplus').'</a>'.' <a target="_blank" href="https://updraftplus.com/faqs/implications-changing-tables-character-set/">'.__('Go here for more information.', 'updraftplus').'</a>';
+				$warn[] = sprintf(_n("The database server that this WordPress site is running on doesn't support the character set (%s) which you are trying to import.", "The database server that this WordPress site is running on doesn't support the character sets (%s) which you are trying to import.", count($db_unsupported_charset_unique), 'updraftplus'), implode(', ', $db_unsupported_charset_unique)).' '.__('You can choose another suitable character set instead and continue with the restoration at your own risk.', 'updraftplus').' <a target="_blank" href="https://updraftplus.com/faqs/implications-changing-tables-character-set/" target="_blank">'.__('Go here for more information.', 'updraftplus').'</a>'.' <a target="_blank" href="https://updraftplus.com/faqs/implications-changing-tables-character-set/" target="_blank">'.__('Go here for more information.', 'updraftplus').'</a>';
 				$db_supported_character_sets = array_keys($db_supported_character_sets);
 				$similar_type_charset = UpdraftPlus_Manipulation_Functions::get_matching_str_from_array_elems($db_unsupported_charset_unique, $db_supported_character_sets, true);
 				if (empty($similar_type_charset)) {
@@ -4245,6 +4282,22 @@ class UpdraftPlus {
 		return array($mess, $warn, $err, $info);
 	}
 
+	/**
+	 * Get the current outgoing IP address. Use this wisely; of course, it's not guaranteed to always be the same.
+	 *
+	 * @return String|Boolean - returns false upon failure
+	 */
+	public function get_outgoing_ip_address() {
+		$ip_lookup = wp_remote_get('https://ipvigilante.com/json', array('timeout' => 6));
+		if (200 == wp_remote_retrieve_response_code($ip_lookup)) {
+			$info = json_decode(wp_remote_retrieve_body($ip_lookup), true);
+			if (!empty($info['status']) && !empty($info['data']) && 'success' === $info['status']);
+			if (!empty($info['data']['ipv4'])) return $info['data']['ipv4'];
+			if (!empty($info['data']['ipv6'])) return $info['data']['ipv6'];
+		}
+		return false;
+	}
+	
 	/**
 	 * Get default substitute similar collate related to charset
 	 *
@@ -4540,6 +4593,9 @@ class UpdraftPlus {
 				break;
 			case 'shop':
 				return apply_filters('updraftplus_com_shop', 'https://updraftplus.com/shop/');
+				break;
+			case 'premium':
+				return apply_filters('updraftplus_com_premium', 'https://updraftplus.com/shop/updraftplus-premium/');
 				break;
 			case 'buy-tokens':
 				return apply_filters('updraftplus_com_updraftclone_tokens', 'https://updraftplus.com/shop/updraftclone-tokens/');
