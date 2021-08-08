@@ -91,7 +91,11 @@
 					} );
 					$mainForm.data( 'backupDisabled', true );
 					$mainForm.sowSetupForm();
-					if ( ! props.attributes.widgetData ) {
+					if ( props.attributes.widgetData ) {
+						// If we call `setWidgetFormValues` with the last parameter ( `triggerChange` ) set to false,
+						// it won't show the correct values for some fields e.g. color and media fields.
+						sowbForms.setWidgetFormValues( $mainForm, props.attributes.widgetData );
+					} else {
 						props.setAttributes( { widgetData: sowbForms.getWidgetFormValues( $mainForm ) } );
 					}
 					$mainForm.on( 'change', function () {
@@ -113,7 +117,7 @@
 				}
 			}
 			
-			if ( props.editing || ! props.attributes.widgetClass ) {
+			if ( props.editing || ! props.attributes.widgetClass || ! props.attributes.widgetData ) {
 				var widgetsOptions = [];
 				if ( sowbBlockEditorAdmin.widgets ) {
 					sowbBlockEditorAdmin.widgets.sort( function ( a, b ) {
@@ -142,9 +146,20 @@
 							widgetData: props.attributes.widgetData,
 						}
 					} )
-					.then( function( widgetForm ) {
+					.done( function( widgetForm ) {
 						props.setState( { widgetFormHtml: widgetForm } );
-					} );
+					} )
+					.fail( function ( response ) {
+						
+						var errorMessage = '';
+						if ( response.hasOwnProperty( 'responseJSON' ) ) {
+							errorMessage = response.responseJSON.message;
+						} else if ( response.hasOwnProperty( 'responseText' ) ) {
+							errorMessage = response.responseText;
+						}
+						
+						props.setState( { widgetFormHtml: '<div>' + errorMessage + '</div>', } );
+					});
 				}
 				
 				var widgetForm = props.widgetFormHtml ? props.widgetFormHtml : '';
@@ -199,7 +214,11 @@
 				];
 			} else {
 				
-				var loadWidgetPreview = ! props.loadingWidgets && ! props.editing && ! props.widgetPreviewHtml && props.attributes.widgetClass;
+				var loadWidgetPreview = ! props.loadingWidgets &&
+					! props.editing &&
+					! props.widgetPreviewHtml &&
+					props.attributes.widgetClass &&
+					props.attributes.widgetData;
 				if ( loadWidgetPreview ) {
 					$.post( {
 						url: sowbBlockEditorAdmin.restUrl + 'sowb/v1/widgets/previews',
@@ -211,12 +230,25 @@
 							widgetData: props.attributes.widgetData || {}
 						}
 					} )
-					.then( function( widgetPreview ) {
+					.done( function( widgetPreview ) {
 						props.setState( {
 							widgetPreviewHtml: widgetPreview,
 							previewInitialized: false,
 						} );
-					} );
+					} )
+					.fail( function ( response ) {
+						
+						var errorMessage = '';
+						if ( response.hasOwnProperty( 'responseJSON' ) ) {
+							errorMessage = response.responseJSON.message;
+						} else if ( response.hasOwnProperty( 'responseText' ) ) {
+							errorMessage = response.responseText;
+						}
+						
+						props.setState( {
+							widgetPreviewHtml: '<div>' + errorMessage + '</div>',
+						} );
+					});
 				}
 				var widgetPreview = props.widgetPreviewHtml ? props.widgetPreviewHtml : '';
 				return [

@@ -627,7 +627,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 
 	public function import( $importData = array() ){
 
-		if ($importData['import']->options['custom_type'] != 'product') return;
+        if ($importData['import']->options['custom_type'] != 'product') return;
 
 		global $wpdb;
 
@@ -638,7 +638,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 		$this->logger = $importData['logger'];		
 		$this->xpath  = $importData['xpath_prefix'];
 
-        $product_taxonomies = array('post_format', 'product_type', 'product_shipping_class');
+        $product_taxonomies = array('post_format', 'product_type', 'product_shipping_class', 'product_visibility');
         $this->product_taxonomies = array_diff_key(get_taxonomies_by_object_type(array('product'), 'object'), array_flip($product_taxonomies));
 
 		extract($importData); 
@@ -740,7 +740,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 
 						if ( ! empty($t_shipping_class) and ! is_wp_error($t_shipping_class) ) 
 						{
-							$p_shipping_class = (int) $t_shipping_class->term_taxonomy_id; 						
+							$p_shipping_class = (int) $t_shipping_class->term_id;
 						}
 						else
 						{						
@@ -748,7 +748,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 												
 							if ( ! empty($t_shipping_class) and ! is_wp_error($t_shipping_class) )
 							{												
-								$p_shipping_class = (int) $t_shipping_class['term_taxonomy_id']; 	
+								$p_shipping_class = (int) $t_shipping_class['term_id'];
 							}
 							else
 							{
@@ -759,7 +759,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 
 								if ( ! empty($t_shipping_class) and ! is_wp_error($t_shipping_class) )
 								{												
-									$p_shipping_class = (int) $t_shipping_class['term_taxonomy_id']; 	
+									$p_shipping_class = (int) $t_shipping_class['term_id'];
 								}
 							}
 						}						
@@ -775,7 +775,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 					
 					if ( ! empty($t_shipping_class) and ! is_wp_error($t_shipping_class) )
 					{
-						$p_shipping_class = (int) $t_shipping_class['term_taxonomy_id']; 	
+						$p_shipping_class = (int) $t_shipping_class['term_id'];
 					}
 					else
 					{
@@ -783,7 +783,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 						
 						if ( ! empty($t_shipping_class) and ! is_wp_error($t_shipping_class) )
 						{
-							$p_shipping_class = (int) $t_shipping_class['term_taxonomy_id']; 	
+							$p_shipping_class = (int) $t_shipping_class['term_id'];
 						}
 						else
 						{
@@ -794,7 +794,7 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 
 							if ( ! empty($t_shipping_class) and ! is_wp_error($t_shipping_class) )
 							{												
-								$p_shipping_class = (int) $t_shipping_class['term_taxonomy_id']; 	
+								$p_shipping_class = (int) $t_shipping_class['term_id'];
 							}
 						}
 					}							
@@ -1667,6 +1667,10 @@ class PMWI_Import_Record extends PMWI_Model_Record {
 							$linked_product = $query[0];
 						}
 						wp_reset_postdata();
+                        if (!$linked_product) {
+                            // Search linked product by title.
+                            $linked_product = get_page_by_title( $id, OBJECT, 'product' );
+                        }
 					}	
 				}
 

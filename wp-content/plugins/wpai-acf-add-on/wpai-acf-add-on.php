@@ -3,7 +3,7 @@
 Plugin Name: WP All Import - ACF Add-On
 Plugin URI: http://www.wpallimport.com/
 Description: Import to Advanced Custom Fields. Requires WP All Import & Advanced Custom Fields.
-Version: 3.1.1
+Version: 3.2.0
 Author: Soflyy
 */
 /**
@@ -24,7 +24,7 @@ define('PMAI_ROOT_URL', rtrim(plugin_dir_url(__FILE__), '/'));
  */
 define('PMAI_PREFIX', 'pmai_');
 
-define('PMAI_VERSION', '3.1.1');
+define('PMAI_VERSION', '3.2.0');
 
 if ( class_exists('PMAI_Plugin') and PMAI_EDITION == "free"){
 
@@ -52,7 +52,7 @@ else {
 	 * Main plugin file, Introduces MVC pattern
 	 *
 	 * @singletone
-	 * @author Max Tsiplyakov <makstsiplyakov@gmail.com>
+	 * @author Maksym Tsypliakov <maksym.tsypliakov@gmail.com>
 	 */
 
 	final class PMAI_Plugin {
@@ -181,15 +181,17 @@ else {
 
 			// create/update required database tables
 
-			// regirster autoloading method
-			if (function_exists('__autoload') and ! in_array('__autoload', spl_autoload_functions())) { // make sure old way of autoloading classes is not broken
-				spl_autoload_register('__autoload');
-			}
-			spl_autoload_register(array($this, '__autoload'));		
+			// register autoloading method
+			spl_autoload_register(array($this, 'autoload'));
 
 			// register helpers
 			if (is_dir(self::ROOT_DIR . '/helpers')) foreach (PMAI_Helper::safe_glob(self::ROOT_DIR . '/helpers/*.php', PMAI_Helper::GLOB_RECURSE | PMAI_Helper::GLOB_PATH) as $filePath) {
 				require_once $filePath;
+			}
+
+			if (is_dir(self::ROOT_DIR . '/libraries')) foreach (PMAI_Helper::safe_glob(self::ROOT_DIR . '/libraries/*.php', PMAI_Helper::GLOB_RECURSE | PMAI_Helper::GLOB_PATH | PMAI_Helper::GLOB_NOSORT) as $filePath) {
+				$subPath = substr($filePath, strlen( self::ROOT_DIR ));
+				if (strpos($subPath, 'view') === false && strpos($subPath, 'template') === false) require_once $filePath;
 			}
 
 			// init plugin options
@@ -201,7 +203,7 @@ else {
 			update_option($option_name, $this->options);
 			$this->options = get_option(get_class($this) . '_Options');
 
-			register_activation_hook(self::FILE, array($this, '__activation'));
+			register_activation_hook(self::FILE, array($this, 'activation'));
 
 			// register action handlers
 			if (is_dir(self::ROOT_DIR . '/actions')) if (is_dir(self::ROOT_DIR . '/actions')) foreach (PMAI_Helper::safe_glob(self::ROOT_DIR . '/actions/*.php', PMAI_Helper::GLOB_RECURSE | PMAI_Helper::GLOB_PATH) as $filePath) {
@@ -236,21 +238,40 @@ else {
 			}
 
 			// register admin page pre-dispatcher
-			add_action('admin_init', array($this, '__adminInit'));		
+			add_action('admin_init', array($this, 'adminInit'), 1);
+			add_action('init', array($this, 'init'), 10);
 
-			self::init_available_acf_fields();
+		}
 
+		public function init(){
+			if ( is_admin() || ! empty($_GET['import_key']) ){
+				self::init_available_acf_fields();
+			}
+			$this->load_plugin_textdomain();
+		}
+
+		/**
+		 * Load Localisation files.
+		 *
+		 * Note: the first-loaded translation file overrides any following ones if the same translation is present
+		 *
+		 * @access public
+		 * @return void
+		 */
+		public function load_plugin_textdomain() {
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'wp_all_import_acf_add_on' );
+			load_plugin_textdomain( 'wp_all_import_acf_add_on', false, dirname( plugin_basename( __FILE__ ) ) . '/i18n/languages' );
 		}
 
 		/**
 		 * pre-dispatching logic for admin page controllers
 		 */
-		public function __adminInit() {					
+		public function adminInit() {
 			$input = new PMAI_Input();
 			$page = strtolower($input->getpost('page', ''));
 			if (preg_match('%^' . preg_quote(str_replace('_', '-', self::PREFIX), '%') . '([\w-]+)$%', $page)) {
 				$this->adminDispatcher($page, strtolower($input->getpost('action', 'index')));
-			}			
+			}
 		}
 
 		/**
@@ -262,12 +283,7 @@ else {
 		 */
 		public function shortcodeDispatcher($args, $content, $tag) {
 
-			if (function_exists('preg_replace_callback')){
-				$controllerName = preg_replace_callback('%(^|_).%', array($this, "replace_callback"), $tag);
-			}
-			else{
-				$controllerName =  self::PREFIX . preg_replace('%(^|_).%e', 'strtoupper("$0")', $tag); // capitalize first letters of class name parts and add prefix
-			}
+			$controllerName = self::PREFIX . preg_replace_callback('%(^|_).%', array($this, "replace_callback"), $tag);// capitalize first letters of class name parts and add prefix
 			$controller = new $controllerName();
 			if ( ! $controller instanceof PMAI_Controller) {
 				throw new Exception("Shortcode `$tag` matches to a wrong controller type.");
@@ -302,12 +318,7 @@ else {
 			} else {
 				$actionName = str_replace('-', '_', $action);
 				// capitalize prefix and first letters of class name parts
-				if (function_exists('preg_replace_callback')){
-					$controllerName = preg_replace_callback('%(^' . preg_quote(self::PREFIX, '%') . '|_).%', array($this, "replace_callback"),str_replace('-', '_', $page));
-				}
-				else{
-					$controllerName =  preg_replace('%(^' . preg_quote(self::PREFIX, '%') . '|_).%e', 'strtoupper("$0")', str_replace('-', '_', $page));
-				}
+				$controllerName = preg_replace_callback('%(^' . preg_quote(self::PREFIX, '%') . '|_).%', array($this, "replace_callback"),str_replace('-', '_', $page));
 				if (method_exists($controllerName, $actionName)) {
 					
 					if ( ! get_current_user_id() or ! current_user_can('manage_options')) {
@@ -325,7 +336,6 @@ else {
 							'is_user' => is_user_admin(),
 						);
 						add_filter('current_screen', array($this, 'getAdminCurrentScreen'));
-						add_filter('admin_body_class', create_function('', 'return "' . PMAI_Plugin::PREFIX . 'plugin";'));
 
 						$controller = new $controllerName();
 						if ( ! $controller instanceof PMAI_Controller_Admin) {
@@ -371,7 +381,7 @@ else {
 		 * @param string $className
 		 * @return bool
 		 */
-		public function __autoload($className) { 
+		public function autoload($className) {
 			$is_prefix = false;
 			$filePath = str_replace('_', '/', preg_replace('%^' . preg_quote(self::PREFIX, '%') . '%', '', strtolower($className), 1, $is_prefix)) . '.php';
 			if ( ! $is_prefix) { // also check file with original letter case
@@ -429,10 +439,10 @@ else {
 		/**
 		 * Plugin activation logic
 		 */
-		public function __activation() {		
+		public function activation() {
 
 			// uncaught exception doesn't prevent plugin from being activated, therefore replace it with fatal error so it does
-			set_exception_handler(create_function('$e', 'trigger_error($e->getMessage(), E_USER_ERROR);'));
+			set_exception_handler(function($e){trigger_error($e->getMessage(), E_USER_ERROR);});
 
 			// create plugin options
 			$option_name = get_class($this) . '_Options';
@@ -441,46 +451,43 @@ else {
 
 		}
 
-		public static function init_available_acf_fields(){
-
+        /**
+         *  Init all available ACF fields.
+         */
+        public static function init_available_acf_fields() {
 			global $acf;
-
-			if ($acf and version_compare($acf->settings['version'], '5.0.0') >= 0){
-
+			if ($acf and version_compare($acf->settings['version'], '5.0.0') >= 0) {
 				$acfs = get_posts(array('posts_per_page' => -1, 'post_type' => 'acf-field'));
-
 				self::$all_acf_fields = array();
-
-				if ( ! empty($acfs) ){
-
+				if (!empty($acfs)) {
 					foreach ($acfs as $key => $acf_entry) {
-
 						self::$all_acf_fields[] = $acf_entry->post_excerpt;
-
 					}
-
+				}
+				if (function_exists('acf_local')) {
+                    $fields = acf_local()->fields;
+                }
+                if (empty($fields) && function_exists('acf_get_local_fields')) {
+                    $fields = acf_get_local_fields();
+                }
+				if ( ! empty($fields) ) {
+					foreach ($fields as $key => $field) {
+						self::$all_acf_fields[] = $field['name'];
+					}
 				}
 			}
-			else{
-
+			else {
 				$acfs = get_posts(array('posts_per_page' => -1, 'post_type' => 'acf'));
-
 				self::$all_acf_fields = array();
-
-				if ( ! empty($acfs) ){
-
+				if (!empty($acfs)) {
 					foreach ($acfs as $key => $acf_entry) {
-
-						foreach (get_post_meta($acf_entry->ID, '') as $cur_meta_key => $cur_meta_val)
-						{	
-							if (strpos($cur_meta_key, 'field_') !== 0) continue;
-
+						foreach (get_post_meta($acf_entry->ID, '') as $cur_meta_key => $cur_meta_val) {
+							if (strpos($cur_meta_key, 'field_') !== 0) {
+                                continue;
+                            }
 							$field = (!empty($cur_meta_val[0])) ? unserialize($cur_meta_val[0]) : array();
-
 							$field_name = $field['name'];
-
 							if ( ! in_array($field_name, self::$all_acf_fields) ) self::$all_acf_fields[] = $field_name;
-
 							if ( ! empty($field['sub_fields']) ){
 								foreach ($field['sub_fields'] as $key => $sub_field) {
 									$sub_field_name = $sub_field['name'];
@@ -491,7 +498,6 @@ else {
 					}
 				}
 			}
-
 		}
 
 		/**

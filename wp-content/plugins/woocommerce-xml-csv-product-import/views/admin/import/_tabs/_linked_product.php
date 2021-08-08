@@ -36,10 +36,6 @@
 
 			if ( $grouped_products ) {
 				foreach ( $grouped_products as $product ) {
-
-					if ( $product->ID == $post->ID )
-						continue;
-
 					$post_parents[ $product->ID ] = $product->post_title;
 				}
 			}

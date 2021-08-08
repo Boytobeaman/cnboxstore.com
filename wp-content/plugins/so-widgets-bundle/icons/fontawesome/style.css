@@ -1,3 +1,7 @@
+/*!
+ * Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
 .fa,
 .fas,
 .far,
@@ -259,6 +263,8 @@
 
 .sow-fab {
     font-family: 'sow-fontawesome-brands';
+    font-style: normal !important;
+    font-weight: normal !important;
 }
 
 @font-face {
@@ -275,7 +281,8 @@
 
 .sow-far {
     font-family: 'sow-fontawesome-free';
-    font-weight: 400;
+    font-style: normal !important;
+    font-weight: 400 !important;
 }
 
 @font-face {
@@ -293,7 +300,8 @@
 .sow-fa,
 .sow-fas {
     font-family: 'sow-fontawesome-free';
-    font-weight: 900;
+    font-weight: 900 !important;
+    font-style: normal !important;
 }
 
 .sow-icon-fontawesome {

@@ -141,7 +141,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 					}
 				
 				}
-				
+
 				// Now loop over the new options, and replace old options with them
 				foreach ($storage_options as $key => $value) {
 					if (null === $value) {
@@ -154,6 +154,8 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 				
 				if (!empty($opts['settings'][$instance_id]['folder']) && preg_match('#^https?://(www.)dropbox\.com/home/Apps/UpdraftPlus(.Com)?([^/]*)/(.*)$#i', $opts['settings'][$instance_id]['folder'], $matches)) $opts['settings'][$instance_id]['folder'] = $matches[3];
 				
+				// check if we have the dummy nosave option and remove it so that it doesn't get saved
+				if (isset($opts['settings'][$instance_id]['dummy-nosave'])) unset($opts['settings'][$instance_id]['dummy-nosave']);
 			}
 			
 		}
@@ -647,7 +649,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 			<?php if (false === strpos($extra_config, '<input')) {
 				// We need to make sure that it is not the case that the module has no settings whatsoever - this can result in the module being effectively invisible.
 				?>
-				<input type="hidden" <?php $this->output_settings_field_name_and_id('tk_access_token');?> value="0">
+				<input type="hidden" <?php $this->output_settings_field_name_and_id('dummy-nosave');?> value="0">
 			<?php } ?>
 			{{/if}}
 		<?php
@@ -824,9 +826,9 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 
 			try {
 				/**
-				 * Quota information is no longer provided with account information a new call to qoutaInfo must be made to get this information.
+				 * Quota information is no longer provided with account information a new call to qoutaInfo must be made to get this information. The timeout is because we've seen cases where it returned after 180 seconds (apparently a faulty outgoing proxy), and we may as well wait as cause an error leading to user confusion.
 				 */
-				$quota_info = $dropbox->quotaInfo();
+				$quota_info = $dropbox->quotaInfo(array('timeout' => 190));
 
 				if (empty($quota_info['code']) || "200" != $quota_info['code']) {
 					$message .= " (".__('though part of the returned information was not as expected - your mileage may vary', 'updraftplus').")". $quota_info['code'];

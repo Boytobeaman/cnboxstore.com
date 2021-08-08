@@ -34,15 +34,21 @@ jQuery( function ( $ ) {
 			var openPanel = function ( panel, preventHashChange, keepVisible ) {
 				var $panel = $( panel );
 				if ( ! $panel.is( '.sow-accordion-panel-open' ) ) {
-					$panel.find( '> .sow-accordion-panel-content' ).slideDown(
-						function() {
+					$panel.find( '> .sow-accordion-panel-content' ).slideDown( {
+						start: function () {
+							// Sometimes the content of the panel relies on a window resize to setup correctly.
+							// Trigger it here so it's hopefully done before the animation.
+							$( window ).trigger( 'resize' );
+							$( sowb ).trigger( 'setup_widgets' );
+						},
+						complete: function() {
 							if ( keepVisible && $panel.offset().top < window.scrollY ) {
 								scrollToPanel( $panel, true );
 							}
 							$( this ).trigger( 'show' );
-							$( sowb ).trigger( 'setup_widgets' );
 						}
-					);
+					});
+					$panel.find(  '> .sow-accordion-panel-header-container > .sow-accordion-panel-header' ).attr( 'aria-expanded', true );
 					$panel.addClass( 'sow-accordion-panel-open' );
 					openPanels.push( panel );
 
@@ -65,6 +71,7 @@ jQuery( function ( $ ) {
 							$( this ).trigger( 'hide' );
 						}
 					);
+					$panel.find(  '> .sow-accordion-panel-header-container > .sow-accordion-panel-header' ).attr( 'aria-expanded', false );
 					$panel.removeClass( 'sow-accordion-panel-open' );
 					openPanels.splice( openPanels.indexOf( panel ), 1 );
 					if ( ! preventHashChange ) {
@@ -73,7 +80,13 @@ jQuery( function ( $ ) {
 				}
 			};
 			
-			$accordionPanels.find( '> .sow-accordion-panel-header' ).click( function () {
+			$accordionPanels.find( '> .sow-accordion-panel-header-container > .sow-accordion-panel-header' ).on( 'click keydown', function( e ) {
+				if ( e.type == 'keydown' ) {
+					if ( e.keyCode !== 13 && e.keyCode !== 32 ){
+						return;
+					}
+					e.preventDefault();
+				}
 				var $this = $( this );
 				var maxOpenPanels = $widget.data( 'maxOpenPanels' );
 				var $panel = $this.closest( '.sow-accordion-panel' );
@@ -129,7 +142,7 @@ jQuery( function ( $ ) {
 						var panel = panels[ i ];
 						var anchor = $( panel ).data( 'anchor' );
 						var anchors = window.location.hash.substring(1).split( ',' ); 
-						if ( anchor && $.inArray( anchor, anchors ) > -1 ) {
+						if ( anchor && $.inArray( anchor.toString(), anchors ) > -1 ) {
 							openPanel( panel, true );
 						} else {
 							closePanel( panel, true );

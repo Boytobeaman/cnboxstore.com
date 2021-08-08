@@ -1,8 +1,8 @@
 <?php
 /**
  * Class to load config files
- * 
- * @author Max Tsiplyakov <makstsiplyakov@gmail.com>
+ *
+ * @author Maksym Tsypliakov <maksym.tsypliakov@gmail.com>
  */
 class PMAI_Config implements IteratorAggregate {
 	/**
@@ -40,9 +40,8 @@ class PMAI_Config implements IteratorAggregate {
 			$filePath = realpath($filePath);
 			if ($filePath and ! in_array($filePath, $this->loaded)) {
 				require $filePath;
-				
-				$sandbox = create_function('', "require '$filePath'; if(array_keys(get_defined_vars()) != array('config')) return array(); return \$config;");
-				$config = $sandbox();
+
+                $config = (!isset($config)) ? array() : $config;
 				$this->loaded[] = $filePath;
 				$this->config = array_merge($this->config, $config);
 			}

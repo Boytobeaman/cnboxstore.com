@@ -1,7 +1,7 @@
 <?php
-function pmwi_pmxi_reimport($entry, $post){
+function pmwi_pmxi_reimport($post_type, $post){
 
-	if ($entry != 'product' and empty($post['is_override_post_type'])) return;
+	if ($post_type != 'product' and empty($post['is_override_post_type'])) return;
 
 	$all_existing_attributes = array();
 	$hide_taxonomies = array('product_type');

@@ -49,37 +49,17 @@ class UpdraftPlus_Filesystem_Functions {
 		return UpdraftPlus_Manipulation_Functions::convert_numeric_size_to_text($size);
 
 	}
-
+	
 	/**
 	 * Ensure that WP_Filesystem is instantiated and functional. Otherwise, outputs necessary HTML and dies.
-	 * Will also consult $_POST['updraft_restore'] and can set $_POST['updraft_restore_*'] and $_POST['updraft_restorer_*']
 	 *
-	 * @param Array|Null $second_loop_entities - array of files grouped by type
-	 * @param Array		 $url_parameters	   - parameters and values to be added to the URL output
+	 * @param array $url_parameters - parameters and values to be added to the URL output
+	 *
+	 * @return void
 	 */
-	public static function ensure_wp_filesystem_set_up_for_restore($second_loop_entities, $url_parameters = array()) {
+	public static function ensure_wp_filesystem_set_up_for_restore($url_parameters = array()) {
 	
-		global $wp_filesystem;
-
-		// request_filesystem_credentials passes on fields just via hidden name/value pairs.
-		// Build array of parameters to be passed via this
-		$extra_fields = array();
-		if (isset($_POST['updraft_restore']) && is_array($_POST['updraft_restore'])) {
-			foreach ($_POST['updraft_restore'] as $entity) {
-				$_POST['updraft_restore_'.$entity] = 1;
-				$extra_fields[] = 'updraft_restore_'.$entity;
-			}
-		}
-
-		foreach ($second_loop_entities as $type => $files) {
-			$_POST['updraft_restore_'.$type] = 1;
-			if (!in_array('updraft_restore_'.$type, $extra_fields)) $extra_fields[] = 'updraft_restore_'.$type;
-		}
-
-		// Now make sure that updraft_restorer_ option fields get passed along to request_filesystem_credentials
-		foreach ($_POST as $key => $value) {
-			if (0 === strpos($key, 'updraft_restorer_')) $extra_fields[] = $key;
-		}
+		global $wp_filesystem, $updraftplus;
 
 		$build_url = UpdraftPlus_Options::admin_page().'?page=updraftplus&action=updraft_restore';
 		
@@ -87,16 +67,23 @@ class UpdraftPlus_Filesystem_Functions {
 			$build_url .= '&'.$k.'='.$v;
 		}
 		
-		$credentials = request_filesystem_credentials($build_url, '', false, false, $extra_fields);
-		
-		WP_Filesystem($credentials);
-		
-		if ($wp_filesystem->errors->get_error_code()) {
-			echo '<p><em><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/asked-ftp-details-upon-restorationmigration-updates/").'" target="_blank">'.__('Why am I seeing this?', 'updraftplus').'</a></em></p>';
-			foreach ($wp_filesystem->errors->get_error_messages() as $message) show_message($message);
-			exit;
+		if (false === ($credentials = request_filesystem_credentials($build_url, '', false, false))) exit;
+
+		if (!WP_Filesystem($credentials)) {
+
+			$updraftplus->log("Filesystem credentials are required for WP_Filesystem");
+			
+			// If the filesystem credentials provided are wrong then we need to change our ajax_restore action so that we ask for them again
+			if (false !== strpos($build_url, 'updraftplus_ajax_restore=do_ajax_restore')) $build_url = str_replace('updraftplus_ajax_restore=do_ajax_restore', 'updraftplus_ajax_restore=continue_ajax_restore', $build_url);
+			
+			request_filesystem_credentials($build_url, '', true, false);
+			
+			if ($wp_filesystem->errors->get_error_code()) {
+				echo '<p><em><a href="' . apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/asked-ftp-details-upon-restorationmigration-updates/") . '" target="_blank">' . __('Why am I seeing this?', 'updraftplus') . '</a></em></p>';
+				foreach ($wp_filesystem->errors->get_error_messages() as $message) show_message($message);
+				exit;
+			}
 		}
-		
 	}
 	
 	/**
@@ -682,7 +669,11 @@ class UpdraftPlus_Filesystem_Functions {
 
 		$size_written = 0;
 		
+		$content_cache = array();
+		$content_cache_highest = -1;
+
 		for ($i = $starting_index; $i < $num_files; $i++) {
+
 			if (!$info = $z->statIndex($i)) {
 				return new WP_Error('stat_failed_'.$method, __('Could not retrieve file from archive.'));
 			}
@@ -697,7 +688,47 @@ class UpdraftPlus_Filesystem_Functions {
 			if (0 !== validate_file($info['name'])) continue;
 
 			// PclZip will return (boolean)false for an empty file
-			$contents = (isset($info['size']) && 0 == $info['size']) ? '' : $z->getFromIndex($i);
+			if (isset($info['size']) && 0 == $info['size']) {
+				$contents = '';
+			} else {
+			
+				// UpdraftPlus_PclZip::getFromIndex() calls PclZip::extract(PCLZIP_OPT_BY_INDEX, array($i), PCLZIP_OPT_EXTRACT_AS_STRING), and this is expensive when done only one item at a time. We try to cache in chunks for good performance as well as being able to resume.
+				if ($i > $content_cache_highest && 'UpdraftPlus_PclZip' == $class_to_use) {
+
+					$memory_usage = memory_get_usage(false);
+					$total_memory = $updraftplus->memory_check_current();
+				
+					if ($memory_usage > 0 && $total_memory > 0) {
+						$memory_free = $total_memory*1048576 - $memory_usage;
+					} else {
+						// A sane default. Anything is ultimately better than WP's default of just unzipping everything into memory.
+						$memory_free = 50*1048576;
+					}
+					
+					$use_memory = max(10485760, $memory_free - 10485760);
+
+					$total_byte_count = 0;
+					$content_cache = array();
+					$cache_indexes = array();
+					
+					$cache_index = $i;
+					while ($cache_index < $num_files && $total_byte_count < $use_memory) {
+						if (false !== ($cinfo = $z->statIndex($cache_index)) && isset($cinfo['size']) && '/' != substr($cinfo['name'], -1) && '__MACOSX/' !== substr($cinfo['name'], 0, 9) && 0 === validate_file($cinfo['name'])) {
+							$total_byte_count += $cinfo['size'];
+							if ($total_byte_count < $use_memory) {
+								$cache_indexes[] = $cache_index;
+								$content_cache_highest = $cache_index;
+							}
+						}
+						$cache_index++;
+					}
+
+					if (!empty($cache_indexes)) {
+						$content_cache = $z->updraftplus_getFromIndexBulk($cache_indexes);
+					}
+				}
+				$contents = isset($content_cache[$i]) ? $content_cache[$i] : $z->getFromIndex($i);
+			}
 			
 			if (false === $contents && ('pclzip' !== $method || 0 !== $info['size'])) {
 				return new WP_Error('extract_failed_'.$method, __('Could not extract file from archive.').' '.$z->last_error, json_encode($info));
@@ -706,7 +737,7 @@ class UpdraftPlus_Filesystem_Functions {
 			if (!$wp_filesystem->put_contents($to . $info['name'], $contents, FS_CHMOD_FILE)) {
 				return new WP_Error('copy_failed_'.$method, __('Could not copy file.'), $info['name']);
 			}
-			
+
 			if (!empty($info['size'])) $size_written += $info['size'];
 
 			do_action('updraftplus_unzip_file_unzipped', $file, $i, $info, $size_written, $num_files);

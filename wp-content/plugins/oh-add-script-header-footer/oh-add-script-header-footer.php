@@ -4,7 +4,7 @@
  * Plugin URI: http://sogo.co.il
  * Description:  create a simple way to add js code to individual page post or custom post type header
  * and footer, in this way it enable you to add google re-marketing code to individual pages
- * Version: 3.2
+ * Version: 3.4
  * Author: orenhav (SOGO)
  * Author URI: http://sogo.co.il
  *
@@ -57,13 +57,13 @@ function oh_add_script() {
 
 	}
 
-	echo stripslashes( $output );
-
 	$sogo_header_footer = get_option( 'sogo_header_footer' );
 
 	if ($generic && isset( $sogo_header_footer['oh_header'] ) ) {
 		echo stripslashes(  $sogo_header_footer['oh_header'] );
 	}
+
+	echo stripslashes( $output );
 
 }
 
@@ -84,7 +84,7 @@ function oh_add_script_footer() {
 
 	}
 
-	echo stripslashes( $output );
+
 
 	$sogo_header_footer = get_option( 'sogo_header_footer' );
 
@@ -92,7 +92,7 @@ function oh_add_script_footer() {
 		echo stripslashes(  $sogo_header_footer['oh_footer'] );
 	}
 
-
+	echo stripslashes( $output );
 
 
 }

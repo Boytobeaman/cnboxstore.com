@@ -91,9 +91,14 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 				'default' => '25',
 			),
 
+			'nav_always_show_mobile' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Always show navigation on mobile', 'so-widgets-bundle' ),
+			),
+			
 			'swipe' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Swipe Control', 'so-widgets-bundle' ),
+				'label' => __( 'Swipe control', 'so-widgets-bundle' ),
 				'description' => __( 'Allow users to swipe through frames on mobile devices.', 'so-widgets-bundle' ),
 				'default' => true,
 			),
@@ -138,12 +143,17 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 					'video/ogg' => 'Ogg',
 				),
 			),
+		);
+	}
 
-			'height' => array(
-				'type' => 'number',
-				'label' => __( 'Maximum height', 'so-widgets-bundle' )
-			),
-
+	function get_settings_form() {
+		return array(
+			'responsive_breakpoint' => array(
+				'type'        => 'measurement',
+				'label'       => __( 'Responsive Breakpoint', 'so-widgets-bundle' ),
+				'default'     => '780px',
+				'description' => __( "This setting controls when the Slider will switch to the responsive mode. This breakpoint will only be used if always show navigation on mobile is enabled. The default value is 780px.", 'so-widgets-bundle' )
+			)
 		);
 	}
 
@@ -153,6 +163,8 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 			'speed'                    => empty( $controls['speed'] ) ? 1 : $controls['speed'],
 			'timeout'                  => $controls['timeout'],
 			'swipe'                    => $controls['swipe'],
+			'nav_always_show_mobile'   => ! empty( $controls['nav_always_show_mobile'] ) ? true : '',
+			'breakpoint'               => ! empty( $controls['breakpoint'] ) ? $controls['breakpoint'] : '780px',
 		);
 	}
 
@@ -331,10 +343,7 @@ abstract class SiteOrigin_Widget_Base_Slider extends SiteOrigin_Widget {
 			if( empty( $video['file'] ) && empty ( $video['url'] ) ) continue;
 			// If video is an external file, try and display it using oEmbed
 			if( !empty( $video['url'] ) ) {
-				$args = array();
-				if ( ! empty( $video['height'] ) ) {
-					$args['height'] = $video['height'];
-				}
+
 				$can_oembed = $so_video->can_oembed( $video['url'] );
 
 				// Check if we can oEmbed the video or not

@@ -3,7 +3,7 @@ Contributors: orenhav
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z5H7VVZLSPYUE
 Tags: javascript,js, re-marketing code, header, footer
 Requires at least: 3.5
-Tested up to: 4.9.8
+Tested up to: 5.2.1
 Stable tag: 3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -99,6 +99,8 @@ fix bug :When I paste the script into an individual post from a category then th
 fix bug : Added support for WooCommerce shop page .
 (thanks to Birdie‏  )
 
+= 3.2 =
+output the individual script after the generic script to support google conversion
 
 == Upgrade Notice ==
 
