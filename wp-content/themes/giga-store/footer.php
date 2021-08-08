@@ -13,10 +13,10 @@
 					<div id="footerLink">
 						<p>
 							<a href="https://www.plastic-crate.co.uk" target="_blank" >euro crates</a> <b>|</b>
-							<a href="http://www.joinplastic.com" target="_blank" >plastic folding crate</a> <b>|</b>
+							<a href="https://www.joinplastic.com" target="_blank" >plastic folding crate</a> <b>|</b>
 							<a href="https://www.moving-dolly.com" target="_blank" >plastic moving dolly</a>
 							<b>|</b>
-							<a href="http://www.joinplastic.com/products/stackableBox/stackableBox.php" target="_blank" >stackable plastic crates</a>
+							<a href="https://www.plastic-crates.com/" target="_blank" >stackable plastic crates</a>
 							<b>|</b>
 							<a href="https://www.palletboxsale.com/" target="_blank">Collapsible plastic pallet box</a>
 							<b>|</b>
