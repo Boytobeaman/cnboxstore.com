@@ -92,9 +92,9 @@ class SiteOrigin_Widget_Field_Media extends SiteOrigin_Widget_Field_Base {
 		<div class="media-field-wrapper">
 			<div class="current">
 				<div class="thumbnail-wrapper">
-					<img src="<?php echo sow_esc_url( $src[0] ) ?>" class="thumbnail" <?php if( empty( $src[0] ) ) echo "style='display:none'" ?> />
+					<img src="<?php echo sow_esc_url( $src[0] ) ?>" class="thumbnail" <?php if( empty( $src[0] ) ) echo "style='display:none'" ?> <?php if( !empty( $post ) ) echo 'title="' . esc_attr( $post->post_title ) . '"' ?>/>
+					<div class="title"><?php if( !empty( $post ) ) echo esc_attr( $post->post_title ); ?></div>
 				</div>
-				<div class="title"><?php if( !empty( $post ) ) echo esc_attr( $post->post_title ) ?></div>
 			</div>
 			<a href="#" class="media-upload-button" data-choose="<?php echo esc_attr( $this->choose ) ?>"
 			   data-update="<?php echo esc_attr( $this->update ) ?>"
@@ -137,7 +137,7 @@ class SiteOrigin_Widget_Field_Media extends SiteOrigin_Widget_Field_Base {
 
 	protected function sanitize_field_input( $value, $instance ) {
 		// Media values should be integer
-		return intval( $value );
+		return (int) $value;
 	}
 
 	public function sanitize_instance( $instance ) {
@@ -170,7 +170,7 @@ class SiteOrigin_Widget_Field_Media extends SiteOrigin_Widget_Field_Base {
 
 				<div class="so-widgets-toolbar">
 					<h3><?php _e( 'Search For Images', 'so-widgets-bundle' ) ?></h3>
-					<div class="close"><span class="dashicons dashicons-no-alt"></span></div>
+					<div class="close" tabindex="0"><span class="dashicons dashicons-no-alt"></span></div>
 				</div>
 
 				<div class="so-widgets-dialog-frame">

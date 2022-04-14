@@ -61,8 +61,12 @@ class FieldLink extends Field {
             foreach ($this->keys as $key){
                 $value = '';
                 foreach ($parents as $parent) {
-                    $value = explode($parent['delimiter'], $values[$key][$this->getPostIndex()]);
-                    $value = $value[$parent['index']];
+                    if (!empty($parent['delimiter'])) {
+                        $value = explode($parent['delimiter'], $values[$key][$this->getPostIndex()]);
+                        $value = $value[$parent['index']];
+                    } else {
+                        $value = $values[$key][$this->getPostIndex()];
+                    }
                 }
                 $values[$key][$this->getPostIndex()] = $value;
             }
@@ -89,7 +93,7 @@ class FieldLink extends Field {
     /**
      * @return int
      */
-    public function getCountValues() {
+    public function getCountValues($parentIndex = false) {
         $parents = $this->getParents();
         $count = 0;
         if (!empty($parents)){
@@ -102,8 +106,13 @@ class FieldLink extends Field {
                         if ($parentIndex !== false){
                             $value = $value[$parentIndex];
                         }
-                        $value = explode($parent['delimiter'], $value);
+                        if (!empty($parent['delimiter'])) {
+	                        $value = explode($parent['delimiter'], $value);
+                        }
                         $parentIndex = $parent['index'];
+                    }
+                    if (!is_array($value)) {
+	                    $value = [$value];
                     }
                     $value = array_filter($value);
                     if (count($value) > $count) {

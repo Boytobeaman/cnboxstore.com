@@ -364,6 +364,19 @@ class Minify_Environment {
 		return '';
 	}
 
+	private function site_uri() {
+		$site_uri = rtrim( network_site_url( '', 'relative' ), '/' ) . '/';
+
+		/* There is a bug in WP where network_home_url can return
+		 * a non-relative URI even though scheme is set to relative.
+		 */
+		if ( Util_Environment::is_url( $site_uri ) ) {
+			$site_uri = parse_url( $site_uri, PHP_URL_PATH );
+		}
+
+		return $site_uri;
+	}
+
 	/**
 	 * Generates rules
 	 *
@@ -373,7 +386,14 @@ class Minify_Environment {
 	function rules_core_generate_apache( $config ) {
 		$cache_uri = Util_Environment::url_to_uri(
 			Util_Environment::filename_to_url( W3TC_CACHE_MINIFY_DIR ) ) . '/';
-		$site_uri = rtrim( network_site_url( '', 'relative' ), '/' ) . '/';
+		$site_uri = $this->site_uri();
+
+		/* There is a bug in WP where network_home_url can return
+		 * a non-relative URI even though scheme is set to relative.
+		 */
+		if ( Util_Environment::is_url( $site_uri ) ) {
+			$site_uri = parse_url( $site_uri, PHP_URL_PATH );
+		}
 
 		$engine = $config->get_string( 'minify.engine' );
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
@@ -439,7 +459,7 @@ class Minify_Environment {
 			$first_regex_var = '$2';
 		}
 
-		$minify_uri = rtrim( network_site_url( '', 'relative' ), '/' ) . '/';
+		$minify_uri = $this->site_uri();
 
 		$engine = $config->get_string( 'minify.engine' );
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
@@ -607,8 +627,8 @@ class Minify_Environment {
 		if ( $expires ) {
 			$rules .= "<IfModule mod_expires.c>\n";
 			$rules .= "    ExpiresActive On\n";
-			$rules .= "    ExpiresByType text/css M" . $lifetime . "\n";
-			$rules .= "    ExpiresByType application/x-javascript M" . $lifetime . "\n";
+			$rules .= "    ExpiresByType text/css A" . $lifetime . "\n";
+			$rules .= "    ExpiresByType application/x-javascript A" . $lifetime . "\n";
 			$rules .= "</IfModule>\n";
 		}
 
@@ -690,121 +710,50 @@ class Minify_Environment {
 
 		$browsercache = $config->get_boolean( 'browsercache.enabled' );
 		$brotli = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.brotli' ) );
-		$compression = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.compression' ) );
-		$expires = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.expires' ) );
-		$lifetime = ( $browsercache ? $config->get_integer( 'browsercache.cssjs.lifetime' ) : 0 );
-		$cache_control = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.cache.control' ) );
-		$w3tc = ( $browsercache && $config->get_integer( 'browsercache.cssjs.w3tc' ) );
+		$gzip = ( $browsercache && $config->get_boolean( 'browsercache.cssjs.compression' ) );
 
 		$rules = '';
 		$rules .= W3TC_MARKER_BEGIN_MINIFY_CACHE . "\n";
 
-		$common_rules = '';
+		$common_rules_a = Dispatcher::nginx_rules_for_browsercache_section(
+			$config, 'cssjs', true );
+		$common_rules_a[] = 'add_header Vary "Accept-Encoding";';
 
-		if ( $expires ) {
-			$common_rules .= "    expires modified " . $lifetime . "s;\n";
-		}
-
-		if ( $w3tc ) {
-			$common_rules .= "    add_header X-Powered-By \"" .
-				Util_Environment::w3tc_header() . "\";\n";
-		}
-
-		if ( $brotli || $compression ) {
-			$common_rules .= "    add_header Vary \"Accept-Encoding\";\n";
-		}
-
-		if ( $cache_control ) {
-			$cache_policy = $config->get_string( 'browsercache.cssjs.cache.policy' );
-
-			switch ( $cache_policy ) {
-			case 'cache':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"public\";\n";
-				break;
-
-			case 'cache_public_maxage':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-
-				if ( $expires ) {
-					$common_rules .= "    add_header Cache-Control \"public\";\n";
-				} else {
-					$common_rules .= "    add_header Cache-Control \"max-age=" . $lifetime . ", public\";\n";
-				}
-				break;
-
-			case 'cache_validation':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"public, must-revalidate, proxy-revalidate\";\n";
-				break;
-
-			case 'cache_noproxy':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-				$common_rules .= "    add_header Cache-Control \"private, must-revalidate\";\n";
-				break;
-
-			case 'cache_maxage':
-				$common_rules .= "    add_header Pragma \"public\";\n";
-
-				if ( $expires ) {
-					$common_rules .= "    add_header Cache-Control \"public, must-revalidate, proxy-revalidate\";\n";
-				} else {
-					$common_rules .= "    add_header Cache-Control \"max-age=" . $lifetime . ", public, must-revalidate, proxy-revalidate\";\n";
-				}
-				break;
-
-			case 'no_cache':
-				$common_rules .= "    add_header Pragma \"no-cache\";\n";
-				$common_rules .= "    add_header Cache-Control \"max-age=0, private, no-store, no-cache, must-revalidate\";\n";
-				break;
-			}
-		}
-
-		$rules .= "location ~ " . $cache_uri . ".*\\.js$ {\n";
-		$rules .= "    types {}\n";
-		$rules .= "    default_type application/x-javascript;\n";
-		$rules .= $common_rules;
-		$rules .= "}\n";
-
-		$rules .= "location ~ " . $cache_uri . ".*\\.css$ {\n";
-		$rules .= "    types {}\n";
-		$rules .= "    default_type text/css;\n";
-		$rules .= $common_rules;
-		$rules .= "}\n";
+		$common_rules = '    ' . implode( "\n    ", $common_rules_a ) . "\n";
 
 		if ( $brotli ) {
 			$rules .= "location ~ " . $cache_uri . ".*js_br$ {\n";
 			$rules .= "    brotli off;\n";
 			$rules .= "    types {}\n";
 			$rules .= "    default_type application/x-javascript;\n";
-			$rules .= $common_rules;
 			$rules .= "    add_header Content-Encoding br;\n";
+			$rules .= $common_rules;
 			$rules .= "}\n";
 
 			$rules .= "location ~ " . $cache_uri . ".*css_br$ {\n";
 			$rules .= "    brotli off;\n";
 			$rules .= "    types {}\n";
 			$rules .= "    default_type text/css;\n";
-			$rules .= $common_rules;
 			$rules .= "    add_header Content-Encoding br;\n";
+			$rules .= $common_rules;
 			$rules .= "}\n";
 		}
 
-		if ( $compression ) {
+		if ( $gzip ) {
 			$rules .= "location ~ " . $cache_uri . ".*js_gzip$ {\n";
 			$rules .= "    gzip off;\n";
 			$rules .= "    types {}\n";
 			$rules .= "    default_type application/x-javascript;\n";
-			$rules .= $common_rules;
 			$rules .= "    add_header Content-Encoding gzip;\n";
+			$rules .= $common_rules;
 			$rules .= "}\n";
 
 			$rules .= "location ~ " . $cache_uri . ".*css_gzip$ {\n";
 			$rules .= "    gzip off;\n";
 			$rules .= "    types {}\n";
 			$rules .= "    default_type text/css;\n";
-			$rules .= $common_rules;
 			$rules .= "    add_header Content-Encoding gzip;\n";
+			$rules .= $common_rules;
 			$rules .= "}\n";
 		}
 

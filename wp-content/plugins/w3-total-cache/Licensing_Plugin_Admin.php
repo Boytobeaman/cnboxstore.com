@@ -46,7 +46,7 @@ class Licensing_Plugin_Admin {
 
 		if ( defined( 'W3TC_DEBUG' ) && W3TC_DEBUG ) {
 			$menu_items['90040.licensing'] = array(
-				'id' => 'w3tc_overlay_upgrade',
+				'id' => 'w3tc_debug_overlay_upgrade',
 				'parent' => 'w3tc_debug_overlays',
 				'title' => __( 'Upgrade', 'w3-total-cache' ),
 				'href' => wp_nonce_url( network_admin_url(
@@ -66,7 +66,7 @@ class Licensing_Plugin_Admin {
 ?>
 		<script type="text/javascript">
 		jQuery(function() {
-			w3tc_lightbox_upgrade(w3tc_nonce);
+			w3tc_lightbox_upgrade(w3tc_nonce, 'topbar_performance');
 			jQuery('#w3tc-license-instruction').show();
 		});
 		   </script>
@@ -107,6 +107,8 @@ class Licensing_Plugin_Admin {
 			$state = Dispatcher::config_state();
 			$state->set( 'license.next_check', 0 );
 			$state->save();
+
+			delete_transient( 'w3tc_imageservice_limited' );
 		}
 	}
 
@@ -120,9 +122,7 @@ class Licensing_Plugin_Admin {
 		$this->maybe_update_license_status();
 
 		if ( current_user_can( $capability ) ) {
-			if ( is_admin() && Util_Admin::is_w3tc_admin_page() ) {
-				add_filter( 'w3tc_notes', array( $this, 'w3tc_notes' ) );
-
+			if ( is_admin() ) {
 				/**
 				 * Only admin can see W3TC notices and errors
 				 */
@@ -136,6 +136,10 @@ class Licensing_Plugin_Admin {
 						$this,
 						'admin_notices'
 					), 1, 1 );
+
+				if ( Util_Admin::is_w3tc_admin_page() ) {
+					add_filter( 'w3tc_notes', array( $this, 'w3tc_notes' ) );
+				}
 			}
 		}
 	}
@@ -160,8 +164,11 @@ class Licensing_Plugin_Admin {
 		if ( defined( 'W3TC_PRO' ) ) {
 		} elseif ( $status == 'no_key' ) {
 		} elseif ( $this->_status_is( $status, 'inactive.expired' ) ) {
-			$message = sprintf( __( 'The W3 Total Cache license key has expired. Please renew it: %s', 'w3-total-cache' ),
-				'<input type="button" class="button-primary button-buy-plugin {nonce: \''. wp_create_nonce( 'w3tc' ).'\'}" value="'.__( 'Renew', 'w3-total-cache' ) . '" />' );
+			$message = sprintf( __( 'It looks like your W3 Total Cache Pro License has expired. %s to continue using the Pro Features', 'w3-total-cache' ),
+				'<input type="button" class="button-primary button-buy-plugin"' .
+				' data-nonce="'. wp_create_nonce( 'w3tc' ) . '"' .
+				' data-renew-key="' . esc_attr( $this->get_license_key() ) . '"' .
+				' data-src="licensing_expired" value="'.__( 'Renew Now', 'w3-total-cache' ) . '" />' );
 		} elseif ( $this->_status_is( $status, 'invalid' ) ) {
 			$message = __( 'The W3 Total Cache license key you entered is not valid.', 'w3-total-cache' ) .
 				'<a href="' . ( is_network_admin() ? network_admin_url( 'admin.php?page=w3tc_general#licensing' ):
@@ -181,10 +188,16 @@ class Licensing_Plugin_Admin {
 			$message = __( 'The W3 Total Cache license key can\'t be verified.', 'w3-total-cache' );
 		}
 
-		if ( $message )
-			Util_Ui::error_box( sprintf( "<p>$message. <a class='w3tc_licensing_check' href='%s'>" . __( 'check again' ) . '</a></p>',
+		if ( $message ) {
+			if ( !Util_Admin::is_w3tc_admin_page() ) {
+				echo '<script src="' . plugins_url( 'pub/js/lightbox.js', W3TC_FILE ) . '"></script>';
+				echo '<link rel="stylesheet" id="w3tc-lightbox-css"  href="' . plugins_url( 'pub/css/lightbox.css', W3TC_FILE ) . '" type="text/css" media="all" />';
+			}
+
+			Util_Ui::error_box( sprintf( "<p>$message. <a class='w3tc_licensing_check' href='%s'>" . __( 'check license status again' ) . '</a></p>',
 					Util_Ui::url( array( 'page' => 'w3tc_general', 'w3tc_licensing_check_key' => 'y' ) ) )
 			);
+		}
 
 
 		if ( $this->site_inactivated ) {
@@ -240,8 +253,15 @@ class Licensing_Plugin_Admin {
 					$buttons;
 			} else {
 				$notes['licensing_terms'] = sprintf(
-					__( 'Thanks for using W3 Total Cache! Please review the latest <a href="%s" target="blank">terms of use and privacy policy</a>, and accept them.', 'w3-total-cache' ),
-						W3TC_TERMS_URL ) .
+					// translators: 1: HTML break tag, 2: Anchor/link open tag, 3: Anchor/link close tag.
+					esc_html__(
+						'By allowing us to collect data about how W3 Total Cache is used, we can improve our features and experience for everyone. This data will not include any personally identifiable information.%1$sFeel free to review our %2$sterms of use and privacy policy%3$s.',
+						'w3-total-cache'
+					),
+					'<br />',
+					'<a target="_blank" href="' . esc_url( W3TC_TERMS_URL ) . '">',
+					'</a>'
+				) .
 					$buttons;
 			}
 		}

@@ -25,6 +25,9 @@ class OHHeaderFooterTerms {
 
 
 	function update_category_meta( $term_id ) {
+		// Secondly we need to check if the user intended to change this value.
+		if ( ! isset( $_POST['oh_add_script_noncename'] ) || ! wp_verify_nonce( $_POST['oh_add_script_noncename'], plugin_basename( __FILE__ ) ) )
+			return;
 
 		if ( isset( $_POST['oh-hide-header'] ) && '' !== $_POST['oh-hide-header'] ) {
 			update_term_meta( $term_id, 'oh-hide-header', $_POST['oh-hide-header'] );
@@ -59,7 +62,7 @@ class OHHeaderFooterTerms {
 		$hide_footer = get_term_meta( $term->term_id, 'oh-hide-footer', true );
 		$header      = get_term_meta( $term->term_id, 'oh-header-script', true );
 		$footer      = get_term_meta( $term->term_id, 'oh-footer-script', true );
-
+		wp_nonce_field( plugin_basename( __FILE__ ), 'oh_add_script_noncename' );
 		?>
 
 

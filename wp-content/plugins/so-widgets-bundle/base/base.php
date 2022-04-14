@@ -64,16 +64,12 @@ add_action('wp_ajax_siteorigin_widgets_get_icons', 'siteorigin_widget_get_icon_l
 /**
  * @param $icon_value
  * @param bool $icon_styles
+ * @param string $title
  *
  * @return bool|string
  */
-function siteorigin_widget_get_icon($icon_value, $icon_styles = false) {
+function siteorigin_widget_get_icon($icon_value, $icon_styles = false, $title = null) {
 	if( empty( $icon_value ) ) return false;
-	$value_parts = SiteOrigin_Widget_Field_Icon::get_value_parts( $icon_value );
-	$family = $value_parts['family'];
-	$style = empty( $value_parts['style'] ) ? null : $value_parts['style'];
-	$icon = $value_parts['icon'];
-	if( empty( $family ) || empty( $icon ) ) return false;
 
 	static $widget_icon_families;
 	static $widget_icons_enqueued = array();
@@ -81,6 +77,16 @@ function siteorigin_widget_get_icon($icon_value, $icon_styles = false) {
 	if ( empty( $widget_icon_families ) ) {
 		$widget_icon_families = apply_filters('siteorigin_widgets_icon_families', array() );
 	}
+  
+	// Get an array of available icon families styles to pass to SiteOrigin_Widget_Field_Icon::get_value_parts()
+	$icon_families_styles = SiteOrigin_Widget_Field_Icon::get_icon_families_styles( $widget_icon_families );
+  
+	$value_parts = SiteOrigin_Widget_Field_Icon::get_value_parts( $icon_value, $icon_families_styles );
+	$family = $value_parts['family'];
+	$style = empty( $value_parts['style'] ) ? null : $value_parts['style'];
+	$icon = $value_parts['icon'];
+	if( empty( $family ) || empty( $icon ) ) return false;
+  
 	if ( empty( $widget_icon_families[ $family ] ) ||
 		 empty( $widget_icon_families[ $family ]['icons'][ $icon ] ) ) {
 		return false;
@@ -99,7 +105,9 @@ function siteorigin_widget_get_icon($icon_value, $icon_styles = false) {
 		} else if ( is_string( $icon_data ) ) {
 			$unicode = $icon_data;
 		}
-		return '<span class="' . esc_attr( $family_style ) . '" data-sow-icon="' . $unicode . '" ' . ( ! empty( $icon_styles ) ? 'style="' . implode( '; ', $icon_styles ) . '"' : '' ) . '></span>';
+		return '<span class="' . esc_attr( $family_style ) . '" data-sow-icon="' . $unicode . '"
+		' . ( ! empty( $icon_styles ) ? 'style="' . implode( '; ', $icon_styles ) . '"' : '' ) . ' '. 
+		( ! empty( $title ) ? 'title="' . esc_attr( $title ) .'"' : '' ) .'></span>';
 	}
 	else {
 		return false;
@@ -112,6 +120,7 @@ function siteorigin_widget_get_icon($icon_value, $icon_styles = false) {
  *
  * @return array
  */
+$sow_registered_fonts = array();
 function siteorigin_widget_get_font($font_value) {
 
 	$web_safe = array(
@@ -126,19 +135,42 @@ function siteorigin_widget_get_font($font_value) {
 	$font = array();
 	if ( isset( $web_safe[ $font_value ] ) ) {
 		$font['family'] = $web_safe[ $font_value ];
-	}
-	else if( siteorigin_widgets_is_google_webfont( $font_value ) ) {
+	} elseif ( siteorigin_widgets_is_google_webfont( $font_value ) ) {
+		global $sow_registered_fonts;
+
 		$font_parts = explode( ':', $font_value );
 		$font['family'] = $font_parts[0];
 		$font_url_param = urlencode( $font_parts[0] );
 		if ( count( $font_parts ) > 1 ) {
 			$font['weight'] = $font_parts[1];
 			$font_url_param .= ':' . $font_parts[1];
+			$font['weight_raw'] = filter_var( $font['weight'], FILTER_SANITIZE_NUMBER_INT );
+			$font['style'] = ! is_numeric( $font['weight'] ) || $font['weight'] == 'italic' ? 'italic' : '';
 		}
 		$font['url'] = 'https://fonts.googleapis.com/css?family=' . $font_url_param;
-		$font['css_import'] = '@import url(https://fonts.googleapis.com/css?family=' . $font_url_param . ');';
-	}
-	else {
+		$style_name = 'sow-google-font-' . strtolower( $font['family'] );
+
+
+		if ( ! empty( $font['weight'] ) ) {
+			$font_slug = $font['weight_raw'] . ( ! empty( $font['style'] ) ? 'i' : '' );
+		} else {
+			// Default to 400 if no weight is set.
+			$font_slug = 400;
+		}
+		$sow_registered_fonts[ $font['family'] ][ $font_slug ] = true;
+
+		// Check if WB (or something else has) has already enqueued the font.
+		if ( ! wp_style_is( $style_name ) ) {
+			wp_enqueue_style( $style_name,  $font['url'] . '&display=swap' );
+		} elseif ( ! empty( $sow_registered_fonts[ $font['family'] ] ) ) {
+			// Font already present. Update URL.
+			global $wp_styles;
+			global $sow_registered_fonts;
+
+			$font_weight_styles = array_keys( $sow_registered_fonts[ $font['family'] ]  );
+			$wp_styles->registered[ $style_name ]->src = 'https://fonts.googleapis.com/css?family=' . urlencode( $font['family'] . ':' . implode( ',', $font_weight_styles ) );
+		}
+	} else {
 		$font['family'] = $font_value;
 		$font = apply_filters( 'siteorigin_widget_get_custom_font_family', $font );
 	}
@@ -175,7 +207,7 @@ add_filter('siteorigin_panels_widgets', 'siteorigin_widget_add_bundle_groups', 1
 function sow_esc_url( $url ) {
 	if( preg_match('/^post: *([0-9]+)/', $url, $matches) ) {
 		// Convert the special post URL into a permalink
-		$url = get_the_permalink( intval($matches[1]) );
+		$url = get_the_permalink( (int) $matches[1] );
 		if( empty($url) ) return '';
 	}
 
@@ -194,7 +226,7 @@ function sow_esc_url( $url ) {
 function sow_esc_url_raw( $url ) {
 	if( preg_match('/^post: *([0-9]+)/', $url, $matches) ) {
 		// Convert the special post URL into a permalink
-		$url = get_the_permalink( intval($matches[1]) );
+		$url = get_the_permalink( (int) $matches[1] );
 	}
 
 	$protocols = wp_allowed_protocols();
@@ -257,9 +289,9 @@ function siteorigin_widgets_font_families( ){
 		foreach ( $variants as $variant ) {
 			if ( $variant == 'regular' || $variant == 400 ) {
 				$font_families[ $font ] = $font;
-			}
-			else {
-				$font_families[ $font . ':' . $variant ] = $font . ' (' . $variant . ')';
+			} else {
+				$label_variant = is_numeric( $variant ) || $variant == 'italic'? $variant : filter_var( $variant, FILTER_SANITIZE_NUMBER_INT ) . ' italic';
+				$font_families[ $font . ':' . $variant ] = $font . ' (' . $label_variant . ')';
 			}
 		}
 	}

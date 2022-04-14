@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('UPDRAFTPLUS_DIR')) die('No access.');
+if (!defined('UPDRAFTCENTRAL_CLIENT_DIR')) die('No access.');
 
 /**
  * Handles UpdraftCentral Plugin Commands which basically handles
@@ -17,9 +17,9 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 	 * @param array  $data       an array of data post or get fields
 	 * @param array  $extra_info extrainfo use in the udrpc_action, e.g. user_id
 	 *
-	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
+	 * link to udrpc_action main function in class UpdraftCentral_Listener
 	 */
-	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- This function is called from listner.php and $extra_info is being sent.
 		// Here we assign the current blog_id to a variable $blog_id
 		$blog_id = get_current_blog_id();
 		if (!empty($data['site_id'])) $blog_id = $data['site_id'];
@@ -36,9 +36,9 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 	 * @param array  $data       an array of data post or get fields
 	 * @param array  $extra_info extrainfo use in the udrpc_action, e.g. user_id
 	 *
-	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
+	 * link to udrpc_action main function in class UpdraftCentral_Listener
 	 */
-	public function _post_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function _post_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		// Here, we're restoring to the current (default) blog before we switched
 		if ($this->switched) restore_current_blog();
 	}
@@ -48,6 +48,16 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 	 */
 	public function __construct() {
 		$this->_admin_include('plugin.php', 'file.php', 'template.php', 'class-wp-upgrader.php', 'plugin-install.php', 'update.php');
+	}
+
+	/**
+	 * Installs and activates a plugin through upload
+	 *
+	 * @param array $params Parameter array containing information pertaining the currently uploaded plugin
+	 * @return array Contains the result of the current process
+	 */
+	public function upload_plugin($params) {
+		return $this->process_chunk_upload($params, 'plugin');
 	}
 
 	/**
@@ -62,7 +72,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 			return $this->_generic_error_response('plugin_name_required');
 
 
-		$result = $this->_get_plugin_info($query['plugin']);
+		$result = $this->_get_plugin_info($query);
 		return $this->_response($result);
 	}
 
@@ -80,7 +90,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 		switch ($action) {
 			case 'activate':
 			case 'network_activate':
-				$info = $this->_get_plugin_info($query['plugin']);
+				$info = $this->_get_plugin_info($query);
 				if ($info['installed']) {
 					if (is_multisite() && 'network_activate' === $action) {
 						$activate = activate_plugin($info['plugin_path'], '', true);
@@ -89,17 +99,27 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 					}
 
 					if (is_wp_error($activate)) {
-						$result = $this->_generic_error_response('generic_response_error', array($activate->get_error_message()));
+						$result = $this->_generic_error_response('generic_response_error', array(
+							'plugin' => $query['plugin'],
+							'error_code' => 'generic_response_error',
+							'error_message' => $activate->get_error_message(),
+							'info' => $this->_get_plugin_info($query)
+						));
 					} else {
-						$result = array('activated' => true);
+						$result = array('activated' => true, 'info' => $this->_get_plugin_info($query));
 					}
 				} else {
-					$result = $this->_generic_error_response('plugin_not_installed', array($query['plugin']));
+					$result = $this->_generic_error_response('plugin_not_installed', array(
+						'plugin' => $query['plugin'],
+						'error_code' => 'plugin_not_installed',
+						'error_message' => __('The plugin you wish to activate is either not installed or has been removed recently.', 'updraftplus'),
+						'info' => $info
+					));
 				}
 				break;
 			case 'deactivate':
 			case 'network_deactivate':
-				$info = $this->_get_plugin_info($query['plugin']);
+				$info = $this->_get_plugin_info($query);
 				if ($info['active']) {
 					if (is_multisite() && 'network_deactivate' === $action) {
 						deactivate_plugins($info['plugin_path'], false, true);
@@ -108,12 +128,22 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 					}
 
 					if (!is_plugin_active($info['plugin_path'])) {
-						$result = array('deactivated' => true);
+						$result = array('deactivated' => true, 'info' => $this->_get_plugin_info($query));
 					} else {
-						$result = $this->_generic_error_response('deactivate_plugin_failed', array($query['plugin']));
+						$result = $this->_generic_error_response('deactivate_plugin_failed', array(
+							'plugin' => $query['plugin'],
+							'error_code' => 'deactivate_plugin_failed',
+							'error_message' => __('There appears to be a problem deactivating the intended plugin. Please kindly check your permission and try again.', 'updraftplus'),
+							'info' => $this->_get_plugin_info($query)
+						));
 					}
 				} else {
-					$result = $this->_generic_error_response('not_active', array($query['plugin']));
+					$result = $this->_generic_error_response('not_active', array(
+						'plugin' => $query['plugin'],
+						'error_code' => 'not_active',
+						'error_message' => __('The plugin you wish to deactivate is currently not active or is already deactivated.', 'updraftplus'),
+						'info' => $info
+					));
 				}
 				break;
 			case 'install':
@@ -135,27 +165,72 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 					)
 				));
 
+				$info = $this->_get_plugin_info($query);
 				if (is_wp_error($api)) {
-					$result = $this->_generic_error_response('generic_response_error', array($api->get_error_message()));
+					$result = $this->_generic_error_response('generic_response_error', array(
+						'plugin' => $query['plugin'],
+						'error_code' => 'generic_response_error',
+						'error_message' => $api->get_error_message(),
+						'info' => $info
+					));
 				} else {
-					$info = $this->_get_plugin_info($query['plugin']);
 					$installed = $info['installed'];
 
+					$error_code = $error_message = '';
 					if (!$installed) {
 						// WP < 3.7
-						if (!class_exists('Automatic_Upgrader_Skin')) include_once(UPDRAFTPLUS_DIR.'/central/classes/class-automatic-upgrader-skin.php');
+						if (!class_exists('Automatic_Upgrader_Skin')) include_once(dirname(dirname(__FILE__)).'/classes/class-automatic-upgrader-skin.php');
 
 						$skin = new Automatic_Upgrader_Skin();
 						$upgrader = new Plugin_Upgrader($skin);
 
 						$download_link = $api->download_link;
 						$installed = $upgrader->install($download_link);
+
+						if (is_wp_error($installed)) {
+							$error_code = $installed->get_error_code();
+							$error_message = $installed->get_error_message();
+						} elseif (is_wp_error($skin->result)) {
+							$error_code = $skin->result->get_error_code();
+							$error_message = $skin->result->get_error_message();
+
+							$error_data = $skin->result->get_error_data($error_code);
+							if (!empty($error_data)) {
+								if (is_array($error_data)) $error_data = json_encode($error_data);
+								$error_message .= ' '.$error_data;
+							}
+						} elseif (is_null($installed) || !$installed) {
+							global $wp_filesystem;
+							$upgrade_messages = $skin->get_upgrade_messages();
+
+							if (!class_exists('WP_Filesystem_Base')) include_once(ABSPATH.'/wp-admin/includes/class-wp-filesystem-base.php');
+
+							// Pass through the error from WP_Filesystem if one was raised.
+							if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+								$error_code = $wp_filesystem->errors->get_error_code();
+								$error_message = $wp_filesystem->errors->get_error_message();
+							} elseif (!empty($upgrade_messages)) {
+								// We're only after for the last feedback that we received from the install process. Mostly,
+								// that is where the last error has been inserted.
+								$messages = $skin->get_upgrade_messages();
+								$error_code = 'install_failed';
+								$error_message = end($messages);
+							} else {
+								$error_code = 'unable_to_connect_to_filesystem';
+								$error_message = __('Unable to connect to the filesystem. Please confirm your credentials.');
+							}
+						}
 					}
 
-					if (!$installed) {
-						$result = $this->_generic_error_response('plugin_install_failed', array($query['plugin']));
+					if (!$installed || is_wp_error($installed)) {
+						$result = $this->_generic_error_response('plugin_install_failed', array(
+							'plugin' => $query['plugin'],
+							'error_code' => $error_code,
+							'error_message' => $error_message,
+							'info' => $this->_get_plugin_info($query)
+						));
 					} else {
-						$result = array('installed' => true);
+						$result = array('installed' => true, 'info' => $this->_get_plugin_info($query));
 					}
 				}
 				break;
@@ -337,18 +412,26 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 		}
 
 		$this->_preload_credentials($query);
-		$info = $this->_get_plugin_info($query['plugin']);
+		$info = $this->_get_plugin_info($query);
 
 		if ($info['installed']) {
 			$deleted = delete_plugins(array($info['plugin_path']));
 
 			if ($deleted) {
-				$result = array('deleted' => true);
+				$result = array('deleted' => true, 'info' => $this->_get_plugin_info($query));
 			} else {
-				$result = $this->_generic_error_response('delete_plugin_failed', array($query['plugin']));
+				$result = $this->_generic_error_response('delete_plugin_failed', array(
+					'plugin' => $query['plugin'],
+					'error_code' => 'delete_plugin_failed',
+					'info' => $info
+				));
 			}
 		} else {
-			$result = $this->_generic_error_response('plugin_not_installed', array($query['plugin']));
+			$result = $this->_generic_error_response('plugin_not_installed', array(
+				'plugin' => $query['plugin'],
+				'error_code' => 'plugin_not_installed',
+				'info' => $info
+			));
 		}
 
 		return $this->_response($result);
@@ -368,7 +451,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 		}
 
 		$this->_preload_credentials($query);
-		$info = $this->_get_plugin_info($query['plugin']);
+		$info = $this->_get_plugin_info($query);
 
 		// Make sure that we still have the plugin installed before running
 		// the update process
@@ -379,10 +462,14 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 
 			$result = $update_command->update_plugin($info['plugin_path'], $query['slug']);
 			if (!empty($result['error'])) {
-				$result['values'] = array($query['plugin']);
+				$result['values'] = array('plugin' => $query['plugin'], 'info' => $info);
 			}
 		} else {
-			$result = $this->_generic_error_response('plugin_not_installed', array($query['plugin']));
+			$result = $this->_generic_error_response('plugin_not_installed', array(
+				'plugin' => $query['plugin'],
+				'error_code' => 'plugin_not_installed',
+				'info' => $info
+			));
 		}
 
 		return $this->_response($result);
@@ -392,10 +479,10 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 	 * Gets the plugin information along with its active and install status
 	 *
 	 * @internal
-	 * @param array $plugin The name of the plugin to pull the information from
-	 * @return array Contains the plugin information
+	 * @param array $query Contains either the plugin name or slug or both to be used when retrieving information
+	 * @return array
 	 */
-	private function _get_plugin_info($plugin) {
+	private function _get_plugin_info($query) {
 
 		$info = array(
 			'active' => false,
@@ -404,15 +491,24 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 		
 		// Clear plugin cache so that newly installed/downloaded plugins
 		// gets reflected when calling "get_plugins"
-		wp_clean_plugins_cache();
+		if (function_exists('wp_clean_plugins_cache')) {
+			wp_clean_plugins_cache();
+		}
 		
 		// Gets all plugins available.
 		$get_plugins = get_plugins();
 
 		// Loops around each plugin available.
 		foreach ($get_plugins as $key => $value) {
+			$slug = basename($key, '.php');
+
 			// If the plugin name matches that of the specified name, it will gather details.
-			if ($value['Name'] === $plugin) {
+			// In case name check isn't enough, we'll use slug to verify if the plugin being queried is actually installed.
+			//
+			// Reason for name check failure:
+			// Due to plugin name inconsistencies - where wordpress.org registered plugin name is different
+			// from the actual plugin files's metadata (found inside the plugin's PHP file itself).
+			if ((!empty($query['plugin']) && $value['Name'] === $query['plugin']) || (!empty($query['slug']) && $slug === $query['slug'])) {
 				$info['installed'] = true;
 				$info['active'] = is_plugin_active($key);
 				$info['plugin_path'] = $key;
@@ -462,6 +558,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 			$plugin->status = is_plugin_active($key) ? 'active' : 'inactive';
 			$plugin->website = $website;
 			$plugin->multisite = is_multisite();
+			$plugin->site_url = trailingslashit(get_bloginfo('url'));
 
 			if (!empty($plugin_updates[$key])) {
 				$update_info = $plugin_updates[$key];

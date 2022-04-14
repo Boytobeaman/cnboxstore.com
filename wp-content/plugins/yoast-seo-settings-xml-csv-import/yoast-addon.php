@@ -4,7 +4,7 @@
 Plugin Name: WP All Import - Yoast WordPress SEO Add-On
 Plugin URI: http://www.wpallimport.com/
 Description: Import data into Yoast WordPress SEO with WP All Import.
-Version: 1.1.7
+Version: 1.1.8
 Author: Soflyy
 */
 
@@ -257,7 +257,6 @@ switch($custom_type) {
 				'_yoast_wpseo_meta-robots-nofollow',
 				'_yoast_wpseo_meta-robots-adv',
 				'_yoast_wpseo_canonical',
-				'_yoast_wpseo_redirect',
 				'_yoast_wpseo_opengraph-title',
 				'_yoast_wpseo_opengraph-description',
 				'_yoast_wpseo_twitter-title',

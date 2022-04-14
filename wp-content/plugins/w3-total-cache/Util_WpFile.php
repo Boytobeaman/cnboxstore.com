@@ -1,7 +1,55 @@
 <?php
+/**
+ * File: Util_WpFile.php
+ *
+ * @package W3TC
+ */
+
 namespace W3TC;
 
+/**
+ * Class: Util_WpFile
+ */
 class Util_WpFile {
+	/**
+	 * Check WP_Filesystem credentials when running ajax.
+	 *
+	 * @since 2.2.1
+	 *
+	 * @param string $extra Extra markup for an error message.
+	 */
+	public static function ajax_check_credentials( $extra = null ) {
+		$access_type = get_filesystem_method();
+		ob_start();
+		$credentials = request_filesystem_credentials(
+			site_url() . '/wp-admin/',
+			$access_type
+		);
+		ob_end_clean();
+
+		if ( false === $credentials || ! WP_Filesystem( $credentials ) ) {
+			global $wp_filesystem;
+
+			$status['error'] = sprintf(
+				// translators: 1: Filesystem access method: "direct", "ssh2", "ftpext" or "ftpsockets".
+				__(
+					'Unable to connect to the filesystem (using %1$s). Please confirm your credentials.  %2$s',
+					'w3-total-cache'
+				),
+				$access_type,
+				$extra
+			);
+
+			// Pass through the error from WP_Filesystem if one was raised.
+			if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) &&
+				$wp_filesystem->errors->has_errors() ) {
+					$status['error'] = esc_html( $wp_filesystem->errors->get_error_message() );
+			}
+
+			wp_send_json_error( $status );
+		}
+	}
+
 	/**
 	 * Tries to write file content
 	 *
@@ -240,6 +288,9 @@ class Util_WpFile {
 			$url = $_SERVER['REQUEST_URI'];
 		$url = preg_replace( "/&w3tc_note=([^&]+)/", '', $url );
 
+		// Ensure request_filesystem_credentials() is available.
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/template.php';
 
 		$success = true;
 		ob_start();
@@ -281,6 +332,10 @@ class Util_WpFile {
 	 */
 	static private function get_filesystem_credentials_form( $method = '', $url = '',
 		$context = false ) {
+		// Ensure request_filesystem_credentials() is available.
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/template.php';
+
 		ob_start();
 		// If first check failed try again and show error message
 		request_filesystem_credentials( $url, $method, true, false, array() );

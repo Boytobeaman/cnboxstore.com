@@ -123,6 +123,20 @@ class Generic_AdminActions_Default {
 		Util_Admin::redirect( array(), true );
 	}
 
+	public function w3tc_default_purgelog_clear() {
+		$module = Util_Request::get_label( 'module' );
+		$log_filename = Util_Debug::log_filename( $module . '-purge' );
+		if ( file_exists( $log_filename ) ) {
+			unlink( $log_filename );
+		}
+
+		Util_Admin::redirect( array(
+			'page' => 'w3tc_general',
+			'view' => 'purge_log',
+			'module' => $module
+		), true );
+	}
+
 	/**
 	 *
 	 */
@@ -268,7 +282,7 @@ class Generic_AdminActions_Default {
 		 */
 		if ( $this->_page == 'w3tc_minify' ) {
 			if ( ( $this->_config->get_boolean( 'minify.js.http2push' ) && ! $config->get_boolean( 'minify.js.http2push' ) ) ||
-			     ( $this->_config->get_boolean( 'minify.css.http2push' ) && ! $config->get_boolean( 'minify.css.http2push' ) ) ) {
+				( $this->_config->get_boolean( 'minify.css.http2push' ) && ! $config->get_boolean( 'minify.css.http2push' ) ) ) {
 				if ( $config->get_string( 'pgcache.engine' ) == 'file_generic' ) {
 					$cache_dir = Util_Environment::cache_blog_dir( 'page_enhanced' );
 					$this->_deleteAllHtaccessFiles( $cache_dir );
@@ -346,158 +360,6 @@ class Generic_AdminActions_Default {
 		}
 
 		/**
-		 * Mobile tab
-		 */
-		if ( $this->_page == 'w3tc_mobile' ) {
-			$groups = Util_Request::get_array( 'mobile_groups' );
-
-			$mobile_groups = array();
-			$cached_mobile_groups = array();
-
-			foreach ( $groups as $group => $group_config ) {
-				$group = strtolower( $group );
-				$group = preg_replace( '~[^0-9a-z_]+~', '_', $group );
-				$group = trim( $group, '_' );
-
-				if ( $group ) {
-					$theme = ( isset( $group_config['theme'] ) ? trim( $group_config['theme'] ) : 'default' );
-					$enabled = ( isset( $group_config['enabled'] ) ? (boolean) $group_config['enabled'] : true );
-					$redirect = ( isset( $group_config['redirect'] ) ? trim( $group_config['redirect'] ) : '' );
-					$agents = ( isset( $group_config['agents'] ) ? explode( "\r\n", trim( $group_config['agents'] ) ) : array() );
-
-					$mobile_groups[$group] = array(
-						'theme' => $theme,
-						'enabled' => $enabled,
-						'redirect' => $redirect,
-						'agents' => $agents
-					);
-
-					$cached_mobile_groups[$group] = $agents;
-				}
-			}
-
-			/**
-			 * Allow plugins modify WPSC mobile groups
-			 */
-			$cached_mobile_groups = apply_filters( 'cached_mobile_groups', $cached_mobile_groups );
-
-			/**
-			 * Merge existent and delete removed groups
-			 */
-			foreach ( $mobile_groups as $group => $group_config ) {
-				if ( isset( $cached_mobile_groups[$group] ) ) {
-					$mobile_groups[$group]['agents'] = (array) $cached_mobile_groups[$group];
-				} else {
-					unset( $mobile_groups[$group] );
-				}
-			}
-
-			/**
-			 * Add new groups
-			 */
-			foreach ( $cached_mobile_groups as $group => $agents ) {
-				if ( !isset( $mobile_groups[$group] ) ) {
-					$mobile_groups[$group] = array(
-						'theme' => '',
-						'enabled' => true,
-						'redirect' => '',
-						'agents' => $agents
-					);
-				}
-			}
-
-			/**
-			 * Allow plugins modify W3TC mobile groups
-			 */
-			$mobile_groups = apply_filters( 'w3tc_mobile_groups', $mobile_groups );
-
-			/**
-			 * Sanitize mobile groups
-			 */
-			foreach ( $mobile_groups as $group => $group_config ) {
-				$mobile_groups[$group] = array_merge( array(
-						'theme' => '',
-						'enabled' => true,
-						'redirect' => '',
-						'agents' => array()
-					), $group_config );
-
-				$mobile_groups[$group]['agents'] = array_unique( $mobile_groups[$group]['agents'] );
-				$mobile_groups[$group]['agents'] = array_map( 'strtolower', $mobile_groups[$group]['agents'] );
-				sort( $mobile_groups[$group]['agents'] );
-			}
-			$enable_mobile = false;
-			foreach ( $mobile_groups as $group_config ) {
-				if ( $group_config['enabled'] ) {
-					$enable_mobile = true;
-					break;
-				}
-			}
-			$config->set( 'mobile.enabled', $enable_mobile );
-			$config->set( 'mobile.rgroups', $mobile_groups );
-		}
-
-		/**
-		 * Referrer tab
-		 */
-		if ( $this->_page == 'w3tc_referrer' ) {
-			$groups = Util_Request::get_array( 'referrer_groups' );
-
-			$referrer_groups = array();
-
-			foreach ( $groups as $group => $group_config ) {
-				$group = strtolower( $group );
-				$group = preg_replace( '~[^0-9a-z_]+~', '_', $group );
-				$group = trim( $group, '_' );
-
-				if ( $group ) {
-					$theme = ( isset( $group_config['theme'] ) ? trim( $group_config['theme'] ) : 'default' );
-					$enabled = ( isset( $group_config['enabled'] ) ? (boolean) $group_config['enabled'] : true );
-					$redirect = ( isset( $group_config['redirect'] ) ? trim( $group_config['redirect'] ) : '' );
-					$referrers = ( isset( $group_config['referrers'] ) ? explode( "\r\n", trim( $group_config['referrers'] ) ) : array() );
-
-					$referrer_groups[$group] = array(
-						'theme' => $theme,
-						'enabled' => $enabled,
-						'redirect' => $redirect,
-						'referrers' => $referrers
-					);
-				}
-			}
-
-			/**
-			 * Allow plugins modify W3TC referrer groups
-			 */
-			$referrer_groups = apply_filters( 'w3tc_referrer_groups', $referrer_groups );
-
-			/**
-			 * Sanitize mobile groups
-			 */
-			foreach ( $referrer_groups as $group => $group_config ) {
-				$referrer_groups[$group] = array_merge( array(
-						'theme' => '',
-						'enabled' => true,
-						'redirect' => '',
-						'referrers' => array()
-					), $group_config );
-
-				$referrer_groups[$group]['referrers'] = array_unique( $referrer_groups[$group]['referrers'] );
-				$referrer_groups[$group]['referrers'] = array_map( 'strtolower', $referrer_groups[$group]['referrers'] );
-				sort( $referrer_groups[$group]['referrers'] );
-			}
-
-			$enable_referrer = false;
-			foreach ( $referrer_groups as $group_config ) {
-				if ( $group_config['enabled'] ) {
-					$enable_referrer = true;
-					break;
-				}
-			}
-			$config->set( 'referrer.enabled', $enable_referrer );
-			$config->set( 'referrer.rgroups', $referrer_groups );
-		}
-
-		/**
 		 * CDN tab
 		 */
 		if ( $this->_page == 'w3tc_cdn' ) {
@@ -505,7 +367,7 @@ class Generic_AdminActions_Default {
 			$cdn_domains = array();
 
 			foreach ( $cdn_cnames as $cdn_cname ) {
-				$cdn_cname = trim( $cdn_cname );
+				$cdn_cname = preg_replace( '~[^0-9a-zA-Z/_.:\-]~', '', wp_strip_all_tags( $cdn_cname ) );
 
 				/**
 				 * Auto expand wildcard domain to 10 subdomains
@@ -795,25 +657,44 @@ class Generic_AdminActions_Default {
 		include W3TC_DIR . '/ConfigKeys.php';   // define $keys
 
 		foreach ( $request as $request_key => $request_value ) {
-			if  ( is_array( $request_value ) )
+			if  ( is_array( $request_value ) ) {
 				array_map( 'stripslashes_deep', $request_value );
-			else
+			} else {
 				$request_value = stripslashes( $request_value );
-			if ( strpos( $request_key, 'memcached__servers' ) || strpos( $request_key, 'redis__servers' ) )
-				$request_value = explode( ',', $request_value );
+
+				if ( strpos( $request_key, 'memcached__servers' ) || strpos( $request_key, 'redis__servers' ) ) {
+					$request_value = explode( ',', $request_value );
+				}
+			}
+
+			if ( substr( $request_key, 0, 11 ) == 'extension__' ) {
+				$extension_id = Util_Ui::config_key_from_http_name(
+					substr( $request_key, 11 ) );
+
+				if ( $request_value == '1' ) {
+					Extensions_Util::activate_extension( $extension_id, $config, true );
+				} else {
+					Extensions_Util::deactivate_extension( $extension_id, $config, true );
+				}
+			}
 
 			$key = Util_Ui::config_key_from_http_name( $request_key );
 			if ( is_array( $key ) ) {
 				$config->set( $key, $request_value );
 			} elseif ( array_key_exists( $key, $keys ) ) {
 				$descriptor = $keys[$key];
-				if ( isset( $descriptor['type'] ) &&
-					$descriptor['type'] == 'array' ) {
-					if ( is_array( $request_value ) ) {
-						$request_value = implode( "\n", $request_value );
+				if ( isset( $descriptor['type'] ) ) {
+					if ( $descriptor['type'] == 'array' ) {
+						if ( is_array( $request_value ) ) {
+							$request_value = implode( "\n", $request_value );
+						}
+						$request_value = explode( "\n",
+							str_replace( "\r\n", "\n", $request_value ) );
+					} elseif ( $descriptor['type'] == 'boolean' ) {
+						$request_value = ( $request_value == '1' );
+					} elseif ( $descriptor['type'] == 'integer' ) {
+						$request_value = (int)$request_value;
 					}
-					$request_value = explode( "\n",
-						str_replace( "\r\n", "\n", $request_value ) );
 				}
 
 				$config->set( $key, $request_value );

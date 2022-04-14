@@ -2,12 +2,12 @@
     <div class="input sub_input">
         <div class="input">
             <?php
-                $field_class = 'acf_field_' . $field['type'];
                 $field['other_choice'] = false;
                 $tmp_key = $field['key'];
                 $field['key'] = 'multiple_value'. $field_name .'[' . $field['key'] . ']';
                 $field['value'] = $current_multiple_value;
                 $field['prefix'] = '';
+                $field['ui'] = 0;
                 $field['ajax'] = FALSE;
                 acf_render_field( $field );
                 $field['key'] = $tmp_key;

@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('UPDRAFTPLUS_DIR')) die('No access.');
+if (!defined('UPDRAFTCENTRAL_CLIENT_DIR')) die('No access.');
 
 /**
  * Handles UpdraftCentral Theme Commands which basically handles
@@ -17,9 +17,9 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 	 * @param array  $data       an array of data post or get fields
 	 * @param array  $extra_info extrainfo use in the udrpc_action, e.g. user_id
 	 *
-	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
+	 * link to udrpc_action main function in class UpdraftCentral_Listener
 	 */
-	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- This function is called from listener.php and $extra_info is being sent.
 		// Here we assign the current blog_id to a variable $blog_id
 		$blog_id = get_current_blog_id();
 		if (!empty($data['site_id'])) $blog_id = $data['site_id'];
@@ -36,9 +36,9 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 	 * @param array  $data       an array of data post or get fields
 	 * @param array  $extra_info extrainfo use in the udrpc_action, e.g. user_id
 	 *
-	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
+	 * link to udrpc_action main function in class UpdraftCentral_Listener
 	 */
-	public function _post_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function _post_action($command, $data, $extra_info) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		// Here, we're restoring to the current (default) blog before we switched
 		if ($this->switched) restore_current_blog();
 	}
@@ -48,6 +48,16 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 	 */
 	public function __construct() {
 		$this->_admin_include('theme.php', 'file.php', 'template.php', 'class-wp-upgrader.php', 'theme-install.php', 'update.php');
+	}
+
+	/**
+	 * Installs and activates a theme through upload
+	 *
+	 * @param array $params Parameter array containing information pertaining the currently uploaded theme
+	 * @return array Contains the result of the current process
+	 */
+	public function upload_theme($params) {
+		return $this->process_chunk_upload($params, 'theme');
 	}
 
 	/**
@@ -83,12 +93,22 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 				if ($info['installed']) {
 					switch_theme($info['slug']);
 					if (wp_get_theme()->get_stylesheet() === $info['slug']) {
-						$result = array('activated' => true);
+						$result = array('activated' => true, 'info' => $this->_get_theme_info($query['theme']));
 					} else {
-						$result = $this->_generic_error_response('theme_not_activated', array($query['theme']));
+						$result = $this->_generic_error_response('theme_not_activated', array(
+							'theme' => $query['theme'],
+							'error_code' => 'theme_not_activated',
+							'error_message' => __('There appears to be a problem activating or switching to the intended theme. Please kindly check your permission and try again.', 'updraftplus'),
+							'info' => $this->_get_theme_info($query['theme'])
+						));
 					}
 				} else {
-					$result = $this->_generic_error_response('theme_not_installed', array($query['theme']));
+					$result = $this->_generic_error_response('theme_not_installed', array(
+						'theme' => $query['theme'],
+						'error_code' => 'theme_not_installed',
+						'error_message' => __('The theme you wish to activate is either not installed or has been removed recently.', 'updraftplus'),
+						'info' => $info
+					));
 				}
 				break;
 			case 'network_enable':
@@ -107,12 +127,22 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 
 					$allowed = WP_Theme::get_allowed_on_network();
 					if (is_array($allowed) && !empty($allowed[$info['slug']])) {
-						$result = array('enabled' => true);
+						$result = array('enabled' => true, 'info' => $this->_get_theme_info($query['theme']));
 					} else {
-						$result = $this->_generic_error_response('theme_not_enabled', array($query['theme']));
+						$result = $this->_generic_error_response('theme_not_enabled', array(
+							'theme' => $query['theme'],
+							'error_code' => 'theme_not_enabled',
+							'error_message' => __('There appears to be a problem enabling the intended theme on your network. Please kindly check your permission and try again.', 'updraftplus'),
+							'info' => $this->_get_theme_info($query['theme'])
+						));
 					}
 				} else {
-					$result = $this->_generic_error_response('theme_not_installed', array($query['theme']));
+					$result = $this->_generic_error_response('theme_not_installed', array(
+						'theme' => $query['theme'],
+						'error_code' => 'theme_not_installed',
+						'error_message' => __('The theme you wish to enable on your network is either not installed or has been removed recently.', 'updraftplus'),
+						'info' => $info
+					));
 				}
 				break;
 			case 'network_disable':
@@ -133,12 +163,22 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 
 					$allowed = WP_Theme::get_allowed_on_network();
 					if (is_array($allowed) && empty($allowed[$info['slug']])) {
-						$result = array('disabled' => true);
+						$result = array('disabled' => true, 'info' => $this->_get_theme_info($query['theme']));
 					} else {
-						$result = $this->_generic_error_response('theme_not_disabled', array($query['theme']));
+						$result = $this->_generic_error_response('theme_not_disabled', array(
+							'theme' => $query['theme'],
+							'error_code' => 'theme_not_disabled',
+							'error_message' => __('There appears to be a problem disabling the intended theme from your network. Please kindly check your permission and try again.', 'updraftplus'),
+							'info' => $this->_get_theme_info($query['theme'])
+						));
 					}
 				} else {
-					$result = $this->_generic_error_response('theme_not_installed', array($query['theme']));
+					$result = $this->_generic_error_response('theme_not_installed', array(
+						'theme' => $query['theme'],
+						'error_code' => 'theme_not_installed',
+						'error_message' => __('The theme you wish to disable from your network is either not installed or has been removed recently.', 'updraftplus'),
+						'info' => $info
+					));
 				}
 				break;
 			case 'install':
@@ -157,27 +197,72 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 					)
 				));
 
+				$info = $this->_get_theme_info($query['theme']);
 				if (is_wp_error($api)) {
-					$result = $this->_generic_error_response('generic_response_error', array($api->get_error_message()));
+					$result = $this->_generic_error_response('generic_response_error', array(
+						'theme' => $query['theme'],
+						'error_code' => 'theme_not_installed',
+						'error_message' => $api->get_error_message(),
+						'info' => $info
+					));
 				} else {
-					$info = $this->_get_theme_info($query['theme']);
 					$installed = $info['installed'];
 
+					$error_code = $error_message = '';
 					if (!$installed) {
 						// WP < 3.7
-						if (!class_exists('Automatic_Upgrader_Skin')) include_once(UPDRAFTPLUS_DIR.'/central/classes/class-automatic-upgrader-skin.php');
+						if (!class_exists('Automatic_Upgrader_Skin')) include_once(dirname(dirname(__FILE__)).'/classes/class-automatic-upgrader-skin.php');
 
 						$skin = new Automatic_Upgrader_Skin();
 						$upgrader = new Theme_Upgrader($skin);
 
 						$download_link = $api->download_link;
 						$installed = $upgrader->install($download_link);
+
+						if (is_wp_error($installed)) {
+							$error_code = $installed->get_error_code();
+							$error_message = $installed->get_error_message();
+						} elseif (is_wp_error($skin->result)) {
+							$error_code = $skin->result->get_error_code();
+							$error_message = $skin->result->get_error_message();
+
+							$error_data = $skin->result->get_error_data($error_code);
+							if (!empty($error_data)) {
+								if (is_array($error_data)) $error_data = json_encode($error_data);
+								$error_message .= ' '.$error_data;
+							}
+						} elseif (is_null($installed) || !$installed) {
+							global $wp_filesystem;
+							$upgrade_messages = $skin->get_upgrade_messages();
+
+							if (!class_exists('WP_Filesystem_Base')) include_once(ABSPATH.'/wp-admin/includes/class-wp-filesystem-base.php');
+
+							// Pass through the error from WP_Filesystem if one was raised.
+							if ($wp_filesystem instanceof WP_Filesystem_Base && is_wp_error($wp_filesystem->errors) && $wp_filesystem->errors->get_error_code()) {
+								$error_code = $wp_filesystem->errors->get_error_code();
+								$error_message = $wp_filesystem->errors->get_error_message();
+							} elseif (!empty($upgrade_messages)) {
+								// We're only after for the last feedback that we received from the install process. Mostly,
+								// that is where the last error has been inserted.
+								$messages = $skin->get_upgrade_messages();
+								$error_code = 'install_failed';
+								$error_message = end($messages);
+							} else {
+								$error_code = 'unable_to_connect_to_filesystem';
+								$error_message = __('Unable to connect to the filesystem. Please confirm your credentials.');
+							}
+						}
 					}
 
-					if (!$installed) {
-						$result = $this->_generic_error_response('theme_install_failed', array($query['theme']));
+					if (!$installed || is_wp_error($installed)) {
+						$result = $this->_generic_error_response('theme_install_failed', array(
+							'theme' => $query['theme'],
+							'error_code' => $error_code,
+							'error_message' => $error_message,
+							'info' => $this->_get_theme_info($query['theme'])
+						));
 					} else {
-						$result = array('installed' => true);
+						$result = array('installed' => true, 'info' => $this->_get_theme_info($query['theme']));
 					}
 				}
 				break;
@@ -377,12 +462,20 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 			$deleted = delete_theme($info['slug']);
 
 			if ($deleted) {
-				$result = array('deleted' => true);
+				$result = array('deleted' => true, 'info' => $this->_get_theme_info($query['theme']));
 			} else {
-				$result = $this->_generic_error_response('delete_theme_failed', array($query['theme']));
+				$result = $this->_generic_error_response('delete_theme_failed', array(
+					'theme' => $query['theme'],
+					'error_code' => 'delete_theme_failed',
+					'info' => $info
+				));
 			}
 		} else {
-			$result = $this->_generic_error_response('theme_not_installed', array($query['theme']));
+			$result = $this->_generic_error_response('theme_not_installed', array(
+				'theme' => $query['theme'],
+				'error_code' => 'theme_not_installed',
+				'info' => $info
+			));
 		}
 
 		return $this->_response($result);
@@ -413,10 +506,14 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 
 			$result = $update_command->update_theme($info['slug']);
 			if (!empty($result['error'])) {
-				$result['values'] = array($query['theme']);
+				$result['values'] = array('theme' => $query['theme'], 'info' => $info);
 			}
 		} else {
-			return $this->_generic_error_response('theme_not_installed', array($query['theme']));
+			return $this->_generic_error_response('theme_not_installed', array(
+				'theme' => $query['theme'],
+				'error_code' => 'theme_not_installed',
+				'info' => $info
+			));
 		}
 
 		return $this->_response($result);
@@ -438,7 +535,9 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 
 		// Clear theme cache so that newly installed/downloaded themes
 		// gets reflected when calling "get_themes"
-		wp_clean_themes_cache();
+		if (function_exists('wp_clean_themes_cache')) {
+			wp_clean_themes_cache();
+		}
 		
 		// Gets all themes available.
 		$themes = wp_get_themes();
@@ -505,6 +604,7 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 			$theme->child_theme = !empty($template) ? true : false;
 			$theme->website = $website;
 			$theme->multisite = is_multisite();
+			$theme->site_url = trailingslashit(get_bloginfo('url'));
 
 			if ($theme->child_theme) {
 				$parent_theme = wp_get_theme($template);

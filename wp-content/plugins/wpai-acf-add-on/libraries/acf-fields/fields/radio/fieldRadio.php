@@ -69,12 +69,9 @@ class FieldRadio extends Field {
         $field_post = get_post($parsedData['id']);
         if ($field_post){
             $field_post_options = unserialize($field_post->post_content);
-            if (!empty($field_post_options['save_custom'])){
-                $current_choice = (!empty($value) and is_array($value)) ? $value : array();
-                foreach ($current_choice as $choice){
-                    if (!isset($field_post_options['choices'][$choice])){
-                        $field_post_options['choices'][$choice] = $choice;
-                    }
+            if (!empty($field_post_options['save_other_choice']) && !empty($value)){
+                if (!isset($field_post_options['choices'][$value])){
+                    $field_post_options['choices'][$value] = $value;
                 }
                 wp_update_post(array(
                     'post_content' => maybe_serialize($field_post_options),
@@ -96,10 +93,10 @@ class FieldRadio extends Field {
      *
      * @return int
      */
-    public function getCountValues() {
+    public function getCountValues($parentIndex = false) {
         $count = 0;
         if ("yes" !== $this->getOption('is_multiple_field')){
-            $count = parent::getCountValues();
+            $count = parent::getCountValues($parentIndex);
         }
         return $count;
     }

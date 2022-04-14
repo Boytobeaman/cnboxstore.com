@@ -62,8 +62,13 @@ class Cache_Redis extends Cache_Base {
 
 		$storage_key = $this->get_item_key( $key );
 		$accessor = $this->_get_accessor( $storage_key );
-		if ( is_null( $accessor ) )
+		if ( is_null( $accessor ) ) {
 			return false;
+		}
+
+		if ( ! $expire ) {
+			return $accessor->set( $storage_key, serialize( $value ) );
+		}
 
 		return $accessor->setex( $storage_key, $expire, serialize( $value ) );
 	}
@@ -86,12 +91,14 @@ class Cache_Redis extends Cache_Base {
 		$v = $accessor->get( $storage_key );
 		$v = @unserialize( $v );
 
-		if ( !is_array( $v ) || !isset( $v['key_version'] ) )
+		if ( !is_array( $v ) || !isset( $v['key_version'] ) ) {
 			return array( null, $has_old_data );
+		}
 
 		$key_version = $this->_get_key_version( $group );
-		if ( $v['key_version'] == $key_version )
+		if ( $v['key_version'] == $key_version ) {
 			return array( $v, $has_old_data );
+		}
 
 		if ( $v['key_version'] > $key_version ) {
 			$this->_set_key_version( $v['key_version'], $group );
@@ -152,7 +159,8 @@ class Cache_Redis extends Cache_Base {
 				return true;
 			}
 		}
-		return $accessor->delete( $storage_key );
+
+		return $accessor->setex( $storage_key, 1, '' );
 	}
 
 	/**
@@ -167,7 +175,7 @@ class Cache_Redis extends Cache_Base {
 		if ( is_null( $accessor ) )
 			return false;
 
-		return $accessor->delete( $storage_key );
+		return $accessor->setex( $storage_key, 1, '' );
 	}
 
 	/**
@@ -261,6 +269,8 @@ class Cache_Redis extends Cache_Base {
 		$accessor->watch( $storage_key );
 
 		$value = $accessor->get( $storage_key );
+		$value = @unserialize( $value );
+
 		if ( !is_array( $value ) ) {
 			$accessor->unwatch();
 			return false;
@@ -340,25 +350,21 @@ class Cache_Redis extends Cache_Base {
 				$accessor = new \Redis();
 
 				if ( substr( $server, 0, 5 ) == 'unix:' ) {
-					if ( $this->_persistent )
+					if ( $this->_persistent ) {
 						$accessor->pconnect( trim( substr( $server, 5 ) ),
 							null, null, $this->_instance_id . '_' . $this->_dbid );
-					else
+					} else {
 						$accessor->connect( trim( substr( $server, 5 ) ) );
-				} elseif ( strpos( $server, ':' ) === false ) {
-					if ( $this->_persistent )
-						$accessor->pconnect( trim( $server ),
-							null, null, $this->_instance_id . '_' . $this->_dbid );
-					else
-						$accessor->connect( trim( $server ) );
+					}
 				} else {
-					list( $ip, $port ) = explode( ':', $server );
+					list( $ip, $port ) = Util_Content::endpoint_to_host_port( $server, null );
 
-					if ( $this->_persistent )
-						$accessor->pconnect( trim( $ip ), (integer) trim( $port ),
+					if ( $this->_persistent ) {
+						$accessor->pconnect( $ip, $port,
 							null, $this->_instance_id . '_' . $this->_dbid );
-					else
-						$accessor->connect( trim( $ip ), (integer) trim( $port ) );
+					} else {
+						$accessor->connect( $ip, $port );
+					}
 				}
 
 				if ( !empty( $this->_password ) )

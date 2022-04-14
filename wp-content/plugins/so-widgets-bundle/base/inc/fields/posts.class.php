@@ -52,6 +52,17 @@ class SiteOrigin_Widget_Field_Posts extends SiteOrigin_Widget_Field_Container_Ba
 				'description' => __( 'Taxonomies are groups such as categories, tags, posts and products.', 'so-widgets-bundle' ),
 			),
 
+			'tax_query_relation' => array(
+				'type' => 'radio',
+				'label' => __( 'Taxonomies relationship', 'so-widgets-bundle' ),
+				'options' => array(
+					'OR' => __( 'OR', 'so-widgets-bundle' ),
+					'AND' => __( 'AND', 'so-widgets-bundle' ),
+				),
+				'description' => __( 'The relationship between taxonomies. OR requires posts to have at least one of the specified taxonomies. AND requires posts to have all of the specified taxonomies.', 'so-widgets-bundle' ),
+				'default' => 'OR',
+			),
+
 			'date_type' => array(
 				'type' => 'radio',
 				'label' => __( 'Date selection type', 'so-widgets-bundle' ),
@@ -137,7 +148,7 @@ class SiteOrigin_Widget_Field_Posts extends SiteOrigin_Widget_Field_Container_Ba
 			'additional' => array(
 				'type'        => 'text',
 				'label'       => __( 'Additional', 'so-widgets-bundle' ),
-				'description' => __( 'Additional query arguments. See <a href="http://codex.wordpress.org/Function_Reference/query_posts" target="_blank" rel="noopener noreferrer">query_posts</a>.', 'so-widgets-bundle' ),
+				'description' => __( 'Additional query arguments. See <a href="https://developer.wordpress.org/reference/functions/query_posts/" target="_blank" rel="noopener noreferrer">query_posts</a>.', 'so-widgets-bundle' ),
 			),
 		);
 	}
@@ -164,10 +175,25 @@ class SiteOrigin_Widget_Field_Posts extends SiteOrigin_Widget_Field_Container_Ba
 			} ?>"><?php
 		}
 
+		if ( isset( $this->field_options['fields'] ) ) {
+			$this->override_fields();
+		}
+
 		$this->create_and_render_sub_fields( $value, array( 'name' => $this->base_name, 'type' => 'composite' ) );
 
 		if ( $this->collapsible ) {
 			?></div><?php
+		}
+	}
+
+	private function override_fields() {
+		foreach ( $this->field_options['fields'] as $field => $options ) {
+			// Are we removing, or updating this field?
+			if ( ! empty( $options['remove'] ) ) {
+				unset( $this->fields[ $field ] );
+			} else {
+				$this->fields[ $field ] = wp_parse_args( $this->field_options['fields'][ $field ], $this->fields[ $field ] );
+			}
 		}
 	}
 

@@ -3,8 +3,8 @@ Contributors: orenhav
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z5H7VVZLSPYUE
 Tags: javascript,js, re-marketing code, header, footer
 Requires at least: 3.5
-Tested up to: 5.2.1
-Stable tag: 3.2
+Tested up to: 5.3.1
+Stable tag: 3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,6 +101,12 @@ fix bug : Added support for WooCommerce shop page .
 
 = 3.2 =
 output the individual script after the generic script to support google conversion
+
+= 3.8 =
+Test support for last WordPress version
+
+= 3.9 =
+add nonce check for terms update
 
 == Upgrade Notice ==
 

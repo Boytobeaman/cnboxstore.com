@@ -6,13 +6,6 @@ namespace W3TC;
  */
 class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 	/**
-	 * Array of queries
-	 *
-	 * @var array
-	 */
-	var $query_stats = array();
-
-	/**
 	 * Queries total
 	 *
 	 * @var integer
@@ -32,9 +25,13 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 	 * @var integer
 	 */
 	var $query_misses = 0;
+	/**
+	 * Number of cache flushes during http request processing
+	 */
+	private $cache_flushes = 0;
 
 	/**
-	 * Time total
+	 * Time total taken by queries, in microsecs
 	 *
 	 * @var integer
 	 */
@@ -71,6 +68,7 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 	private $reject_logged = false;
 	private $reject_constants;
 	private $use_filters;
+	private $log_filehandle = false;
 
 	/**
 	 * Result of check if caching is possible at the level of current http request
@@ -105,8 +103,8 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 			return $this->next_injection->query( $query );
 		}
 
-		$reason = '';
-		$cached = false;
+		$reject_reason = '';
+		$is_cache_hit = false;
 		$data = false;
 		$time_total = 0;
 		$group = '';
@@ -114,25 +112,25 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 
 		$this->query_total++;
 
-		$caching = $this->_can_cache( $query, $reason );
+		$caching = $this->_can_cache( $query, $reject_reason );
 		if ( preg_match( '~^\s*start transaction\b~is', $query ) ) {
 			$this->cache_reject_reason = 'transaction';
-			$reason = $this->cache_reject_reason;
+			$reject_reason = $this->cache_reject_reason;
 			$caching = false;
 		}
 
 		if ( preg_match( '~^\s*insert\b|^\s*delete\b|^\s*update\b|^\s*replace\b|^\s*commit\b|^\s*truncate\b|^\s*drop\b|^\s*create\b~is', $query ) ) {
 			$this->cache_reject_reason = 'modification query';
-			$reason = $this->cache_reject_reason;
+			$reject_reason = $this->cache_reject_reason;
 			$caching = false;
 			$flush_after_query = true;
 		}
 
 		if ( $this->use_filters && function_exists( 'apply_filters' ) ) {
-			$reason = apply_filters( 'w3tc_dbcache_can_cache_sql',
-				( $caching ? '' : $reason ), $query );
+			$reject_reason = apply_filters( 'w3tc_dbcache_can_cache_sql',
+				( $caching ? '' : $reject_reason ), $query );
 
-			$caching = empty( $reason );
+			$caching = empty( $reject_reason );
 		}
 
 		if ( $caching ) {
@@ -146,7 +144,7 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 		}
 
 		if ( is_array( $data ) ) {
-			$cached = true;
+			$is_cache_hit = true;
 			$this->query_hits++;
 
 			$this->wpdb_mixin->last_error = $data['last_error'];
@@ -202,15 +200,16 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 		}
 
 		if ( $this->debug ) {
-			$this->query_stats[] = array(
-				'query' => $query,
-				'group' => $group,
-				'caching' => $caching,
-				'reason' => $reason,
-				'cached' => $cached,
-				'data_size' => ( $data ? strlen( serialize( $data ) ) : 0 ),
-				'time_total' => $time_total
-			);
+			$this->log_query( array(
+				date( 'r' ),
+				strtr( $_SERVER['REQUEST_URI'], "<>\r\n", '..  ' ),
+				strtr( $query, "<>\r\n", '..  ' ),   // 'query'
+				(int)($time_total * 1000000),   // 'time_total' (microsecs)
+				$reject_reason,   // 'reason'
+				$is_cache_hit,   // 'cached'
+				( $data ? strlen( serialize( $data ) ) : 0 ),   // 'data_size'
+				strtr( $group, "<>\r\n", '..  ' )   // 'group'
+			) );
 		}
 
 		$this->time_total += $time_total;
@@ -295,15 +294,23 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 	}
 
 	private function _flush_cache_for_sql_group( $group, $extras = array() ) {
+		$this->wpdb_mixin->timer_start();
+
 		if ( $this->debug ) {
 			$filename = Util_Debug::log( 'dbcache',
 				'flushing based on sqlquery group ' . $group .
 				' with extras ' . json_encode( $extras ) );
 		}
+		if ( $this->_config->get_boolean( 'dbcache.debug_purge' ) ) {
+			Util_Debug::log_purge( 'dbcache', '_flush_cache_for_sql_group',
+				array( $group, $extras ) );
+		}
 
 		$cache = $this->_get_cache();
 		$flush_groups = $this->_get_flush_groups( $group, $extras );
 		$v = true;
+
+		$this->cache_flushes++;
 
 		foreach ( $flush_groups as $f_group => $nothing ) {
 			if ( $this->debug ) {
@@ -311,6 +318,8 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 			}
 			$v &= $cache->flush( $f_group );
 		}
+
+		$this->time_total += $this->wpdb_mixin->timer_stop();
 
 		return $v;
 	}
@@ -333,7 +342,8 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 					'persistent' => $this->_config->get_boolean( 'dbcache.memcached.persistent' ),
 					'aws_autodiscovery' => $this->_config->get_boolean( 'dbcache.memcached.aws_autodiscovery' ),
 					'username' => $this->_config->get_string( 'dbcache.memcached.username' ),
-					'password' => $this->_config->get_string( 'dbcache.memcached.password' )
+					'password' => $this->_config->get_string( 'dbcache.memcached.password' ),
+					'binary_protocol' => $this->_config->get_boolean( 'dbcache.memcached.binary_protocol' )
 				);
 				break;
 
@@ -710,60 +720,57 @@ class DbCache_WpdbInjection_QueryCaching extends DbCache_WpdbInjection {
 	}
 
 	public function w3tc_footer_comment( $strings ) {
-		$reason = $this->get_reject_reason();
-		$append = ( $reason ? sprintf( ' (%s)', $reason ) : '' );
+		$reject_reason = $this->get_reject_reason();
+		$append        = empty( $reject_reason ) ? '' : sprintf( ' (%1$s)', $reject_reason );
 
 		if ( $this->query_hits ) {
 			$strings[] = sprintf(
-				__( 'Database Caching %d/%d queries in %.3f seconds using %s%s', 'w3-total-cache' ),
-				$this->query_hits, $this->query_total, $this->time_total,
+				// translators: 1: Query hits, 2: Total queries, 3: Total time, 4: Engine name, 5: Reject reason.
+				__( 'Database Caching %1$d/%2$d queries in %3$.3f seconds using %4$s%5$s', 'w3-total-cache' ),
+				$this->query_hits,
+				$this->query_total,
+				$this->time_total,
 				Cache::engine_name( $this->_config->get_string( 'dbcache.engine' ) ),
-				$append );
+				$append
+			);
 		} else {
 			$strings[] = sprintf(
-				__( 'Database Caching using %s%s', 'w3-total-cache' ),
+				// translators: 1: Engine name, 2: Reject reason.
+				__( 'Database Caching using %1$s%2$s', 'w3-total-cache' ),
 				Cache::engine_name( $this->_config->get_string( 'dbcache.engine' ) ),
-				$append );
+				$append
+			);
 		}
 
 		if ( $this->debug ) {
 			$strings[] = '';
-			$strings[] = "Db cache debug info:";
-			$strings[] = sprintf( "%s%d", str_pad( 'Total queries: ', 20 ), $this->query_total );
-			$strings[] = sprintf( "%s%d", str_pad( 'Cached queries: ', 20 ), $this->query_hits );
-			$strings[] = sprintf( "%s%.4f", str_pad( 'Total query time: ', 20 ), $this->time_total );
-
-			if ( count( $this->query_stats ) ) {
-				$strings[] = "SQL info:";
-				$strings[] = sprintf( "%s | %s | %s | % s | %s | %s | %s",
-					str_pad( '#', 5, ' ', STR_PAD_LEFT ), str_pad( 'Time (s)', 8, ' ', STR_PAD_LEFT ),
-					str_pad( 'Caching (Reject reason)', 30, ' ', STR_PAD_BOTH ),
-					str_pad( 'Status', 10, ' ', STR_PAD_BOTH ),
-					str_pad( 'Data size (b)', 13, ' ', STR_PAD_LEFT ),
-					str_pad( 'Group', 10, ' ', STR_PAD_BOTH ),
-					'Query' );
-
-				foreach ( $this->query_stats as $index => $query ) {
-					$strings[] = sprintf( "%s | %s | %s | %s | %s | %s | %s",
-						str_pad( $index + 1, 5, ' ', STR_PAD_LEFT ),
-						str_pad( round( $query['time_total'], 4 ), 8, ' ', STR_PAD_LEFT ),
-						str_pad( ( $query['caching'] ? 'enabled'
-								: sprintf( 'disabled (%s)', $query['reason'] ) ), 30, ' ', STR_PAD_BOTH ),
-						str_pad( ( $query['cached'] ? 'cached' : 'not cached' ), 10, ' ', STR_PAD_BOTH ),
-						str_pad( $query['data_size'], 13, ' ', STR_PAD_LEFT ),
-						str_pad( $query['group'], 10, ' ', STR_PAD_LEFT ),
-						trim( $query['query'] ) );
-				}
-			}
-
-			$strings[] = '';
+			$strings[] = 'Db cache debug info:';
+			$strings[] = sprintf( '%1$s%2$d', str_pad( 'Total queries: ', 20 ), $this->query_total );
+			$strings[] = sprintf( '%1$s%2$d', str_pad( 'Cached queries: ', 20 ), $this->query_hits );
+			$strings[] = sprintf( '%1$s%2$.4f', str_pad( 'Total query time: ', 20 ), $this->time_total );
 		}
 
+		if ( $this->log_filehandle ) {
+			fclose( $this->log_filehandle );
+			$this->log_filehandle = false;
+		}
 		return $strings;
 	}
 
 	public function w3tc_usage_statistics_of_request( $storage ) {
 		$storage->counter_add( 'dbcache_calls_total', $this->query_total );
 		$storage->counter_add( 'dbcache_calls_hits', $this->query_hits );
+		$storage->counter_add( 'dbcache_flushes', $this->cache_flushes );
+		$time_ms = (int)( $this->time_total * 1000 );
+		$storage->counter_add( 'dbcache_time_ms', $time_ms );
+	}
+
+	private function log_query( $line ) {
+		if ( !$this->log_filehandle ) {
+			$filename = Util_Debug::log_filename( 'dbcache-queries' );
+			$this->log_filehandle = fopen( $filename, 'a' );
+		}
+
+		fputcsv ( $this->log_filehandle, $line, "\t" );
 	}
 }

@@ -120,7 +120,15 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 	 * @return array The form array, or an empty array if the form doesn't exist.
 	 */
 	function get_form( $form_type ) {
-		return $this->has_form( $form_type ) ? call_user_func( array( $this, 'get_' . $form_type . '_form'  ) ) : array();
+		$form_options = $this->has_form( $form_type ) ? call_user_func( array( $this, 'get_' . $form_type . '_form'  ) ) : array();
+
+		if ( $form_type == 'settings' ) {
+			// Allow plugins to filter global widgets form.
+			$form_options = apply_filters( 'siteorigin_widgets_settings_form', $form_options, $this );
+			$form_options = apply_filters( 'siteorigin_widgets_settings_form_' . $this->id_base, $form_options, $this );
+		}
+
+		return $form_options;
 	}
 
 	/**
@@ -237,9 +245,9 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		echo '</div>';
 		echo $args['after_widget'];
 		do_action( 'siteorigin_widgets_after_widget_' . $this->id_base, $instance, $this );
-		
+
+		// If this is a widget preview, we need to print the styling inline
 		if ( $this->is_preview( $instance ) ) {
-			// print inline styles if we're preview the widget.
 			siteorigin_widget_print_styles();
 		}
 	}
@@ -284,20 +292,18 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		$style = $this->get_style_name( $instance );
 
 		$upload_dir = wp_upload_dir();
-		$this->clear_file_cache();
 
 		if( !empty($style) ) {
 			$hash = $this->get_style_hash( $instance );
-			$css_name = $this->id_base.'-'.$style.'-'.$hash;
+			$css_name = $this->id_base . '-' . $style . '-' . $hash . ( ! empty( $instance['panels_info'] ) && ! isset( $instance['panels_info']['builder'] ) ? '-' . get_the_id() : '' );
 
 			//Ensure styles aren't generated and enqueued more than once.
-			$in_preview = $this->is_preview( $instance );
+			$in_preview = $this->is_preview( $instance ) || ( isset( $_POST['action'] ) &&  $_POST['action'] == 'so_widgets_preview' );
 			if ( ! in_array( $css_name, $this->generated_css ) || $in_preview ) {
-				if( $in_preview ) {
+				if ( $in_preview || ( defined( 'SITEORIGIN_WIDGETS_DEBUG' ) && SITEORIGIN_WIDGETS_DEBUG ) ) {
 					siteorigin_widget_add_inline_css( $this->get_instance_css( $instance ) );
-				}
-				else {
-					if( !file_exists( $upload_dir['basedir'] . '/siteorigin-widgets/' . $css_name .'.css' ) || ( defined('SITEORIGIN_WIDGETS_DEBUG') && SITEORIGIN_WIDGETS_DEBUG ) ) {
+				} else {
+					if ( ! file_exists( $upload_dir['basedir'] . '/siteorigin-widgets/' . $css_name .'.css' ) ) {
 						// Attempt to recreate the CSS
 						$this->save_css( $instance );
 					}
@@ -309,8 +315,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 								set_url_scheme($upload_dir['baseurl'] . '/siteorigin-widgets/' . $css_name .'.css')
 							);
 						}
-					}
-					else {
+					} else {
 						// Fall back to using inline CSS if we can't find the cached CSS file.
 						// Try get the cached value.
 						$css = wp_cache_get( $css_name, 'siteorigin_widgets' );
@@ -335,10 +340,10 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		global $wp_customize;
 		return is_a( $wp_customize, 'WP_Customize_Manager' ) && $wp_customize->is_preview();
 	}
-	
-	private function is_block_editor_page() {
+
+	protected function is_block_editor_page() {
 		$current_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-		
+
 		// This is for the Gutenberg plugin.
 		$is_gutenberg_page = $current_screen != null &&
 							 function_exists( 'is_gutenberg_page' ) &&
@@ -348,7 +353,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		if ( ! empty( $current_screen ) && method_exists( $current_screen, 'is_block_editor' ) ) {
 			$is_block_editor = $current_screen->is_block_editor();
 		}
-		
+
 		return $is_block_editor || $is_gutenberg_page;
 	}
 
@@ -371,14 +376,21 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 	 * @param $args
 	 * @param $instance
 	 */
-	public function sub_widget($class, $args, $instance){
+	public function sub_widget( $class, $args, $instance, $return = false ){
 		if(!class_exists($class)) return;
 		$widget = new $class;
 
 		$args['before_widget'] = '';
 		$args['after_widget'] = '';
+		if ( $return ) {
+			ob_start();
+		}
 
 		$widget->widget( $args, $instance );
+		
+		if ( $return ) {
+			return ob_get_clean();
+		}
 	}
 
 	/**
@@ -550,9 +562,13 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 				), admin_url( 'admin-ajax.php' ) );
 				$dismiss_url = wp_nonce_url( $dismiss_url, 'dismiss-widget-teaser' );
 
+				if ( is_array( $teaser ) ) {
+					$teaser = $teaser[ array_rand( $teaser ) ];
+				}
+
 				?>
 				<div class="siteorigin-widget-teaser">
-					<?php echo wp_kses_post( $teaser ) ?>
+					<?php echo wp_kses_post( $teaser ); ?>.
 					<span class="dashicons dashicons-dismiss" data-dismiss-url="<?php echo esc_url( $dismiss_url ) ?>"></span>
 				</div>
 				<?php
@@ -658,7 +674,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 
 				<div class="so-widgets-toolbar">
 					<h3><?php _e( 'Widget Preview', 'so-widgets-bundle' ) ?></h3>
-					<div class="close"><span class="dashicons dashicons-arrow-left-alt2"></span></div>
+					<div class="close" tabindex="0"><span class="dashicons dashicons-arrow-left-alt2"></span></div>
 				</div>
 
 				<div class="so-widgets-dialog-frame">
@@ -726,7 +742,10 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		}
 
 		// Remove the old CSS, it'll be regenerated on page load.
-		$this->delete_css( $this->modify_instance( $old_instance ) );
+		if ( $form_type == 'widget' ) {
+			$this->delete_css( $this->modify_instance( $old_instance ) );
+		}
+
 		return $new_instance;
 	}
 
@@ -741,7 +760,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 
 		$style = $this->get_style_name($instance);
 		$hash = $this->get_style_hash( $instance );
-		$name = $this->id_base.'-'.$style.'-'.$hash.'.css';
+		$name = $this->id_base . '-' . $style . '-' . $hash . ( ! empty( $instance['panels_info'] ) && ! isset( $instance['panels_info']['builder'] ) ? '-' . get_the_id() : '' ) . '.css';
 
 		$css = $this->get_instance_css($instance);
 
@@ -749,14 +768,14 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 			if ( WP_Filesystem() ) {
 				global $wp_filesystem;
 				$upload_dir = wp_upload_dir();
-				
+
 				$dir_exists = $wp_filesystem->is_dir( $upload_dir['basedir'] . '/siteorigin-widgets/' );
-				
+
 				if ( empty( $dir_exists ) ) {
 					// The 'siteorigin-widgets' directory doesn't exist, so try to create it.
 					$dir_exists = $wp_filesystem->mkdir( $upload_dir['basedir'] . '/siteorigin-widgets/' );
 				}
-				
+
 				if ( ! empty( $dir_exists ) ) {
 					// The 'siteorigin-widgets' directory exists, so we can try to write the CSS to a file.
 					$wp_filesystem->delete( $upload_dir['basedir'] . '/siteorigin-widgets/' . $name );
@@ -764,7 +783,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 						$upload_dir['basedir'] . '/siteorigin-widgets/' . $name,
 						$css
 					);
-					
+
 					// Alert other plugins that we've added a new CSS file
 					do_action( 'siteorigin_widgets_stylesheet_added', $name, $instance );
 				}
@@ -793,7 +812,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 
 			$style = $this->get_style_name($instance);
 			$hash = $this->get_style_hash( $instance );
-			$name = $this->id_base.'-'.$style.'-'.$hash;
+			$name = $this->id_base . '-' . $style . '-' . $hash . ( ! empty( $instance['panels_info'] ) && ! isset( $instance['panels_info']['builder'] ) ? '-' . get_the_id() : '' );
 
 			$wp_filesystem->delete($upload_dir['basedir'] . '/siteorigin-widgets/' . $name . '.css');
 			if ( in_array( $name, $this->generated_css ) ) {
@@ -802,45 +821,19 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 				//Reindex array
 				$this->generated_css = array_values( $this->generated_css );
 			}
-			
+
 			// Alert other plugins that we've deleted a CSS file
 			do_action( 'siteorigin_widgets_stylesheet_deleted', $name, $instance );
 		}
 	}
 
 	/**
-	 * Clear all old CSS files
+	 * Clear all old CSS files.
 	 *
-	 * @var bool $force Must we force a cache refresh.
+	 * @var bool $force_delete Whether to forcefully clear the file cache.
 	 */
 	public static function clear_file_cache( $force_delete = false ){
-		// Use this variable to ensure this only runs once per request
-		static $done = false;
-		if ( $done && !$force_delete ) return;
-
-		if( !get_transient('sow:cleared') || $force_delete ) {
-
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-			if( WP_Filesystem() ) {
-				global $wp_filesystem;
-				$upload_dir = wp_upload_dir();
-
-				$list = $wp_filesystem->dirlist( $upload_dir['basedir'] . '/siteorigin-widgets/' );
-				if ( ! empty( $list ) ) {
-					foreach($list as $file) {
-						if( $file['lastmodunix'] < time() - self::$css_expire || $force_delete ) {
-							// Delete the file
-							$wp_filesystem->delete( $upload_dir['basedir'] . '/siteorigin-widgets/' . $file['name'] );
-						}
-					}
-				}
-			}
-
-			// Set this transient so we know when to clear all the generated CSS.
-			set_transient('sow:cleared', true, self::$css_expire);
-		}
-
-		$done = true;
+		SiteOrigin_Widgets_Bundle::single()->clear_file_cache( $force_delete, self::$css_expire );
 	}
 
 	/**
@@ -877,6 +870,10 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		$less = preg_replace_callback( '/^@import\s+".*?\/?([\w\-\.]+)";/m', array( $this, 'get_less_import_contents' ), $less );
 
 		$vars = apply_filters( 'siteorigin_widgets_less_variables_' . $this->id_base, $this->get_less_variables( $instance ), $instance, $this );
+
+		$less = apply_filters( 'siteorigin_widgets_styles_vars', $less, $vars, $this->widget_class, $instance );
+		$less = apply_filters( 'siteorigin_widgets_less_vars_' . $this->id_base, $less, $vars, $instance, $this );
+
 		if( !empty( $vars ) ){
 			foreach($vars as $name => $value) {
 				// Ignore empty string, false and null values (but keep '0')
@@ -894,7 +891,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		if( ! empty( $less ) ) {
 			$style = $this->get_style_name( $instance );
 			$hash = $this->get_style_hash( $instance );
-			$css_name = $this->id_base . '-' . $style . '-' . $hash;
+			$css_name = $this->id_base . '-' . $style . '-' . $hash . ( ! empty( $instance['panels_info'] ) && ! isset( $instance['panels_info']['builder'] ) ? '-' . get_the_id() : '' );
 
 			//we assume that any remaining @imports are plain css imports and should be kept outside selectors
 			$css_imports = '';
@@ -912,11 +909,11 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 
 			try {
 				if( method_exists( $compiler, 'compile' ) ) {
-					$css = $compiler->compile( $less );
+					$css = @ $compiler->compile( $less );
 				}
 			}
 			catch ( Exception $e ) {
-				if( defined( 'SITEORIGIN_WIDGETS_DEBUG' ) && SITEORIGIN_WIDGETS_DEBUG ) {
+				if ( defined( 'SITEORIGIN_WIDGETS_DEBUG' ) && SITEORIGIN_WIDGETS_DEBUG ) {
 					throw $e;
 				}
 			}
@@ -999,49 +996,6 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		// Finally call the function and include the
 		$args = array_map('trim', $args);
 		return call_user_func( array($this, $func), $this->current_instance, $args );
-	}
-
-	/**
-	 * Less function for importing Google web fonts.
-	 *
-	 * @param $instance
-	 * @param $args
-	 *
-	 * @return string
-	 */
-	function less_import_google_font($instance, $args) {
-		if( empty( $instance ) ) return;
-
-		$fonts = $this->get_google_font_fields($instance);
-		if( empty( $fonts ) || ! is_array( $fonts ) ) return '';
-
-		$font_imports = array();
-
-		foreach ( $fonts as $font ) {
-			$font_imports[] = siteorigin_widget_get_font( $font );
-		}
-
-		$import_strings = array();
-		foreach( $font_imports as $import ) {
-			$import_strings[] = !empty($import['css_import']) ? $import['css_import'] : '';
-		}
-
-		// Remove empty and duplicate items from the array
-		$import_strings = array_filter( $import_strings );
-		$import_strings = array_unique( $import_strings );
-
-		return implode( "\n", $import_strings );
-	}
-
-	/**
-	 * Get any font fields which may be used by this widget.
-	 *
-	 * @param $instance
-	 *
-	 * @return array
-	 */
-	function get_google_font_fields( $instance ) {
-		return apply_filters( 'siteorigin_widgets_google_font_fields_' . $this->id_base, array(), $instance, $this );
 	}
 
 	/**
@@ -1347,7 +1301,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 	function is_preview( $instance = array() ) {
 		// Check if the instance is a preview
 		if( !empty( $instance[ 'is_preview' ] ) ) return true;
-		
+
 		// Check if the general request is a preview
 		$is_preview =
 			is_preview() || // Is this a standard preview
@@ -1374,9 +1328,11 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 	/**
 	 * Get the global settings from the options table.
 	 *
+	 * @param string|null $key
+	 *
 	 * @return mixed
 	 */
-	function get_global_settings( ){
+	function get_global_settings( $key = null ){
 		$values = get_option( 'so_widget_settings[' . $this->widget_class . ']', array() );
 
 		// Add in the defaults
@@ -1384,7 +1340,7 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 			$values = $this->add_defaults( $this->get_settings_form(), $values );
 		}
 
-		return $values;
+		return !empty( $key ) ? $values[$key] : $values;
 	}
 
 	/**
@@ -1402,5 +1358,109 @@ abstract class SiteOrigin_Widget extends WP_Widget {
 		update_option( 'so_widget_settings[' . $this->widget_class . ']', $values );
 
 		return $values;
+	}
+
+	/**
+	 * Add state_handler for fields based on how they're adjusted by preset data.
+	 *
+	 * @param string $state_name
+	 * @param array $preset_data
+	 * @param array $fields The fields to apply state handlers too.
+	 *
+	 * @return array $fields with any state_handler's applied.
+	 */
+	public function dynamic_preset_state_handler( $state_name, $preset_data, $fields ) {
+		// Build an array of all the adjusted fields by the preset data, and note which presets adjust them.
+		$adjusted_fields = array();
+		foreach ( $preset_data as $preset_id => $preset ) {
+			$adjusted_fields = array_merge_recursive(
+				$this->dynamic_preset_extract_fields(
+					$preset['values'],
+					$preset_id
+				),
+				$adjusted_fields
+			);
+		}
+
+		// Apply state handlers to fields.
+		return $this->dynamic_preset_add_state_handler(
+			$state_name,
+			$adjusted_fields,
+			$fields,
+			true
+		);
+	}
+
+	/**
+	 * Build an array of all of fields adjusted by the preset data, and note which presets adjust them.
+	 *
+	 * @param array $fields The fields to extract preset usage from.
+	 * @param array $preset_id
+	 *
+	 * @return array An array containing extracted fields.
+	 */
+	private function dynamic_preset_extract_fields( $fields, $preset_id ) {
+		$extracted_fields = array();
+		foreach ( $fields as $field_key => $field ) {
+			// Does this field have sub fields?
+			if ( is_array( $field ) ) {
+				$extracted_fields[ $field_key ] = $this->dynamic_preset_extract_fields( $field, $preset_id );
+			} else {
+				$extracted_fields[ $field_key ][] = $preset_id;
+				// Add a key that contains all of the presets that adjust this section.
+				$extracted_fields['key'][ $preset_id ] = $preset_id;
+			}
+		}
+
+		return $extracted_fields;
+	}
+
+
+	/**
+	 * Add state_handler to fields based on preset adjusted fields.
+	 *
+	 * @param string $state_name
+	 * @param array $preset_adjusted_fields
+	 * @param array $fields The fields to apply state handlers too.
+	 * @param array false $exclude_section Whether to add state emitter to the current section.
+	 *
+	 * @return array $fields with any state_handler's applied.
+	 */
+	private function dynamic_preset_add_state_handler( $state_name, $adjusted_fields, $fields, $exclude_section = false ) {
+		foreach ( $adjusted_fields as $field => $field_value ) {
+			// Skip field if it's not adjusted by of the presets, or if the field has a state_handler already.
+			if (
+				! isset( $fields[ $field ] ) ||
+				isset( $fields[ $field ]['state_handler'] )
+			) {
+				continue;
+			}
+
+			$used_by = null;
+
+			// If this is a section field, we need to apply the state handlers for sub fields.
+			if ( $fields[ $field ]['type'] == 'section' ) {
+				$fields[ $field ]['fields'] = $this->dynamic_preset_add_state_handler(
+					$state_name,
+					$field_value,
+					$fields[ $field ]['fields']
+				);
+
+				if ( isset( $field_value['key'] ) ) {
+					$used_by = implode( ',', $field_value['key'] );
+				}
+			} else {
+				$used_by = implode( ',', $field_value ); 
+			}
+
+			if ( ! $exclude_section && ! empty( $used_by ) ) {
+				$fields[ $field ]['state_handler'] = array(
+					$state_name . '[' . $used_by . ']' => array( 'show' ),
+						'_else[' . $state_name . ']' => array( 'hide' ),
+				);
+			}
+		}
+
+		return $fields;
 	}
 }

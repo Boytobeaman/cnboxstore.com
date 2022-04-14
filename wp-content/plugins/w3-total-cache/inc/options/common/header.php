@@ -21,6 +21,9 @@ $licensing_visible = ( ( !Util_Environment::is_wpmu() || is_network_admin() ) &&
 	<?php
 	switch ( $page ) {
 	case 'w3tc_general':
+		if ( !empty( $_REQUEST['view'] ) ) {
+			break;
+		}
 		$anchors = array(
 			array( 'id' => 'general', 'text' => __( 'General', 'w3-total-cache' ) ),
 			array( 'id' => 'page_cache', 'text' => __( 'Page Cache', 'w3-total-cache' ) ),
@@ -29,7 +32,7 @@ $licensing_visible = ( ( !Util_Environment::is_wpmu() || is_network_admin() ) &&
 			array( 'id' => 'database_cache', 'text' => __( 'Database Cache', 'w3-total-cache' ) ),
 			array( 'id' => 'object_cache', 'text' => __( 'Object Cache', 'w3-total-cache' ) ) );
 		if ( Util_Environment::is_w3tc_pro( $config ) )
-			$anchors[] = array( 'id' => 'fragment_cache', 'text' => __( 'Fragment Cache', 'w3-total-cache' ) );
+			$anchors[] = array( 'id' => 'fragmentcache', 'text' => __( 'Fragment Cache', 'w3-total-cache' ) );
 
 		$anchors = array_merge( $anchors, array(
 				array( 'id' => 'browser_cache', 'text' => __( 'Browser Cache', 'w3-total-cache' ) ),
@@ -131,23 +134,14 @@ $licensing_visible = ( ( !Util_Environment::is_wpmu() || is_network_admin() ) &&
 		break;
 ?>
 	<?php
-	case 'w3tc_mobile':
+	case 'w3tc_cachegroups':
 ?>
 				<p id="w3tc-options-menu">
 					<?php _e( 'Jump to: ', 'w3-total-cache' ); ?>
 					<a href="#toplevel_page_w3tc_general"><?php _e( 'Main Menu', 'w3-total-cache' ); ?></a> |
-					<a href="#manage"><?php _e( 'Manage User Agent Groups', 'w3-total-cache' ); ?></a>
-				</p>
-	<?php
-		break;
-?>
-	<?php
-	case 'w3tc_referrer':
-?>
-				<p id="w3tc-options-menu">
-					<?php _e( 'Jump to: ', 'w3-total-cache' ); ?>
-					<a href="#toplevel_page_w3tc_general"><?php _e( 'Main Menu', 'w3-total-cache' ); ?></a> |
-					<a href="#manage"><?php _e( 'Manage Referrer Groups', 'w3-total-cache' ); ?></a>
+					<a href="#manage-uag"><?php _e( 'Manage User Agent Groups', 'w3-total-cache' ); ?></a> |
+					<a href="#manage-rg"><?php _e( 'Manage Referrer Groups', 'w3-total-cache' ); ?></a> |
+					<a href="#manage-cg"><?php _e( 'Manage Cookie Groups', 'w3-total-cache' ); ?></a>
 				</p>
 	<?php
 		break;
@@ -161,14 +155,12 @@ $licensing_visible = ( ( !Util_Environment::is_wpmu() || is_network_admin() ) &&
 					<a href="#rules"><?php _e( 'Rewrite Rules', 'w3-total-cache' ); ?></a> |
 				<?php endif ?>
 				<?php if ( count( $other_areas ) ): ?>
-			        <a href="#other"><?php _e( 'Other', 'w3-total-cache' ); ?></a> |
+					<a href="#other"><?php _e( 'Other', 'w3-total-cache' ); ?></a> |
 				<?php endif ?>
 				<a href="#additional"><?php _e( 'Services', 'w3-total-cache' ); ?></a> |
 				<a href="#modules"><?php _e( '<acronym title="Hypertext Preprocessor">PHP</acronym> Modules', 'w3-total-cache' ); ?></a>
 			</p>
 <?php
 	break;
-?>
-	<?php
 	}
 ?>

@@ -17,7 +17,7 @@ class SiteOrigin_Widget_Video_Widget extends SiteOrigin_Widget {
 			'sow-video',
 			__( 'SiteOrigin Video Player', 'so-widgets-bundle' ),
 			array(
-				'description' => __( 'A video player widget.', 'so-widgets-bundle' ),
+				'description' => __( 'Play all your self or externally hosted videos in a customizable video player.', 'so-widgets-bundle' ),
 				'help'        => 'http://siteorigin.com/widgets-bundle/video-widget-documentation/'
 			),
 			array(),
@@ -100,21 +100,22 @@ class SiteOrigin_Widget_Video_Widget extends SiteOrigin_Widget {
 						'default' => false,
 						'label'   => __( 'Autoplay', 'so-widgets-bundle' )
 					),
+					'loop' => array(
+						'type'    => 'checkbox',
+						'default' => false,
+						'label'   => __( 'Loop', 'so-widgets-bundle' ),
+					),
+					'fitvids' => array(
+						'type'    => 'checkbox',
+						'default' => true,
+						'label'   => __( 'Use FitVids', 'so-widgets-bundle' ),
+						'description'   => __( 'FitVids will scale the video to fill the width of the widget area while maintaining aspect ratio.', 'so-widgets-bundle' ),
+					),
 					'oembed'   => array(
 						'type'          => 'checkbox',
 						'default'       => true,
 						'label'         => __( 'Use oEmbed', 'so-widgets-bundle' ),
 						'description'   => __( 'Always use the embedded video rather than the MediaElement player.', 'so-widgets-bundle' ),
-						'state_handler' => array(
-							'video_type[external]' => array( 'show' ),
-							'video_type[self]'     => array( 'hide' ),
-						)
-					),
-					'related_videos' => array(
-						'type'          => 'checkbox',
-						'default'       => true,
-						'label'         => __( 'Show related videos.', 'so-widgets-bundle' ),
-						'description'   => __( 'If the external host supports it.', 'so-widgets-bundle' ),
 						'state_handler' => array(
 							'video_type[external]' => array( 'show' ),
 							'video_type[self]'     => array( 'hide' ),
@@ -151,6 +152,15 @@ class SiteOrigin_Widget_Video_Widget extends SiteOrigin_Widget {
 					plugin_dir_url( __FILE__ ) . 'js/so-video-widget' . SOW_BUNDLE_JS_SUFFIX . '.js',
 					array( 'jquery', 'mediaelement' ),
 					SOW_BUNDLE_VERSION
+				);
+			}
+
+			if ( ! empty( $instance['playback']['fitvids'] ) && ! wp_script_is( 'jquery-fitvids' ) ) {
+				wp_enqueue_script(
+					'jquery-fitvids',
+					plugin_dir_url( SOW_BUNDLE_BASE_FILE ) . 'js/lib/jquery.fitvids' . SOW_BUNDLE_JS_SUFFIX . '.js',
+					array( 'jquery' ),
+					1.1
 				);
 			}
 		}
@@ -195,6 +205,14 @@ class SiteOrigin_Widget_Video_Widget extends SiteOrigin_Widget {
 			$video_host          = $this->get_host_from_url( $instance['video']['external_video'] );
 			$external_video_type = 'video/' . $video_host;
 			$external_src        = ! empty( $instance['video']['external_video'] ) ? $instance['video']['external_video'] : '';
+
+			if ( ! $instance['playback']['oembed'] ) {
+				// Add video as self_source to allow MediaElements to pick up on it.
+				$self_sources[] = array(
+					'src' => $external_src,
+					'type' => 'mp4',
+				);
+			}
 		}
 
 		$return = array(
@@ -206,12 +224,13 @@ class SiteOrigin_Widget_Video_Widget extends SiteOrigin_Widget {
 			'is_skinnable_video_host' => $this->is_skinnable_video_host( $video_host ),
 			'poster'                  => $poster,
 			'autoplay'                => ! empty( $instance['playback']['autoplay'] ),
-			'related_videos'          => ! empty( $instance['playback']['related_videos'] ),
-			'skin_class'              => 'default'
+			'loop'                    => ! empty( $instance['playback']['loop'] ),
+			'skin_class'              => 'default',
+			'fitvids'                 => ! empty( $instance['playback']['fitvids'] ),
 		);
 
-		// Force oEmbed for this video
 		if ( $instance['host_type'] == 'external' && $instance['playback']['oembed'] ) {
+			// Force oEmbed for this video if oEmbed is enabled.
 			$return['is_skinnable_video_host'] = false;
 		}
 
@@ -272,6 +291,11 @@ class SiteOrigin_Widget_Video_Widget extends SiteOrigin_Widget {
 				$instance['video']['self_sources'] = array();
 			}
 			$instance['video']['self_sources'][] = $video_src;
+		}
+
+		// Prevent FitVids from being enabled for widgets created before FitVids was added.
+		if ( ! isset( $instance['playback']['fitvids'] ) ) {
+			$instance['playback']['fitvids'] = false;
 		}
 
 		return $instance;

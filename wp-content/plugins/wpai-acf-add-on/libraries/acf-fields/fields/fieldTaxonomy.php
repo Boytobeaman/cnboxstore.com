@@ -33,16 +33,14 @@ class FieldTaxonomy extends Field {
             $multipleValue = $this->getOption('multiple_value');
             if (!is_array($multipleValue)) {
                 $values = array_fill(0, $this->getOption('count'), $multipleValue);
-            }
-            else {
+            } else {
                 $values = array();
                 foreach ($multipleValue as $single_value) {
                     $values[] = array_fill(0, $this->getOption('count'), $single_value);
                 }
                 $this->setOption('is_multiple', TRUE);
             }
-        }
-        else {
+        } else {
 
             $values = array();
             if (!empty($xpath)) {
@@ -74,28 +72,33 @@ class FieldTaxonomy extends Field {
                         if ('' != $tx_raw) {
                             foreach ($delimetedTaxonomies as $j => $cc) {
                                 if ('' != $cc) {
-                                    $cat = get_term_by('name', trim($cc), $tx_name) or $cat = get_term_by('slug', trim($cc), $tx_name) or ctype_digit($cc) and $cat = get_term_by('id', $cc, $tx_name);
-                                    if (!empty($taxonomy->parent_id)) {
-                                        foreach ($taxonomies_hierarchy as $key => $value) {
-                                            if ($value->item_id == $taxonomy->parent_id and !empty($value->txn_names[$i])) {
-                                                foreach ($value->txn_names[$i] as $parent) {
-                                                    $values[$tx_name][$i][] = array(
-                                                        'name' => trim($cc),
-                                                        'parent' => $parent,
-                                                        'assign' => 1
-                                                        //$taxonomy->assign
-                                                    );
+                                    $terms = explode($xpath['delim'], $cc);
+                                    if (!empty($terms)) {
+                                        $terms = array_map('trim', $terms);
+                                        foreach ($terms as $term) {
+                                            $cat = get_term_by('name', trim($term), $tx_name) or $cat = get_term_by('slug', trim($term), $tx_name) or ctype_digit($term) and $cat = get_term_by('id', $term, $tx_name);
+                                            if (!empty($taxonomy->parent_id)) {
+                                                foreach ($taxonomies_hierarchy as $key => $value) {
+                                                    if ($value->item_id == $taxonomy->parent_id and !empty($value->txn_names[$i])) {
+                                                        foreach ($value->txn_names[$i] as $parent) {
+                                                            $values[$tx_name][$i][] = array(
+                                                                'name' => trim($term),
+                                                                'parent' => $parent,
+                                                                'assign' => 1
+                                                                //$taxonomy->assign
+                                                            );
+                                                        }
+                                                    }
                                                 }
+                                            } else {
+                                                $values[$tx_name][$i][] = array(
+                                                    'name' => trim($term),
+                                                    'parent' => FALSE,
+                                                    'assign' => 1
+                                                    //$taxonomy->assign
+                                                );
                                             }
                                         }
-                                    }
-                                    else {
-                                        $values[$tx_name][$i][] = array(
-                                            'name' => trim($cc),
-                                            'parent' => FALSE,
-                                            'assign' => 1
-                                            //$taxonomy->assign
-                                        );
                                     }
                                 }
                             }
@@ -193,7 +196,7 @@ class FieldTaxonomy extends Field {
      */
     public function saved_post($importData) {
 
-        $assign_taxes = get_post_meta($this->getPostID(), $this->getFieldName(), true);
+        $assign_taxes = ACFService::get_post_meta($this, $this->getPostID(), $this->getFieldName());
 
         $field = $this->getData('field');
 
@@ -208,9 +211,7 @@ class FieldTaxonomy extends Field {
                     $assign_terms[] = $term->term_taxonomy_id;
                 }
             }
-            if ($this->getImportType() != 'import_users') {
-                ACFService::associate_terms($this->getPostID(), (empty($assign_terms) ? FALSE : $assign_terms), $field['taxonomy'], $this->getLogger());
-            }
+            ACFService::associate_terms($this->getPostID(), (empty($assign_terms) ? FALSE : $assign_terms), $field['taxonomy'], $this->getLogger());
         }
     }
 
@@ -239,9 +240,13 @@ class FieldTaxonomy extends Field {
                 $values[$tx_name] = $value;
             }
             return $values;
-        }
-        else{
-            $value = $this->getOption('is_multiple_field') ? explode(",", parent::getFieldValue()) : parent::getFieldValue();
+        } else {
+			if ($this->getOption('is_multiple_field')) {
+				$value = $this->options['values'];
+			} else {
+				$value = parent::getFieldValue();
+			}
+
         }
         return $value;
     }
@@ -249,7 +254,7 @@ class FieldTaxonomy extends Field {
     /**
      * @return int
      */
-    public function getCountValues() {
+    public function getCountValues($parentIndex = false) {
         $parents = $this->getParents();
         $count = 0;
         if (!empty($parents)){

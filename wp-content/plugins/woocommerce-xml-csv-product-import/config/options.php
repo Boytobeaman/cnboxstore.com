@@ -4,5 +4,5 @@
  * and can be changed by corresponding wordpress function calls
  */
 $config = array(
-	
+
 );

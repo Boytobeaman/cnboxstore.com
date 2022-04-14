@@ -37,9 +37,8 @@ class Root_AdminActivation {
 			$e = Dispatcher::component( 'Root_Environment' );
 
 			$config = Dispatcher::config();
+			$e->fix_in_wpadmin( $config, true );
 			$e->fix_on_event( $config, 'activate' );
-
-			Generic_AdminLinks::link_update( $config );
 
 			// try to save config file if needed, optional thing so exceptions
 			// hidden
@@ -55,6 +54,7 @@ class Root_AdminActivation {
 				} catch ( \Exception $ex ) {
 				}
 			}
+		} catch ( Util_Environment_Exceptions $e ) {
 		} catch ( \Exception $e ) {
 			Util_Activation::error_on_exception( $e );
 		}
@@ -74,8 +74,6 @@ class Root_AdminActivation {
 		try {
 			$e = Dispatcher::component( 'Root_Environment' );
 			$e->fix_after_deactivation();
-
-			Generic_AdminLinks::link_delete();
 		} catch ( Util_Environment_Exceptions $exs ) {
 			$r = Util_Activation::parse_environment_exceptions( $exs );
 
@@ -102,5 +100,9 @@ class Root_AdminActivation {
 			Util_Activation::disable_maintenance_mode();
 		} catch ( \Exception $ex ) {
 		}
+
+		// Delete cron events.
+		require_once __DIR__ . '/Extension_ImageService_Cron.php';
+		Extension_ImageService_Cron::delete_cron();
 	}
 }

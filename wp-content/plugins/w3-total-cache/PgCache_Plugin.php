@@ -36,11 +36,18 @@ class PgCache_Plugin {
 		add_action( 'w3tc_flush_url',
 			array( $this, 'w3tc_flush_url' ),
 			1100, 1 );
+
+		add_filter( 'w3tc_pagecache_set_header',
+			array( $this, 'w3tc_pagecache_set_header' ), 10, 3 );
 		add_filter( 'w3tc_admin_bar_menu',
 			array( $this, 'w3tc_admin_bar_menu' ) );
 
 		add_filter( 'cron_schedules',
 			array( $this, 'cron_schedules' ) );
+
+		add_action( 'w3tc_config_save',
+			array( $this, 'w3tc_config_save' ),
+			10, 1 );
 
 		$o = Dispatcher::component( 'PgCache_ContentGrabber' );
 
@@ -52,6 +59,8 @@ class PgCache_Plugin {
 			10, 1 );
 		add_filter( 'w3tc_usage_statistics_metrics',
 			array( $this, 'w3tc_usage_statistics_metrics' ) );
+		add_filter( 'w3tc_usage_statistics_sources', array(
+				$this, 'w3tc_usage_statistics_sources' ) );
 
 
 		if ( $this->_config->get_string( 'pgcache.engine' ) == 'file' ||
@@ -182,7 +191,7 @@ class PgCache_Plugin {
 	public function redirect_on_foreign_domain() {
 		$request_host = Util_Environment::host();
 		// host not known, potentially we are in console mode not http request
-		if ( empty( $request_host ) )
+		if ( empty( $request_host ) || defined( 'WP_CLI' ) && WP_CLI )
 			return;
 
 		$home_url = get_home_url();
@@ -211,12 +220,6 @@ class PgCache_Plugin {
 		}
 	}
 
-	/**
-	 *
-	 *
-	 * @param integer $lifetime
-	 * @return integer
-	 */
 	function comment_cookie_lifetime( $lifetime ) {
 		$l = $this->_config->get_integer( 'pgcache.comment_cookie_ttl' );
 		if ( $l != -1 )
@@ -253,8 +256,44 @@ class PgCache_Plugin {
 
 	public function w3tc_usage_statistics_metrics( $metrics ) {
 		return array_merge( $metrics, array(
-				'pagecache_requests_total', 'pagecache_requests_hits',
+				'php_requests_pagecache_hit',
+				'php_requests_pagecache_miss_404',
+				'php_requests_pagecache_miss_ajax',
+				'php_requests_pagecache_miss_api_call',
+				'php_requests_pagecache_miss_configuration',
+				'php_requests_pagecache_miss_fill',
+				'php_requests_pagecache_miss_logged_in',
+				'php_requests_pagecache_miss_mfunc',
+				'php_requests_pagecache_miss_query_string',
+				'php_requests_pagecache_miss_third_party',
+				'php_requests_pagecache_miss_wp_admin',
 				'pagecache_requests_time_10ms' ) );
+	}
+
+	public function w3tc_usage_statistics_sources( $sources ) {
+		$c = Dispatcher::config();
+		if ( $c->get_string( 'pgcache.engine' ) == 'apc' ) {
+			$sources['apc_servers']['pgcache'] = array(
+				'name' => __( 'Page Cache', 'w3-total-cache' )
+			);
+		} elseif ( $c->get_string( 'pgcache.engine' ) == 'memcached' ) {
+			$sources['memcached_servers']['pgcache'] = array(
+				'servers' => $c->get_array( 'pgcache.memcached.servers' ),
+				'username' => $c->get_string( 'pgcache.memcached.username' ),
+				'password' => $c->get_string( 'pgcache.memcached.password' ),
+				'binary_protocol' => $c->get_boolean( 'pgcache.memcached.binary_protocol' ),
+				'name' => __( 'Page Cache', 'w3-total-cache' )
+			);
+		} elseif ( $c->get_string( 'pgcache.engine' ) == 'redis' ) {
+			$sources['redis_servers']['pgcache'] = array(
+				'servers' => $c->get_array( 'pgcache.redis.servers' ),
+				'dbid' => $c->get_integer( 'pgcache.redis.dbid' ),
+				'password' => $c->get_string( 'pgcache.redis.password' ),
+				'name' => __( 'Page Cache', 'w3-total-cache' )
+			);
+		}
+
+		return $sources;
 	}
 
 	public function w3tc_admin_bar_menu( $menu_items ) {
@@ -262,7 +301,7 @@ class PgCache_Plugin {
 			'id' => 'w3tc_flush_pgcache',
 			'parent' => 'w3tc_flush',
 			'title' => __( 'Page Cache: All', 'w3-total-cache' ),
-			'href' => wp_nonce_url( network_admin_url(
+			'href' => wp_nonce_url( admin_url(
 					'admin.php?page=w3tc_dashboard&amp;w3tc_flush_pgcache' ),
 				'w3tc' )
 		);
@@ -331,4 +370,28 @@ class PgCache_Plugin {
 
 		return $v;
 	}
+
+
+
+	/**
+	 * By default headers are not cached by file_generic
+	 */
+	public function w3tc_pagecache_set_header( $header, $header_original,
+			$pagecache_engine ) {
+		if ( $pagecache_engine == 'file_generic' ) {
+			return null;
+		}
+
+		return $header;
+	}
+
+
+
+	public function w3tc_config_save( $config ) {
+		// frontend activity
+		if ( $config->get_boolean( 'pgcache.cache.feed' ) ) {
+			$config->set( 'pgcache.cache.nginx_handle_xml', true );
+		}
+	}
+
 }

@@ -85,12 +85,12 @@ class Generic_AdminNotes {
 				Util_Ui::button_link( __( 'disable', 'w3-total-cache' ),
 					Util_Ui::url( array(
 							'w3tc_config_preview_disable' => 'y' ) ) ) ) .
-				'<br /><span class="description">'.
+				'<p class="description">'.
 				sprintf(
 				__( 'To preview any changed settings (without deploying): %s',
 					'w3-total-cache' ),
 				Util_Ui::preview_link() ).
-				'</span>';
+				'</p>';
 		}
 
 		/**
@@ -112,10 +112,17 @@ class Generic_AdminNotes {
 						'w3-total-cache' ),
 					Util_Ui::button_link(
 						__( 'minify settings', 'w3-total-cache' ),
-						Util_Ui::url( array(
+						Util_Ui::url(
+							array(
 								'w3tc_default_config_state_note' => 'y',
-								'key' => 'common.show_note.plugins_updated',
-								'value' => 'false' ) ) ) );
+								'key'                            => 'common.show_note.plugins_updated',
+								'value'                          => 'false',
+								'page'                           => 'w3tc_minify',
+								'redirect'                       => esc_url( admin_url( 'admin.php?page=w3tc_minify' ) ),
+							)
+						)
+					)
+				);
 			}
 
 			if ( count( $texts ) ) {
@@ -166,6 +173,25 @@ class Generic_AdminNotes {
 							'key' => 'common.show_note.flush_posts_needed',
 							'value' => 'false' ) ) );
 			}
+		}
+
+		$is_debug = $c->get_boolean( 'cluster.messagebus.debug' ) ||
+			$c->get_boolean( 'dbcache.debug' ) ||
+			$c->get_boolean( 'objectcache.debug' ) ||
+			$c->get_boolean( 'pgcache.debug' ) ||
+			$c->get_boolean( 'minify.debug' ) ||
+			$c->get_boolean( 'cdn.debug' ) ||
+			$c->get_boolean( 'cdnfsd.debug' ) ||
+			$c->get_boolean( 'varnish.debug' );
+
+		if ( $is_debug && !$state_master->get_boolean( 'common.hide_note_debug_enabled' ) ) {
+			$notes['debug_enabled'] = sprintf(
+				__( 'You’re running debug mode, it’s using Resources and not recommend to run continuously. %s',
+					'w3-total-cache' ),
+				Util_Ui::button_hide_note2( array(
+						'w3tc_default_config_state_master' => 'y',
+						'key' => 'common.hide_note_debug_enabled',
+						'value' => 'true' ) ) );
 		}
 
 		return $notes;

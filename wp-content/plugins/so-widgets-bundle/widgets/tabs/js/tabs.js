@@ -23,10 +23,33 @@ jQuery( function ( $ ) {
 			var $tabPanels = $tabPanelsContainer.find( '> .sow-tabs-panel' );
 			$tabPanels.not( ':eq(' + selectedIndex + ')' ).hide();
 			var tabAnimation;
-			
+
+			var scrollToTab = function ( smooth ) {
+				var navOffset = 90; // Add some magic number offset to make space for possible nav menus etc.
+				var scrollTop = $widget.offset().top - navOffset;
+				if ( smooth ) {
+					$( 'body,html' ).animate( {
+						scrollTop: scrollTop,
+					}, 200 );
+				} else {
+					window.scrollTo( 0, scrollTop );
+				}
+			};
+
+			var shouldScroll = function( $tab ) {
+				return sowTabs.scrollto_after_change &&
+				(
+					$tab.offset().top < window.scrollY ||
+					$tab.offset().top + $tab.height() > window.scrollY
+				);
+			}
+
 			var selectTab = function ( tab, preventHashChange ) {
 				var $tab = $( tab );
 				if ( $tab.is( '.sow-tabs-tab-selected' ) ) {
+					if ( shouldScroll( $tab ) ) {
+						scrollToTab( true );
+					}
 					return true;
 				}
 				var selectedIndex = $tab.index();
@@ -66,6 +89,10 @@ jQuery( function ( $ ) {
 								},
 								complete: function() {
 									$( this ).trigger( 'show' );
+
+									if ( preventHashChange || shouldScroll( $tab ) ) {
+										scrollToTab( true );
+									}
 								}
 							});
 						}
@@ -78,11 +105,11 @@ jQuery( function ( $ ) {
 				}
 			};
 			
-			$tabs.click( function() {
+			$tabs.on( 'click', function() {
 				selectTab( this );
 			} );
 
-			$tabs.keyup( function( e ) {
+			$tabs.on( 'keyup', function( e ) {
 				var $currentTab = $( this );
 
 				if ( e.keyCode !== 37 && e.keyCode !== 39 ){
@@ -112,17 +139,19 @@ jQuery( function ( $ ) {
 				if ( $currentTab === $newTab ){
 					return;
 				}
-				$newTab.focus();
+				$newTab.trigger( 'focus' );
 				selectTab( $newTab.get(0) );
 			} );
 			
 			if ( useAnchorTags ) {
 				var updateSelectedTab = function () {
 					if ( window.location.hash ) {
-						var anchors = window.location.hash.replace( '#', '' ).split( ',' );
+						var anchors = window.location.hash.substring(1).split( ',' );
 						anchors.forEach( function ( anchor ) {
-							var tab = $tabs.filter( '[data-anchor="' + anchor + '"]' );
-							if ( tab ) {
+							var tab = $tabs.filter( function ( index, element ) {
+								return decodeURI( anchor ) === decodeURI( $( element ).data( 'anchor' ) );
+							} );
+							if ( tab.length > 0 ) {
 								selectTab( tab, true );
 							}
 						} );
@@ -131,8 +160,6 @@ jQuery( function ( $ ) {
 				$( window ).on( 'hashchange', updateSelectedTab );
 				if ( window.location.hash ) {
 					updateSelectedTab();
-				} else {
-					window.location.hash = $selectedTab.data( 'anchor' );
 				}
 			}
 			

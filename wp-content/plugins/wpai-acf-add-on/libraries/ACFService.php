@@ -31,14 +31,28 @@ final class ACFService{
      */
     public static function update_post_meta(Field $field, $pid, $name, $value) {
 
+        // Prepare field data for acf/update_value filter.
+        $fieldData = [
+            'key' => $field->getFieldKey(),
+            'name' => $field->getFieldName(),
+            'type' => $field->getType(),
+            'save_custom' => 0,
+            'save_other_choice'	=> 0,
+            'allow_null' 		=> 0,
+            'return_format'		=> 'value',
+            'save_terms' => 0
+        ];
+        // Apply filters to field value.
+        $value = apply_filters( "acf/update_value", $value, $pid, $fieldData, $value );
         $cf_value = apply_filters('pmxi_acf_custom_field', $value, $pid, $name);
 
         switch ($field->getImportType()) {
             case 'import_users':
+            case 'shop_customer':
                 update_user_meta($pid, $name, $cf_value);
                 break;
             case 'taxonomies':
-                update_term_meta($pid, $name, $value);
+                update_term_meta($pid, $name, $cf_value);
                 break;
             default:
                 update_post_meta($pid, $name, $cf_value);
@@ -58,6 +72,7 @@ final class ACFService{
     public static function get_post_meta(Field $field, $pid, $name) {
         switch ($field->getImportType()) {
             case 'import_users':
+            case 'shop_customer':
                 $value = get_user_meta($pid, $name, TRUE);
                 break;
             case 'taxonomies':
@@ -80,6 +95,20 @@ final class ACFService{
      * @param bool $logger
      */
     public static function associate_terms($pid, $assign_taxes, $tx_name, $logger = FALSE) {
+
+        $use_wp_set_object_terms = apply_filters('wp_all_import_use_wp_set_object_terms', false, $tx_name);
+        if ($use_wp_set_object_terms) {
+            $term_ids = [];
+            if (!empty($assign_taxes)) {
+                foreach ($assign_taxes as $ttid) {
+                    $term = get_term_by('term_taxonomy_id', $ttid, $tx_name);
+                    if ($term) {
+                        $term_ids[] = $term->term_id;
+                    }
+                }
+            }
+            return wp_set_object_terms($pid, $term_ids, $tx_name);
+        }
 
         global $wpdb;
 
@@ -124,9 +153,10 @@ final class ACFService{
      * @param bool $search_in_gallery
      * @param bool $search_in_files
      *
+     * @param array $importData
      * @return bool|int|\WP_Error
      */
-    public static function import_image($img_url, $pid, $logger, $search_in_gallery = FALSE, $search_in_files = FALSE) {
+    public static function import_image($img_url, $pid, $logger, $search_in_gallery = FALSE, $search_in_files = FALSE, $importData = array()) {
 
         // Search image attachment by ID.
         if ($search_in_gallery and is_numeric($img_url)) {
@@ -143,18 +173,18 @@ final class ACFService{
             if ($search_in_gallery) {
                 $logger and call_user_func($logger, sprintf(__('- Searching for existing image `%s` by Filename...', 'wp_all_import_plugin'), rawurldecode($img_url)));
                 $imageList = new \PMXI_Image_List();
-                $attch = $imageList->getExistingImageByFilename($img_url);
+                $attch = $imageList->getExistingImageByFilename(basename($img_url));
                 if ($attch){
-                    $logger and call_user_func($logger, sprintf(__('Existing image was found by Filename `%s`...', 'wp_all_import_plugin'), $img_url));
+                    $logger and call_user_func($logger, sprintf(__('Existing image was found by Filename `%s`...', 'wp_all_import_plugin'), basename($img_url)));
                     return $attch->ID;
                 }
             }
 
             $downloadFiles = "no";
-            $fileName = $img_url;
+            $fileName = basename($img_url);
         }
 
-        return PMXI_API::upload_image($pid, $img_url, $downloadFiles, $logger, true, $fileName, 'images', $search_in_gallery);
+        return PMXI_API::upload_image($pid, $img_url, $downloadFiles, $logger, true, $fileName, 'images', $search_in_gallery, $importData['articleData'], $importData);
     }
 
     /**
@@ -165,9 +195,10 @@ final class ACFService{
      * @param bool $search_in_gallery
      * @param bool $search_in_files
      *
+     * @param array $importData
      * @return bool|int|\WP_Error
      */
-    public static function import_file($atch_url, $pid, $logger, $fast = FALSE, $search_in_gallery = FALSE, $search_in_files = FALSE) {
+    public static function import_file($atch_url, $pid, $logger, $fast = FALSE, $search_in_gallery = FALSE, $search_in_files = FALSE, $importData = array()) {
 
         // search file attachment by ID
         if ($search_in_gallery and is_numeric($atch_url)) {
@@ -184,18 +215,18 @@ final class ACFService{
             if ($search_in_gallery) {
                 $logger and call_user_func($logger, sprintf(__('- Searching for existing file `%s` by Filename...', 'wp_all_import_plugin'), rawurldecode($atch_url)));
                 $imageList = new \PMXI_Image_List();
-                $attch = $imageList->getExistingImageByFilename($atch_url);
+                $attch = $imageList->getExistingImageByFilename(basename($atch_url));
                 if ($attch){
-                    $logger and call_user_func($logger, sprintf(__('Existing file was found by Filename `%s`...', 'wp_all_import_plugin'), $atch_url));
+                    $logger and call_user_func($logger, sprintf(__('Existing file was found by Filename `%s`...', 'wp_all_import_plugin'), basename($atch_url)));
                     return $attch->ID;
                 }
             }
 
             $downloadFiles = "no";
-            $fileName = $atch_url;
+            $fileName = basename($atch_url);
         }
 
-        return PMXI_API::upload_image($pid, $atch_url, $downloadFiles, $logger, true, $fileName, "files", $search_in_gallery);
+        return PMXI_API::upload_image($pid, $atch_url, $downloadFiles, $logger, true, $fileName, "files", $search_in_gallery, $importData['articleData'], $importData);
     }
 
     /**
@@ -203,24 +234,29 @@ final class ACFService{
      * @param array $post_types
      * @return array
      */
-    public static function get_posts_by_relationship($values, $post_types = array()){
+    public static function get_posts_by_relationship($values, $post_types){
         $post_ids = array();
         $values = array_filter($values);
         if (!empty($values)) {
+			if (!empty($post_types) && !is_array($post_types)) {
+				$post_types = [$post_types];
+			}
             $values = array_map('trim', $values);
             global $wpdb;
             foreach ($values as $ev) {
-
                 $relation = false;
                 if (ctype_digit($ev)) {
-                    $relation = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->posts} WHERE ID = %s", $ev));
+                	if (empty($post_types)) {
+		                $relation = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->posts} WHERE ID = %d", $ev));
+	                } else {
+		                $relation = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->posts} WHERE ID = %d AND post_type IN ('" . implode("','", $post_types) . "')", $ev));
+	                }
                 }
-                if (empty($relation)){
-                    if (empty($post_types)){
+                if (empty($relation)) {
+                    if (empty($post_types)) {
                         $sql = "SELECT * FROM {$wpdb->posts} WHERE post_type != %s AND ( post_title = %s OR post_name = %s )";
                         $relation = $wpdb->get_row($wpdb->prepare($sql, 'revision', $ev, sanitize_title_for_query($ev)));
-                    }
-                    else{
+                    } else {
                         $sql = "SELECT * FROM {$wpdb->posts} WHERE post_type IN ('" . implode("','", $post_types) . "') AND ( post_title = %s OR post_name = %s )";
                         $relation = $wpdb->get_row($wpdb->prepare($sql, $ev, sanitize_title_for_query($ev)));
                     }

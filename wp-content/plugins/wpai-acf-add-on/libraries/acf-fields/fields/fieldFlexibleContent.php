@@ -79,12 +79,24 @@ class FieldFlexibleContent extends Field {
         }
         $values = $this->getOption('values');
         $layouts = array();
-        foreach ($values as $layout_number => $layout) {
+	    $layout_number = 0;
+        foreach ($values as $layout) {
             if (!empty($layout['fields'])) {
-                $layouts[] = $layout['acf_fc_layout'];
-                /** @var Field $sub_field */
-                foreach ($layout['fields'] as $sub_field_key => $sub_field) {
-                    $sub_field->import($importData, array('container_name' => $this->getFieldName() . "_" . $layout_number . "_"));
+                /** @var Field $subField */
+                foreach ($layout['fields'] as $sub_field_key => $subField) {
+                    // Init importData in all sub fields.
+                    $subField->importData = $importData;
+                }
+                if ($this->isImportLayout($layout['fields'])) {
+                    $layouts[] = $layout['acf_fc_layout'];
+                    /** @var Field $subField */
+                    foreach ($layout['fields'] as $sub_field_key => $subField) {
+                    	if ($subField->getType() == 'empty') {
+                    		continue;
+	                    }
+                        $subField->import($importData, array('container_name' => $this->getFieldName() . "_" . $layout_number . "_"));
+                    }
+	                $layout_number++;
                 }
             }
         }
@@ -92,9 +104,25 @@ class FieldFlexibleContent extends Field {
     }
 
     /**
+     * @param $fields
+     * @return bool
+     */
+    protected function isImportLayout($fields){
+        $isImportLayout = false;
+        /** @var Field $field */
+        foreach ($fields as $field){
+            if ($field->isNotEmpty()){
+                $isImportLayout = true;
+                break;
+            }
+        }
+        return $isImportLayout;
+    }
+
+    /**
      * @return int
      */
-    public function getCountValues() {
+    public function getCountValues($parentIndex = false) {
         $values = $this->getOption('values');
         $countRows = 0;
         foreach ($values as $layout_number => $layout) {
@@ -102,7 +130,7 @@ class FieldFlexibleContent extends Field {
                 /** @var Field $sub_field */
                 foreach ($layout['fields'] as $sub_field_key => $sub_field) {
                     $sub_field->importData = $this->getImportData();
-                    $count = $sub_field->getCountValues();
+                    $count = $sub_field->getCountValues($parentIndex);
                     if ($count > $countRows){
                         $countRows = $count;
                     }

@@ -13,12 +13,6 @@ return array(
 		'icon_color' => '#FFFFFF',
 		'button_color' => '#78BDF1'
 	),
-	'google-plus' => array(
-		'label'    => __( 'Google+', 'so-widgets-bundle' ),
-		'base_url' => 'https://plus.google.com/',
-		'icon_color' => '#FFFFFF',
-		'button_color' => '#DD4B39'
-	),
 	'rss'         => array(
 		'label'    => __( 'RSS', 'so-widgets-bundle' ),
 		'base_url' => get_bloginfo('rss_url'),
@@ -42,6 +36,12 @@ return array(
 		'base_url' => 'https://www.snapchat.com/',
 		'icon_color' => '#FFFFFF',
 		'button_color' => '#FFFC00'
+	),
+	'skype'    => array(
+		'label'    => __( 'Skype', 'so-widgets-bundle' ),
+		'base_url' => 'https://skype.com/',
+		'icon_color' => '#0078d7',
+		'button_color' => '#FFFFFF'
 	),
 	'linkedin'    => array(
 		'label'    => __( 'LinkedIn', 'so-widgets-bundle' ),
@@ -142,6 +142,12 @@ return array(
 		'icon_color' => '#FFFFFF',
 		'button_color' => '#B2C01C'
 	),
+	'discord'   => array(
+		'label'    => __( 'Discord', 'so-widgets-bundle' ),
+		'base_url' => 'https://discord.gg/',
+		'icon_color' => '#ffffff',
+		'button_color' => '#7289da',
+	),
 	'dribbble'   => array(
 		'label'    => __( 'Dribbble', 'so-widgets-bundle' ),
 		'base_url' => 'https://dribbble.com/',
@@ -178,11 +184,23 @@ return array(
 		'icon_color' => '#372213',
 		'button_color' => '#e2e0d1'
 	),
+	'google' => array(
+		'label'    => __( 'Google', 'so-widgets-bundle' ),
+		'base_url' => 'https://google.com/',
+		'icon_color' => '#4285F4',
+		'button_color' => '#FFFFFF'
+	),
 	'hacker-news'   => array(
 		'label'    => __( 'Hacker News', 'so-widgets-bundle' ),
 		'base_url' => 'https://news.ycombinator.com/',
 		'icon_color' => '#FFFFFF',
 		'button_color' => '#FF6600'
+	),
+	'imdb'   => array(
+		'label'    => __( 'IMDb', 'so-widgets-bundle' ),
+		'base_url' => 'https://www.imdb.com/',
+		'icon_color' => '#F3CE13',
+		'button_color' => '#000'
 	),
 	'jsfiddle'   => array(
 		'label'    => __( 'JSFiddle', 'so-widgets-bundle' ),
@@ -261,6 +279,12 @@ return array(
 		'base_url' => 'https://t.me/',
 		'icon_color' => '#FFFFFF',
 		'button_color' => '#27a7e5'
+	),
+	'tiktok'      => array(
+		'label'    => __( 'TikTok', 'so-widgets-bundle' ),
+		'base_url' => 'https://www.tiktok.com/',
+		'icon_color' => '#FFFFFF',
+		'button_color' => '#000',
 	),
 	'trello'   => array(
 		'label'    => __( 'Trello', 'so-widgets-bundle' ),

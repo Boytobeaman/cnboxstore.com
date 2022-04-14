@@ -23,23 +23,25 @@ final class FieldFactory {
      * @param $post
      * @param $fieldName
      * @param $fieldParent
-     * @return bool|\wpai_acf_add_on\acf\fields\FieldEmpty
+     * @return bool|FieldEmpty
      */
     public static function create($fieldData, $post, $fieldName = "", $fieldParent = false) {
         $field = FALSE;
         $class = '\\wpai_acf_add_on\\acf\\fields\\Field' . str_replace(" ", "", ucwords(str_replace("_", " ", $fieldData['type'])));
-        if (in_array($fieldData['type'], self::$hiddenFields)) {
-            $field = new FieldEmpty($fieldData, $post, $fieldName);
+	    $class = apply_filters( 'wp_all_import_acf_field_class', $class , $fieldData, $post, $fieldName, $fieldParent );
+	    $field = apply_filters( 'wp_all_import_acf_field_field', $field,  $class, $fieldData, $post, $fieldName, $fieldParent );
+	    if (!empty($field)){
+		    return $field;
         }
-        elseif (ACFService::isACFNewerThan('5.0.0') && class_exists($class.'V5')){
+        if (empty($fieldData['type']) || in_array($fieldData['type'], self::$hiddenFields)) {
+            $field = new FieldEmpty($fieldData, $post, $fieldName);
+        } elseif (ACFService::isACFNewerThan('5.0.0') && class_exists($class.'V5')){
             $class .= 'V5';
             $field = new $class($fieldData, $post, $fieldName, $fieldParent);
-        }
-        elseif (!ACFService::isACFNewerThan('5.0.0') && class_exists($class.'V4')){
+        } elseif (!ACFService::isACFNewerThan('5.0.0') && class_exists($class.'V4')){
             $class .= 'V4';
             $field = new $class($fieldData, $post, $fieldName, $fieldParent);
-        }
-        elseif (class_exists($class)) {
+        } elseif (class_exists($class)) {
             $field = new $class($fieldData, $post, $fieldName, $fieldParent);
         }
 

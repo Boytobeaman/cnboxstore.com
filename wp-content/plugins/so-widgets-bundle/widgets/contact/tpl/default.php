@@ -10,7 +10,7 @@ if( $result['status'] == 'success' ) {
 	// Display the success message
 	?>
 	<div class="sow-contact-form-success" id="contact-form-<?php echo esc_attr( $short_hash ) ?>">
-		<?php echo wp_kses_post( wpautop( $instance['settings']['success_message'] ) ) ?>
+		<?php echo $instance['settings']['success_message']; ?>
 	</div>
 	<?php
 }
@@ -28,7 +28,7 @@ else {
 		);
 	}
 	?>
-	<form action="<?php echo esc_url( add_query_arg( false, false ) ) ?>#contact-form-<?php echo esc_attr( $short_hash ) ?>"
+	<form action="#contact-form-<?php echo esc_attr( $short_hash ); ?>"
           method="POST" class="sow-contact-form" id="contact-form-<?php echo esc_attr( $short_hash ) ?>">
 
 		<?php if( !empty($result['errors']['_general']) ) : ?>

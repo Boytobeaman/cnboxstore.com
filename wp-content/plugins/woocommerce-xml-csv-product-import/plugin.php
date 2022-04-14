@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: WP All Import - WooCommerce Add-On
-Plugin URI: http://www.wpallimport.com/
+Plugin URI: http://www.wpallimport.com/woocommerce-product-import/?utm_source=import-wooco-products-addon-free&utm_medium=wp-plugins-page&utm_campaign=upgrade-to-pro
 Description: An extremely easy, drag & drop importer to import WooCommerce simple products. A paid upgrade is available for premium support and support for Variable, Grouped, and External/Affiliate products
-Version: 1.4.1
+Version: 1.5.1
 Author: Soflyy
-WC tested up to: 3.6.0
+WC tested up to: 6.0
 */
 
 if ( ! function_exists( 'is_plugin_active' ) ) {
@@ -25,7 +25,7 @@ if ( is_plugin_active('wpai-woocommerce-add-on/wpai-woocommerce-add-on.php') ) {
 }
 else {
 
-    define('PMWI_FREE_VERSION', '1.4.1');
+    define('PMWI_FREE_VERSION', '1.5.1');
 
     define('PMWI_EDITION', 'free');
 
@@ -182,6 +182,10 @@ else {
                 require_once $filePath;
             }
 
+            if (is_dir(self::ROOT_DIR . '/libraries')) foreach (PMWI_Helper::safe_glob(self::ROOT_DIR . '/libraries/*.php', PMWI_Helper::GLOB_RECURSE | PMWI_Helper::GLOB_PATH | PMWI_Helper::GLOB_NOSORT) as $filePath) {
+                require_once $filePath;
+            }
+
             register_activation_hook(self::FILE, array($this, 'activation'));
 
             // register action handlers
@@ -272,21 +276,25 @@ else {
                             // Update Options
                             switch ($options['update_custom_fields_logic']){
                                 case 'only':
-                                    $fields_list = explode(',', $options['custom_fields_only_list']);
-                                    if ( ! in_array('_featured', $fields_list) ){
-                                        $options['is_update_featured_status'] = 0;
-                                    }
-                                    if ( ! in_array('_visibility', $fields_list) ){
-                                        $options['is_update_catalog_visibility'] = 0;
+                                    if (!empty($options['custom_fields_only_list']) && !is_array($options['custom_fields_only_list'])) {
+                                        $fields_list = explode(',', $options['custom_fields_only_list']);
+                                        if (!in_array('_featured', $fields_list)) {
+                                            $options['is_update_featured_status'] = 0;
+                                        }
+                                        if (!in_array('_visibility', $fields_list)) {
+                                            $options['is_update_catalog_visibility'] = 0;
+                                        }
                                     }
                                     break;
                                 case 'all_except':
-                                    $fields_list = explode(',', $options['custom_fields_except_list']);
-                                    if ( in_array('_featured', $fields_list) ){
-                                        $options['is_update_featured_status'] = 0;
-                                    }
-                                    if ( in_array('_visibility', $fields_list) ){
-                                        $options['is_update_catalog_visibility'] = 0;
+                                    if (!empty($options['custom_fields_except_list']) && !is_array($options['custom_fields_except_list'])) {
+                                        $fields_list = explode(',', $options['custom_fields_except_list']);
+                                        if (in_array('_featured', $fields_list)) {
+                                            $options['is_update_featured_status'] = 0;
+                                        }
+                                        if (in_array('_visibility', $fields_list)) {
+                                            $options['is_update_catalog_visibility'] = 0;
+                                        }
                                     }
                                     break;
                             }
@@ -330,9 +338,9 @@ else {
          */
         public function load_plugin_textdomain() {
 
-            $locale = apply_filters( 'plugin_locale', get_locale(), 'wpai_woocommerce_addon_plugin' );
+            $locale = apply_filters( 'plugin_locale', get_locale(), self::TEXT_DOMAIN );
 
-            load_plugin_textdomain( 'wpai_woocommerce_addon_plugin', false, dirname( plugin_basename( __FILE__ ) ) . "/i18n/languages" );
+            load_plugin_textdomain( self::TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . "/i18n/languages" );
         }
 
         /**
@@ -398,9 +406,9 @@ else {
                 $actionName = str_replace('-', '_', $action);
                 if (method_exists($controllerName, $actionName)) {
 
-                    if ( ! get_current_user_id() or ! current_user_can('manage_options')) {
-                        // This nonce is not valid.
-                        die( 'Security check' );
+					if ( ! get_current_user_id() or ! current_user_can(PMXI_Plugin::$capabilities)) {
+					    // This nonce is not valid.
+					    die( 'Security check' );
 
                     } else {
 
@@ -461,7 +469,7 @@ else {
             if ( ! $is_prefix) { // also check file with original letter case
                 $filePathAlt = $className . '.php';
             }
-            foreach ($is_prefix ? array('models', 'controllers', 'shortcodes', 'classes') : array() as $subdir) {
+            foreach ($is_prefix ? array('models', 'controllers', 'shortcodes', 'classes') : array('libraries') as $subdir) {
                 $path = self::ROOT_DIR . '/' . $subdir . '/' . $filePath;
                 if (is_file($path)) {
                     require $path;
@@ -487,11 +495,10 @@ else {
             set_exception_handler(function($e){trigger_error($e->getMessage(), E_USER_ERROR);});
         }
 
-        public function plugin_row_meta($links, $file)
-        {
+        public function plugin_row_meta($links, $file){
             if ( $file == plugin_basename( __FILE__ ) ) {
                 $row_meta = array(
-                    'pro'    => '<a href="http://www.wpallimport.com/woocommerce-product-import/" target="_blank" title="' . esc_attr( __( 'WP All Import - WooCommerce Add-On Pro Version', 'wpai_woocommerce_addon_plugin' ) ) . '">' . __( 'Pro Version', 'wpai_woocommerce_addon_plugin' ) . '</a>',
+                    'pro'    => '<a href="http://www.wpallimport.com/woocommerce-product-import/?utm_source=import-wooco-products-addon-free&utm_medium=wp-plugins-page&utm_campaign=upgrade-to-pro" target="_blank" title="' . esc_attr( __( 'WP All Import - WooCommerce Add-On Pro Version', self::TEXT_DOMAIN ) ) . '">' . __( 'Pro Version', self::TEXT_DOMAIN ) . '</a>',
                 );
 
                 return array_merge( $links, $row_meta );
@@ -515,6 +522,8 @@ else {
                 'single_product_downloadable' => '',
                 'is_product_enabled' => 'yes',
                 'single_product_enabled' => '',
+                'is_variation_enabled' => 'yes',
+                'single_variation_enabled' => '',
                 'is_product_featured' => 'no',
                 'single_product_featured' => '',
                 'is_product_visibility' => 'visible',
@@ -580,7 +589,9 @@ else {
                 'single_product_id' => '',
                 'single_product_parent_id' => '',
                 'single_product_id_first_is_parent_id' => '',
+                'single_product_first_is_parent_id_parent_sku' => '',
                 'single_product_id_first_is_parent_title' => '',
+                'single_product_first_is_parent_title_parent_sku' => '',
                 'single_product_id_first_is_variation' => '',
                 '_virtual' => 0,
                 '_downloadable' => 0,
@@ -669,6 +680,7 @@ else {
                 'is_default_attributes' => 0,
                 'default_attributes_type' => 'first',
                 'disable_sku_matching' => 1,
+                'default_attributes_xpath' => '',
                 'disable_prepare_price' => 1,
                 'prepare_price_to_woo_format' => 0,
                 'convert_decimal_separator' => 1,
@@ -695,13 +707,144 @@ else {
                 'variation_stock' => '',
                 'variation_stock_status' => 'auto',
                 'put_variation_image_to_gallery' => 0,
+                'import_additional_variation_images' => 0,
                 'single_variation_stock_status' => '',
+                'single_product_low_stock_amount' => '',
+                'pmwi_order' => array(
+                    'status' => 'wc-pending',
+                    'status_xpath' => '',
+                    'date' => 'now',
+                    'billing_source' => 'guest',
+                    'billing_source_match_by' => 'username',
+                    'billing_source_username' => '',
+                    'billing_source_email' => '',
+                    'billing_source_id' => '',
+                    'billing_source_cf_name' => '',
+                    'billing_source_cf_value' => '',
+                    'billing_first_name' => '',
+                    'billing_last_name' => '',
+                    'billing_company' => '',
+                    'billing_address_1' => '',
+                    'billing_address_2' => '',
+                    'billing_city' => '',
+                    'billing_postcode' => '',
+                    'billing_country' => '',
+                    'billing_state' => '',
+                    'billing_email' => '',
+                    'billing_phone' => '',
+                    'guest_billing_first_name' => '',
+                    'guest_billing_last_name' => '',
+                    'guest_billing_company' => '',
+                    'guest_billing_address_1' => '',
+                    'guest_billing_address_2' => '',
+                    'guest_billing_city' => '',
+                    'guest_billing_postcode' => '',
+                    'guest_billing_country' => '',
+                    'guest_billing_state' => '',
+                    'guest_billing_email' => '',
+                    'guest_billing_phone' => '',
+                    'is_guest_matching' => 0,
+                    'shipping_source' => 'copy',
+                    'shipping_first_name' => '',
+                    'shipping_last_name' => '',
+                    'shipping_company' => '',
+                    'shipping_address_1' => '',
+                    'shipping_address_2' => '',
+                    'shipping_city' => '',
+                    'shipping_postcode' => '',
+                    'shipping_country' => '',
+                    'shipping_state' => '',
+                    'shipping_email' => '',
+                    'shipping_phone' => '',
+                    'copy_from_billing' => 0,
+                    'customer_provided_note' => '',
+                    'payment_method' => '',
+                    'payment_method_xpath' => '',
+                    'transaction_id' => '',
+                    'products_repeater_mode' => 'csv',
+                    'products_repeater_mode_separator' => '|',
+                    'products_repeater_mode_foreach' => '',
+                    'products_source' => 'existing',
+                    'products' => array(),
+                    'manual_products' => array(),
+                    'fees_repeater_mode' => 'csv',
+                    'fees_repeater_mode_separator' => '|',
+                    'fees_repeater_mode_foreach' => '',
+                    'fees' => array(),
+                    'coupons_repeater_mode' => 'csv',
+                    'coupons_repeater_mode_separator' => '|',
+                    'coupons_repeater_mode_foreach' => '',
+                    'coupons' => array(),
+                    'shipping_repeater_mode' => 'csv',
+                    'shipping_repeater_mode_separator' => '|',
+                    'shipping_repeater_mode_foreach' => '',
+                    'shipping' => array(),
+                    'taxes_repeater_mode' => 'csv',
+                    'taxes_repeater_mode_separator' => '|',
+                    'taxes_repeater_mode_foreach' => '',
+                    'taxes' => array(),
+                    'order_total_logic' => 'auto',
+                    'order_total_xpath' => '',
+                    'order_refund_amount' => '',
+                    'order_refund_reason' => '',
+                    'order_refund_date' => 'now',
+                    'order_refund_issued_source' => 'existing',
+                    'order_refund_issued_match_by' => 'username',
+                    'order_refund_issued_username' => '',
+                    'order_refund_issued_email' => '',
+                    'order_refund_issued_cf_name' => '',
+                    'order_refund_issued_cf_value' => '',
+                    'order_refund_issued_id' => '',
+                    'notes_repeater_mode' => 'csv',
+                    'notes_repeater_mode_separator' => '|',
+                    'notes_repeater_mode_foreach' => '',
+                    'notes' => array(),
+                ),
+                'is_update_billing_details' => 1,
+                'is_update_shipping_details' => 1,
+                'is_update_payment' => 1,
+                'is_update_notes' => 1,
+                'is_update_products' => 1,
+                'update_products_logic' => 'full_update',
+                'is_update_fees' => 1,
+                'is_update_coupons' => 1,
+                'is_update_shipping' => 1,
+                'is_update_taxes' => 1,
+                'is_update_refunds' => 1,
+                'is_update_total' => 1,
+                'do_not_send_order_notifications' => 1,
                 'is_update_advanced_options' => 1,
                 'is_update_catalog_visibility' => 1,
-                'is_update_featured_status' => 1
-            );
-        }
-    }
+                'is_update_featured_status' => 1,
+                'existing_parent_product_matching_logic' => 'custom field',
+                'existing_parent_product_title' => '',
+                'existing_parent_product_cf_name' => '_sku',
+                'existing_parent_product_cf_value' => '',
+                // WooCommerce Subscriptions
+                'single_product_subscription_price' => '',
+                'single_product_subscription_sign_up_fee' => '',
+                'is_multiple_product_subscription_period_interval' => 'yes',
+                'multiple_product_subscription_period_interval' => 1,
+                'single_product_subscription_period_interval' => '',
+
+                'is_multiple_product_subscription_period' => 'yes',
+                'multiple_product_subscription_period' => 'month',
+                'single_product_subscription_period' => '',
+
+                'is_multiple_product_subscription_trial_period' => 'yes',
+                'multiple_product_subscription_trial_period' => 0,
+                'single_product_subscription_trial_period' => '',
+                'is_multiple_product_subscription_length' => 'yes',
+                'multiple_product_subscription_length' => 0,
+                'single_product_subscription_length' => '',
+                'is_multiple_product_subscription_limit' => 'yes',
+                'multiple_product_subscription_limit' => 'no',
+                'single_product_subscription_limit' => '',
+				'grouped_product_children' => 'xpath',
+				'grouped_product_children_xpath' => ''
+			);
+		}
+	}
 
     PMWI_Plugin::getInstance();
 }

@@ -13,8 +13,9 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 			'sow-features',
 			__( 'SiteOrigin Features', 'so-widgets-bundle' ),
 			array(
-				'description' => __( 'Displays a list of features.', 'so-widgets-bundle' ),
-				'help'        => 'https://siteorigin.com/widgets-bundle/features-widget-documentation/'
+				'description'  => __( 'Displays a block of features with icons.', 'so-widgets-bundle' ),
+				'help'         => 'https://siteorigin.com/widgets-bundle/features-widget-documentation/',
+				'panels_title' => false,
 			),
 			array(),
 			false,
@@ -35,7 +36,7 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 		);
 	}
 
-	function get_widget_form(){
+	function get_widget_form() {
 
 		return array(
 			'features' => array(
@@ -43,34 +44,40 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 				'label' => __( 'Features', 'so-widgets-bundle' ),
 				'item_name' => __( 'Feature', 'so-widgets-bundle' ),
 				'item_label' => array(
-					'selector'     => "[id*='features-title']",
-					'update_event' => 'change',
-					'value_method' => 'val'
+					'selectorArray' => array(
+						array(
+							'selector' => '[id*="features-title"]',
+							'valueMethod' => 'val'
+						),
+						array(
+							'selector' => '[id*="features-icon"]',
+							'valueMethod' => 'val'
+						),
+					),
 				),
 				'fields' => array(
 
 					// The container shape
-
 					'container_color' => array(
 						'type' => 'color',
 						'label' => __( 'Icon container color', 'so-widgets-bundle' ),
 						'default' => '#404040',
 					),
 
-                    'container_position' => array(
-                        'type' => 'select',
-                        'label' => __( 'Icon container position', 'so-widgets-bundle' ),
-                        'options' => array(
-                            'top'    => __( 'Top', 'so-widgets-bundle' ),
-                            'right'  => __( 'Right', 'so-widgets-bundle' ),
-                            'bottom' => __( 'Bottom', 'so-widgets-bundle' ),
-                            'left'   => __( 'Left', 'so-widgets-bundle' ),
-                        ),
-                        'default' => 'top',
-                    ),
+					// Left and right array keys are swapped due to a mistake that couldn't be corrected without disturbing existing users.
+					'container_position' => array(
+						'type' => 'select',
+						'label' => __( 'Icon container position', 'so-widgets-bundle' ),
+						'options' => array(
+							'top'    => __( 'Top', 'so-widgets-bundle' ),
+							'left'  => __( 'Right', 'so-widgets-bundle' ),
+							'bottom' => __( 'Bottom', 'so-widgets-bundle' ),
+							'right'   => __( 'Left', 'so-widgets-bundle' ),
+						),
+						'default' => 'top',
+					),
 
-					// The Icon
-
+					// The icon.
 					'icon' => array(
 						'type' => 'icon',
 						'label' => __( 'Icon', 'so-widgets-bundle' ),
@@ -84,7 +91,7 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 					'icon_color' => array(
 						'type' => 'color',
 						'label' => __( 'Icon color', 'so-widgets-bundle' ),
-						'default' => '#FFFFFF',
+						'default' => '#fff',
 					),
 
 					'icon_image' => array(
@@ -92,6 +99,7 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 						'library' => 'image',
 						'label' => __( 'Icon image', 'so-widgets-bundle' ),
 						'description' => __( 'Use your own icon image.', 'so-widgets-bundle' ),
+						'fallback' => true,
 					),
 
 					'icon_image_size' => array(
@@ -99,8 +107,7 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 						'label' => __( 'Icon image size', 'so-widgets-bundle' ),
 					),
 
-					// The text under the icon
-
+					// The text under the icon.
 					'title' => array(
 						'type' => 'text',
 						'label' => __( 'Title text', 'so-widgets-bundle' ),
@@ -218,6 +225,20 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 				'default' => false,
 			),
 
+			'title_tag' => array(
+				'type' => 'select',
+				'label' => __( 'Title text HTML tag', 'so-widgets-bundle' ),
+				'default' => 'h5',
+				'options' => array(
+					'h1' => __( 'H1', 'so-widgets-bundle' ),
+					'h2' => __( 'H2', 'so-widgets-bundle' ),
+					'h3' => __( 'H3', 'so-widgets-bundle' ),
+					'h4' => __( 'H4', 'so-widgets-bundle' ),
+					'h5' => __( 'H5', 'so-widgets-bundle' ),
+					'h6' => __( 'H6', 'so-widgets-bundle' ),
+				)
+			),
+
 			'per_row' => array(
 				'type' => 'number',
 				'label' => __( 'Features per row', 'so-widgets-bundle' ),
@@ -234,12 +255,32 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 				'type' => 'checkbox',
 				'label' => __( 'Link feature title to more URL', 'so-widgets-bundle' ),
 				'default' => false,
+				'state_handler' => array(
+					'link_feature[hide]' => array( 'hide' ),
+					'link_feature[show]' => array( 'show' ),
+				)
 			),
 
 			'icon_link' => array(
 				'type' => 'checkbox',
 				'label' => __( 'Link icon to more URL', 'so-widgets-bundle' ),
 				'default' => false,
+				'state_handler' => array(
+					'link_feature[hide]' => array( 'hide' ),
+					'link_feature[show]' => array( 'show' ),
+				)
+			),
+
+			'link_feature' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Link feature column to more URL', 'so-widgets-bundle' ),
+				'state_emitter' => array(
+					'callback' => 'conditional',
+					'args' => array(
+						'link_feature[show]: ! val',
+						'link_feature[hide]: val'
+					),
+				)
 			),
 
 			'new_window' => array(
@@ -275,7 +316,8 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 					$font = siteorigin_widget_get_font( $styles['font'] );
 					$less_vars[$field_name.'_font'] = $font['family'];
 					if ( ! empty( $font['weight'] ) ) {
-						$less_vars[$field_name.'_font_weight'] = $font['weight'];
+						$less_vars[ $field_name . '_font_weight' ] = $font['weight_raw'];
+						$less_vars[ $field_name . '_font_style' ] = $font['style'];
 					}
 				}
 			}
@@ -283,8 +325,10 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 
 		$less_vars['container_size'] = $instance['container_size'];
 		$less_vars['icon_size'] = $instance['icon_size'];
+		$less_vars['title_tag'] = ! empty( $instance['title_tag'] ) ? $instance['title_tag'] : 'h5';
 		$less_vars['per_row'] = $instance['per_row'];
 		$less_vars['use_icon_size'] = empty( $instance['icon_size_custom'] ) ? 'false' : 'true';
+		$less_vars['link_feature'] = ! empty( $instance['link_feature'] );
 
 		$global_settings = $this->get_global_settings();
 
@@ -293,6 +337,28 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 		}
 
 		return $less_vars;
+	}
+
+	function get_feature_flex_direction( $position ) {
+		switch ( $position ) {
+			case 'top':
+				$style = 'column';
+				break;
+			
+			case 'right':
+				$style = 'row';
+				break;
+			
+			case 'bottom':
+				$style = 'column-reverse';
+				break;
+			
+			case 'left':			
+			default:
+				$style = 'row-reverse';
+				break;
+		}
+		return $style;
 	}
 
 	function get_settings_form() {
@@ -306,16 +372,21 @@ class SiteOrigin_Widget_Features_Widget extends SiteOrigin_Widget {
 		);
 	}
 
-	function get_google_font_fields( $instance ) {
-
-		$fonts = $instance['fonts'];
-
+	function get_form_teaser() {
+		if ( class_exists( 'SiteOrigin_Premium' ) ) return false;
 		return array(
-			$fonts['title_options']['font'],
-			$fonts['text_options']['font'],
-			$fonts['more_text_options']['font'],
+			sprintf(
+				__( 'Add an feature icon title tooltip with %sSiteOrigin Premium%s', 'so-widgets-bundle' ),
+				'<a href="https://siteorigin.com/downloads/premium/?featured_addon=plugin/tooltip" target="_blank">',
+				'</a>'
+			),
+			sprintf(
+				__( 'Use Google Fonts right inside the Features Widget with %sSiteOrigin Premium%s', 'so-widgets-bundle' ),
+				'<a href="https://siteorigin.com/downloads/premium/?featured_addon=plugin/web-font-selector" target="_blank" rel="noopener noreferrer">',
+				'</a>'
+			),
 		);
 	}
 }
 
-siteorigin_widget_register('sow-features', __FILE__, 'SiteOrigin_Widget_Features_Widget');
+siteorigin_widget_register( 'sow-features', __FILE__, 'SiteOrigin_Widget_Features_Widget' );

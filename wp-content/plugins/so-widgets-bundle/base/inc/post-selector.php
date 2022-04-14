@@ -4,10 +4,11 @@
  * Filter a query created from the post selector field into an array that will work properly with get_posts
  *
  * @param $query
+ * @param bool $exclude_current whether to exclude the current post or not.
  *
  * @return mixed
  */
-function siteorigin_widget_post_selector_process_query( $query ){
+function siteorigin_widget_post_selector_process_query( $query, $exclude_current = true ){
 	$query = wp_parse_args($query,
 		array(
 			'post_status' => 'publish',
@@ -33,9 +34,15 @@ function siteorigin_widget_post_selector_process_query( $query ){
 		$tax_queries = explode(',', $query['tax_query']);
 
 		$query['tax_query'] = array();
-		$query['tax_query']['relation'] = 'OR';
+		$query['tax_query']['relation'] = isset( $query['tax_query_relation'] ) ? $query['tax_query_relation'] : 'OR';
 		foreach($tax_queries as $tq) {
-			list($tax, $term) = explode(':', $tq);
+			if ( strpos( $tq, ':' ) !== false ) {
+				list( $tax, $term ) = explode( ':', $tq );
+			} else {
+				// There's no separator, try using the previous $tax.
+				$tax = empty( $tax ) ? 'category' : $tax;
+				$term = $tq;
+			}
 
 			if( empty($tax) || empty($term) ) continue;
 			$query['tax_query'][] = array(
@@ -87,11 +94,6 @@ function siteorigin_widget_post_selector_process_query( $query ){
 		unset( $query['sticky'] );
 	}
 
-	// Exclude the current post (if applicable) to avoid any issues associated with showing the same post again
-	if( is_singular() && get_the_id() != false ){
-		$query['post__not_in'][] = get_the_id();
-	}
-
 	if ( ! empty( $query['additional'] ) ) {
 		$query = wp_parse_args( $query['additional'], $query );
 		unset( $query['additional'] );
@@ -101,6 +103,13 @@ function siteorigin_widget_post_selector_process_query( $query ){
 			$query['post__not_in'] = explode( ',', $query['post__not_in'] );
 			$query['post__not_in'] = array_map( 'intval', $query['post__not_in'] );
 		}
+	}
+
+	if ( $exclude_current && get_the_ID() ) {
+		if ( ! isset( $query['post__not_in'] ) ) {
+			$query['post__not_in'] = array();
+		}
+		$query['post__not_in'][] = get_the_ID();
 	}
 
 	return apply_filters( 'siteorigin_widgets_posts_selector_query', $query );

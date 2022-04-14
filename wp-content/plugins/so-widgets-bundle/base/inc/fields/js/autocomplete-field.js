@@ -45,6 +45,12 @@
 			} else if ( source === 'terms' ) {
 				ajaxData.term = query;
 			}
+
+			// If WPML is enabled for this page, include page language for filtering.
+			if ( typeof icl_this_lang == 'string' ) {
+				ajaxData.language = icl_this_lang;
+			}
+
 			var $ul = $$.find('ul.items').empty().addClass('loading');
 			return $.get(
 				soWidgets.ajaxurl,
@@ -66,7 +72,7 @@
 			);
 		};
 
-		$$.find('.siteorigin-widget-autocomplete-input').click(function () {
+		$$.find( '.siteorigin-widget-autocomplete-input' ).on( 'click', function () {
 			var $s = $$.find('.existing-content-selector');
 			$s.show();
 
@@ -84,18 +90,23 @@
 			$$.find('.existing-content-selector').hide();
 		};
 
-		$(window).mousedown(function (event) {
+		$( window ).on( 'mousedown', function( event ) {
 			var mouseDownOutside = $$.find(event.target).length === 0;
 			if ( mouseDownOutside ) {
 				closeContent();
 			}
 		});
 
-		$$.find('.button-close').click( closeContent );
+		$$.find('.button-close').on( 'click', closeContent );
 
 		// Clicking on one of the url items
-		$$.on( 'click', '.items li', function(e) {
+		$$.on( 'click keypress', '.items li', function( e ) {
 			e.preventDefault();
+
+			if ( e.type == 'keyup' && ! window.sowbForms.isEnter( e ) ) {
+				return;
+			}
+
 			var $li = $(this);
 			var selectedItems = getSelectedItems();
 			var clickedItem = $li.data( 'value' );
@@ -111,11 +122,11 @@
 			}
 			var $input = $$.find('input.siteorigin-widget-input');
 			$input.val( selectedItems.join(',') );
-			$input.change();
+			$input.trigger( 'change' );
 		} );
 
 		var interval = null;
-		$$.find('.content-text-search').keyup( function(){
+		$$.find('.content-text-search').on( 'keyup', function() {
 			if( interval !== null ) {
 				clearTimeout(interval);
 			}

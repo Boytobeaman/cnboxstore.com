@@ -2,7 +2,7 @@
 namespace W3TC;
 
 if ( !defined( 'W3TC_SKIPLIB_AWS' ) ) {
-	require_once W3TC_LIB_DIR . '/Aws/aws-autoloader.php';
+	require_once W3TC_DIR . '/vendor/autoload.php';
 }
 
 /**
@@ -10,6 +10,41 @@ if ( !defined( 'W3TC_SKIPLIB_AWS' ) ) {
  */
 class CdnEngine_S3 extends CdnEngine_Base {
 	private $api;
+
+	/**
+	 * Regions list.
+	 *
+	 * @link https://docs.aws.amazon.com/general/latest/gr/rande.html
+	 *
+	 * @return array
+	 */
+	static public function regions_list() {
+		return array(
+			'us-east-1'      => __( 'US East (N. Virginia)', 'w3-total-cache' ),
+			'us-east-2'      => __( 'US East (Ohio)', 'w3-total-cache' ),
+			'us-west-1'      => __( 'US West (N. California)', 'w3-total-cache' ),
+			'us-west-2'      => __( 'US West (Oregon)', 'w3-total-cache' ),
+			'af-south-1'     => __( 'Africa (Cape Town)', 'w3-total-cache' ),
+			'ap-east-1'      => __( 'Asia Pacific (Hong Kong)', 'w3-total-cache' ),
+			'ap-northeast-1' => __( 'Asia Pacific (Tokyo)', 'w3-total-cache' ),
+			'ap-northeast-2' => __( 'Asia Pacific (Seoul)', 'w3-total-cache' ),
+			'ap-northeast-3' => __( 'Asia Pacific (Osaka-Local)', 'w3-total-cache' ),
+			'ap-south-1'     => __( 'Asia Pacific (Mumbai)', 'w3-total-cache' ),
+			'ap-southeast-1' => __( 'Asia Pacific (Singapore)', 'w3-total-cache' ),
+			'ap-southeast-2' => __( 'Asia Pacific (Sydney)', 'w3-total-cache' ),
+			'ca-central-1'   => __( 'Canada (Central)', 'w3-total-cache' ),
+			'cn-north-1'     => __( 'China (Beijing)', 'w3-total-cache' ),
+			'cn-northwest-1' => __( 'China (Ningxia)', 'w3-total-cache' ),
+			'eu-central-1'   => __( 'Europe (Frankfurt)', 'w3-total-cache' ),
+			'eu-north-1'     => __( 'Europe (Stockholm)', 'w3-total-cache' ),
+			'eu-south-1'     => __( 'Europe (Milan)', 'w3-total-cache' ),
+			'eu-west-1'      => __( 'Europe (Ireland)', 'w3-total-cache' ),
+			'eu-west-2'      => __( 'Europe (London)', 'w3-total-cache' ),
+			'eu-west-3'      => __( 'Europe (Paris)', 'w3-total-cache' ),
+			'me-south-1'     => __( 'Middle East (Bahrain)', 'w3-total-cache' ),
+			'sa-east-1'      => __( 'South America (São Paulo)', 'w3-total-cache' ),
+		);
+	}
 
 	public function __construct( $config = array() ) {
 		$config = array_merge( array(
@@ -53,26 +88,31 @@ class CdnEngine_S3 extends CdnEngine_Base {
 			return;
 		}
 
-		if ( empty( $this->_config['key'] ) ) {
-			throw new \Exception( 'Empty access key.' );
-		}
-
-		if ( empty( $this->_config['secret'] ) ) {
-			throw new \Exception( 'Empty secret key.' );
-		}
-
 		if ( empty( $this->_config['bucket'] ) ) {
 			throw new \Exception( 'Empty bucket.' );
 		}
 
-		$credentials = new \Aws\Credentials\Credentials(
-			$this->_config['key'],
-			$this->_config['secret'] );
+		if ( empty( $this->_config['key'] ) && empty( $this->_config['secret'] ) ) {
+			$credentials = \Aws\Credentials\CredentialProvider::defaultProvider();
+		} else {
+			if ( empty( $this->_config['key'] ) ) {
+				throw new \Exception( 'Empty access key.' );
+			}
+
+			if ( empty( $this->_config['secret'] ) ) {
+				throw new \Exception( 'Empty secret key.' );
+			}
+
+			$credentials = new \Aws\Credentials\Credentials(
+				$this->_config['key'],
+				$this->_config['secret'] );
+		}
 
 		$this->api = new \Aws\S3\S3Client( array(
 				'credentials' => $credentials,
 				'region' => $this->_config['bucket_location'],
-				'version' => '2006-03-01'
+				'version' => '2006-03-01',
+				'use_arn_region' => true,
 			)
 		);
 	}
@@ -157,12 +197,11 @@ class CdnEngine_S3 extends CdnEngine_Base {
 				}
 			}
 
-			$headers = $this->_get_headers( $file );
+			$headers = $this->get_headers_for_file( $file );
 			$result = $this->_put_object( array(
 					'Key' => $remote_path,
 					'SourceFile' => $local_path,
-					'Metadata' => $headers
-				)
+				), $headers
 			);
 
 			return $this->_get_result( $local_path, $remote_path,
@@ -224,17 +263,13 @@ class CdnEngine_S3 extends CdnEngine_Base {
 				}
 			}
 
-			$headers = $this->_get_headers( $file );
-			$headers = array_merge( $headers, array(
-					'Vary' => 'Accept-Encoding',
-					'Content-Encoding' => 'gzip'
-				) );
+			$headers = $this->get_headers_for_file( $file );
+			$headers['Content-Encoding'] = 'gzip';
 
 			$result = $this->_put_object( array(
 					'Key' => $remote_path,
-					'Body' => $data,
-					'Metadata' => $headers
-				)
+					'Body' => $data
+				), $headers
 			);
 
 			return $this->_get_result( $local_path, $remote_path,
@@ -250,18 +285,17 @@ class CdnEngine_S3 extends CdnEngine_Base {
 	/**
 	 * Wrapper to set headers well
 	 */
-	private function _put_object( $data ) {
+	private function _put_object( $data, $headers ) {
 		$data['ACL'] = 'public-read';
 		$data['Bucket'] = $this->_config['bucket'];
 
-		if ( isset( $data['Metadata']['Content-Type'] ) ) {
-			$data['ContentType'] = $data['Metadata']['Content-Type'];
+		$data['ContentType'] = $headers['Content-Type'];
+
+		if ( isset( $headers['Content-Encoding'] ) ) {
+			$data['ContentEncoding'] = $headers['Content-Encoding'];
 		}
-		if ( isset( $data['Metadata']['Content-Encoding'] ) ) {
-			$data['ContentEncoding'] = $data['Metadata']['Content-Encoding'];
-		}
-		if ( isset( $data['Metadata']['Cache-Control'] ) ) {
-			$data['CacheControl'] = $data['Metadata']['Cache-Control'];
+		if ( isset( $headers['Cache-Control'] ) ) {
+			$data['CacheControl'] = $headers['Cache-Control'];
 		}
 
 		return $this->api->putObject( $data );
@@ -429,8 +463,21 @@ class CdnEngine_S3 extends CdnEngine_Base {
 		}
 
 		try {
-			$result = $this->api->createBucket( array(
+			$this->api->createBucket( array(
 				'Bucket' => $this->_config['bucket'],
+			) );
+
+			$this->api->putBucketCors( array(
+				'Bucket' => $this->_config['bucket'],
+				'CORSConfiguration' => array(
+					'CORSRules' => array(
+						array(
+							'AllowedHeaders' => array( '*' ),
+							'AllowedMethods' => array( 'GET' ),
+							'AllowedOrigins' => array( '*' )
+						)
+					)
+				)
 			) );
 		} catch ( \Exception $e) {
 			throw new \Exception( 'Failed to create bucket: ' . $ex->getMessage() );

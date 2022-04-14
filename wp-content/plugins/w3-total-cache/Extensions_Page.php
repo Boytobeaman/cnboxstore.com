@@ -6,10 +6,10 @@ namespace W3TC;
 /* todo - sort by name
 function extensions_sort_cmp_name($a, $b)
 {
-    if ($a['name'] == $b['name']) {
-        return 0;
-    }
-    return ($a['name'] < $b['name']) ? -1 : 1;
+	if ($a['name'] == $b['name']) {
+		return 0;
+	}
+	return ($a['name'] < $b['name']) ? -1 : 1;
 }*/
 
 
@@ -39,7 +39,7 @@ class Extensions_Page extends Base_Page_Settings {
 		}
 
 		if ( isset( $_GET['extension'] ) ) {
-			$extension = $_GET['extension'];
+			$extension = esc_attr( $_GET['extension'] );
 		}
 
 		$view = ( isset( $_GET['action'] ) && $_GET['action'] == 'view' );
@@ -84,6 +84,7 @@ class Extensions_Page extends Base_Page_Settings {
 			'enabled' => true,
 			'requirements' => array(),
 			'core' => false,
+			'public' => true,
 			'path' => ''
 		);
 		return array_merge( $default, $meta );

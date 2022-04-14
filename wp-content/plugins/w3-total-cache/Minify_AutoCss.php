@@ -252,6 +252,9 @@ class Minify_AutoCss {
 		if ( count( $this->files_to_minify ) <= 0 )
 			$this->embed_pos = $tag_pos;
 		$this->files_to_minify[] = $file;
+
+		if ( $this->config->get_string( 'minify.css.method' ) == 'minify' )
+			$this->flush_collected( '' );
 	}
 
 	/**
@@ -290,7 +293,7 @@ class Minify_AutoCss {
 				$data );
 			$this->buffer = $data['buffer'];
 
-			if ( $this->config->get_boolean( 'minify.css.http2push' ) ) {
+			if ( $this->config->getf_boolean( 'minify.css.http2push' ) ) {
 				$this->minify_helpers->http2_header_add(
 					$data['style_to_embed_url'], 'style' );
 			}
