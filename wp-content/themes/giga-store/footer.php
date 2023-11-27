@@ -13,16 +13,12 @@
 					<div id="footerLink">
 						<p>
 							<a href="https://www.plastic-crate.co.uk" target="_blank" >euro crates</a> <b>|</b>
-							<a href="https://www.joinplastic.com" target="_blank" >plastic folding crate</a> <b>|</b>
-							<a href="https://www.moving-dolly.com" target="_blank" >plastic moving dolly</a>
 							<b>|</b>
 							<a href="https://www.plastic-crates.com/" target="_blank" >stackable plastic crates</a>
 							<b>|</b>
-							<a href="https://www.palletboxsale.com/" target="_blank">Collapsible plastic pallet box</a>
+							<a href="https://www.palletboxsale.com/product/intermediate-bulk-containers-for-sale-folding-large-containers/" target="_blank">intermediate bulk container</a>
 							<b>|</b>
-							<a href="https://www.plastic-crate.com/" target="_blank">plastic moving boxes for sale</a>
-							<b>|</b>
-							<a href="http://www.jiajiubox.com" target="_blank" >上海周转箱</a>
+							<a href="https://www.poolteststrip.com/product-category/ph-test-strips/" target="_blank">ph strip tester</a>
 							<b>|</b>
 						</p>
 					</div>
